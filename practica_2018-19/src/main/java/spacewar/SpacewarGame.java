@@ -24,7 +24,7 @@ public class SpacewarGame {
 	private final static long TICK_DELAY = 1000 / FPS;
 	public final static boolean DEBUG_MODE = true;
 	public final static boolean VERBOSE_MODE = true;
-
+	int vidas;
 	ObjectMapper mapper = new ObjectMapper();
 	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -102,7 +102,7 @@ public class SpacewarGame {
 		long thisInstant = System.currentTimeMillis();
 		Set<Integer> bullets2Remove = new HashSet<>();
 		boolean removeBullets = false;
-
+//aqui dentro se lleva todo lo que va de colisiones, meter que se reste 1 a la vida al detectarse una 
 		try {
 			// Update players
 			for (Player player : getPlayers()) {
@@ -126,6 +126,9 @@ public class SpacewarGame {
 					if ((projectile.getOwner().getPlayerId() != player.getPlayerId()) && player.intersect(projectile)) {
 						// System.out.println("Player " + player.getPlayerId() + " was hit!!!");
 						projectile.setHit(true);
+						player.getLives();
+						player.setLives(player.getLives()-1);
+						System.out.println(player.getLives());
 						break;
 					}
 				}
