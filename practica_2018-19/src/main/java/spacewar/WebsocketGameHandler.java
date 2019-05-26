@@ -21,7 +21,8 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		Player player = new Player(playerId.incrementAndGet(), session);
+		//el 3 es porque tiene 3 vidas 
+		Player player = new Player(playerId.incrementAndGet(), session, 3);
 		session.getAttributes().put(PLAYER_ATTRIBUTE, player);
 		
 		ObjectNode msg = mapper.createObjectNode();
