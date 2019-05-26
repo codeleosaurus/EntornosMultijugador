@@ -4,7 +4,7 @@ Spacewar.gameState = function(game) {
 	this.numStars = 100 // Should be canvas size dependant
 	this.maxProjectiles = 800 // 8 per player
 }
-
+var lives;
 Spacewar.gameState.prototype = {
 
 	init : function() {
@@ -53,7 +53,7 @@ Spacewar.gameState.prototype = {
 				return false
 			}
 		}
-
+		//movimiento
 		this.wKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.sKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -96,6 +96,28 @@ Spacewar.gameState.prototype = {
 		if (game.global.DEBUG_MODE) {
 			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
 		}
+		if (lives==0){
+			delete game.global.myPlayer.image;
+			game.state.start('endingState')
+		}
+		
+		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
+		//que recoge la vida. Creo que hay que poner un post en la parte de java.
 		game.global.socket.send(JSON.stringify(msg))
+		getPlayer(callback) {
+		    $.ajax({
+		      method: "GET",
+		      url: "/game/" + game.lives,
+		      processData: false,
+		      headers: {
+		        "Content-Type": "application/json"
+		      }
+		    }).done(function(data) {
+		      game.vida = JSON.parse(JSON.stringify(data));
+		      lives=game.lives;
+		    });
+		  },
+		  
+		  
 	}
 }
