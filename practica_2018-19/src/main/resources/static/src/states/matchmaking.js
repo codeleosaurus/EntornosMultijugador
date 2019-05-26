@@ -21,7 +21,12 @@ Spacewar.matchmakingState.prototype = {
 	},
 
 	create : function() {
-
+		
+		var menubackground = game.add.sprite(game.world.X, game.world.Y, "matchmaking");
+		menubackground.height = game.height;
+		menubackground.width = game.width;
+		//seria conveniente meter alguna flecha de estas girando que indica que se esta cargando pero eso es decorativo
+		//tampoco estaría mal un timeout por si llevas esperando conectarte a la sala demasiado tiempo
 	},
 
 	update : function() {

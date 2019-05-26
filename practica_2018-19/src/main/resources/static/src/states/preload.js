@@ -14,7 +14,9 @@ Spacewar.preloadState.prototype = {
 		//fondos de la interfaz y botones 
 		game.load.image("menu", "/assets/images/menuFondo.png");
 		game.load.image("play", "assets/images/play.png");
-		
+		game.load.image("room", "assets/images/crearSala.png");
+		game.load.image("lobby", "assets/images/lobbyFondo.png");
+		game.load.image("matchmaking", "assets/images/matchmakingFondo.png");
 		//explosiones y naves
 		game.load.atlas('spacewar', 'assets/atlas/spacewar.png',
 				'assets/atlas/spacewar.json',

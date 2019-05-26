@@ -8,9 +8,7 @@ function newGame(){
 Spacewar.lobbyState.prototype = {
 
 	init : function() {
-		if (game.global.DEBUG_MODE) {
-			console.log("[DEBUG] Entering **LOBBY** state");
-		}
+		
 	},
 
 	preload : function() {
