@@ -102,22 +102,7 @@ Spacewar.gameState.prototype = {
 		}
 		
 		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
-		//que recoge la vida. Creo que hay que poner un post en la parte de java.
-		game.global.socket.send(JSON.stringify(msg))
-		getPlayer(callback) {
-		    $.ajax({
-		      method: "GET",
-		      url: "/game/" + game.lives,
-		      processData: false,
-		      headers: {
-		        "Content-Type": "application/json"
-		      }
-		    }).done(function(data) {
-		      game.vida = JSON.parse(JSON.stringify(data));
-		      lives=game.lives;
-		    });
-		  },
-		  
+		//que recoge la vida. Creo que hay que poner un post en la parte de java.	  
 		  
 	}
 }

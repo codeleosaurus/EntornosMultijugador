@@ -21,7 +21,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		//el 3 es porque tiene 3 vidas 
+		//el 3 es porque tiene 3 vidas, aqui se crea el jugador cuando se establece la conexion 
 		Player player = new Player(playerId.incrementAndGet(), session, 3);
 		session.getAttributes().put(PLAYER_ATTRIBUTE, player);
 		
@@ -29,8 +29,8 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 		msg.put("event", "JOIN");
 		msg.put("id", player.getPlayerId());
 		msg.put("shipType", player.getShipType());
+		msg.put("vidas", player.getLives());
 		player.getSession().sendMessage(new TextMessage(msg.toString()));
-		
 		game.addPlayer(player);
 	}
 
@@ -42,22 +42,31 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			Player player = (Player) session.getAttributes().get(PLAYER_ATTRIBUTE);
 
 			switch (node.get("event").asText()) {
+			//cuando se une al juego
 			case "JOIN":
 				msg.put("event", "JOIN");
 				msg.put("id", player.getPlayerId());
 				msg.put("shipType", player.getShipType());
+				msg.put("vidas", player.getLives());
 				player.getSession().sendMessage(new TextMessage(msg.toString()));
 				break;
+				//cuando se une a la room
 			case "JOIN ROOM":
 				msg.put("event", "NEW ROOM");
 				msg.put("room", "GLOBAL");
 				player.getSession().sendMessage(new TextMessage(msg.toString()));
 				break;
+				//cuando se actualiza la posicion
 			case "UPDATE MOVEMENT":
+				//en verdad la vida se puede ir actualizando con el movimiento 
 				player.loadMovement(node.path("movement").get("thrust").asBoolean(),
 						node.path("movement").get("brake").asBoolean(),
 						node.path("movement").get("rotLeft").asBoolean(),
 						node.path("movement").get("rotRight").asBoolean());
+				
+				//mete las vidas aqui
+				//player.getLives(node.path("vida").asInt());
+				//esta mal y peta
 				if (node.path("bullet").asBoolean()) {
 					Projectile projectile = new Projectile(player, this.projectileId.incrementAndGet());
 					game.addProjectile(projectile.getId(), projectile);
@@ -74,6 +83,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 	}
 
 	@Override
+	//cuando se cierra la conexion 
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Player player = (Player) session.getAttributes().get(PLAYER_ATTRIBUTE);
 		game.removePlayer(player);

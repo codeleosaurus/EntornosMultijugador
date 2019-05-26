@@ -126,9 +126,12 @@ public class SpacewarGame {
 					if ((projectile.getOwner().getPlayerId() != player.getPlayerId()) && player.intersect(projectile)) {
 						// System.out.println("Player " + player.getPlayerId() + " was hit!!!");
 						projectile.setHit(true);
-						player.getLives();
+						//aqui se actualiza la vida, se resta bien 
 						player.setLives(player.getLives()-1);
-						System.out.println(player.getLives());
+						if(player.getLives()<=0) {
+							player.setLives(0);
+						}
+						//System.out.println(player.getLives());
 						break;
 					}
 				}
