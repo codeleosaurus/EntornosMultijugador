@@ -4,7 +4,7 @@ Spacewar.gameState = function(game) {
 	this.numStars = 100 // Should be canvas size dependant
 	this.maxProjectiles = 800 // 8 per player
 }
-var lives;
+var vidas;
 Spacewar.gameState.prototype = {
 
 	init : function() {
@@ -67,11 +67,11 @@ Spacewar.gameState.prototype = {
 
 		game.camera.follow(game.global.myPlayer.image);
 	},
-
+	//aqui actualiza lo de la posicion es donde llega el mensaje que se hace en el servidor
 	update : function() {
 		let msg = new Object()
 		msg.event = 'UPDATE MOVEMENT'
-
+			
 		msg.movement = {
 			thrust : false,
 			brake : false,
@@ -96,13 +96,29 @@ Spacewar.gameState.prototype = {
 		if (game.global.DEBUG_MODE) {
 			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
 		}
-		if (lives==0){
+		if (vidas==0){
 			delete game.global.myPlayer.image;
 			game.state.start('endingState')
 		}
 		
 		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
 		//que recoge la vida. Creo que hay que poner un post en la parte de java.	  
+		
+		 getPlayer(callback) {
+			    $.ajax({
+			      method: "GET",
+			      url: "/game/" + game.player.lives,
+			      processData: false,
+			      headers: {
+			        "Content-Type": "application/json"
+			      }
+			    }).done(function(data) {
+			    	//la primera parte es la variable local, la segunda la que viene del server
+			      game.player = JSON.parse(JSON.stringify(data));
+			      myPlayer.vidas=aux;
+
+			    });
+			  },
 		  
 	}
 }
