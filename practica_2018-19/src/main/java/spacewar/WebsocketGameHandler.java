@@ -2,6 +2,10 @@ package spacewar;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -81,7 +85,16 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			e.printStackTrace(System.err);
 		}
 	}
-
+	@PostMapping(value = "/game")
+	public ResponseEntity<Player> isReady(@RequestBody Player player) {
+		int aux;
+		if (player != null) {
+		aux= player.getLives();
+			return new ResponseEntity<>(player, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	@Override
 	//cuando se cierra la conexion 
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
