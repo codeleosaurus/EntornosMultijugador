@@ -25,8 +25,9 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		//el 3 es porque tiene 3 vidas, aqui se crea el jugador cuando se establece la conexion 
-		Player player = new Player(playerId.incrementAndGet(), session, 3);
+		//el 3 es porque tiene 3 vidas, y el 0 por la puntuacion inicial
+		//aqui se crea el jugador cuando se establece la conexion 
+		Player player = new Player(playerId.incrementAndGet(), session, 3, 0);
 		session.getAttributes().put(PLAYER_ATTRIBUTE, player);
 		
 		ObjectNode msg = mapper.createObjectNode();
@@ -52,6 +53,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 				msg.put("id", player.getPlayerId());
 				msg.put("shipType", player.getShipType());
 				msg.put("vidas", player.getLives());
+				msg.put("puntuacion", player.getPoints());
 				player.getSession().sendMessage(new TextMessage(msg.toString()));
 				break;
 				//cuando se une a la room
@@ -69,7 +71,8 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 						node.path("movement").get("rotRight").asBoolean());
 				
 				//mete las vidas aqui
-				//player.getLives(node.path("vida").asInt());
+				msg.put("vidas", player.getLives());
+				msg.put("puntuacion", player.getPoints());
 				//esta mal y peta
 				if (node.path("bullet").asBoolean()) {
 					Projectile projectile = new Projectile(player, this.projectileId.incrementAndGet());
@@ -85,7 +88,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			e.printStackTrace(System.err);
 		}
 	}
-	@PostMapping(value = "/game")
+	/*@PostMapping(value = "/game")
 	public ResponseEntity<Player> isReady(@RequestBody Player player) {
 		int aux;
 		if (player != null) {
@@ -94,7 +97,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
+	}*/
 	@Override
 	//cuando se cierra la conexion 
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
