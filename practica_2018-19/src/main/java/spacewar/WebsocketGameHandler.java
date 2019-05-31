@@ -71,8 +71,8 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 						node.path("movement").get("rotRight").asBoolean());
 				
 				//mete las vidas aqui
-				msg.put("vidas", player.getLives());
-				msg.put("puntuacion", player.getPoints());
+				/*msg.put("vidas", player.getLives());
+				msg.put("puntuacion", player.getPoints());*/
 				//esta mal y peta
 				if (node.path("bullet").asBoolean()) {
 					Projectile projectile = new Projectile(player, this.projectileId.incrementAndGet());

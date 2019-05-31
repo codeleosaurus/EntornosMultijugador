@@ -98,7 +98,7 @@ Spacewar.gameState.prototype = {
 		}
 		/*if (vidas==0){
 			delete game.global.myPlayer.image;
-			game.state.start('endingState')
+			
 		}*/
 		
 		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
@@ -119,6 +119,6 @@ Spacewar.gameState.prototype = {
 
 			    });
 			  },*/
-		  
+		game.state.start('endingState')
 	}
 }
