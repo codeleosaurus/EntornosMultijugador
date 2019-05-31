@@ -128,11 +128,14 @@ public class SpacewarGame {
 						projectile.setHit(true);
 						//aqui se actualiza la vida, se resta bien 
 						player.setLives(player.getLives()-1);
+						//las vidas se restan a todos los jugadores en vez de al que ha sido golpeado, debe ponerse de modo
+						//que se le resten al jugador en funcion de su id
 						if(player.getLives()<=0) {
 							player.setLives(0);
 						}
+						//System.out.println(player);
 						//System.out.println(player.getLives());
-						//debemos comprobar que las vidas se quitan a quien deben
+					
 						break;
 					}
 				}

@@ -119,6 +119,7 @@ Spacewar.gameState.prototype = {
 
 			    });
 			  },*/
+		game.global.socket.send(JSON.stringify(msg))
 		  
 	}
 }
