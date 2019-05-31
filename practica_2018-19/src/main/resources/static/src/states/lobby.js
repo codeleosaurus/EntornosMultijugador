@@ -35,8 +35,8 @@ Spacewar.lobbyState.prototype = {
 	},
 
 	update : function() {
-		//if (selected == true){
+		if (selected == true){
 			game.state.start('matchmakingState')
-		//}
+		}
 	}
 }
