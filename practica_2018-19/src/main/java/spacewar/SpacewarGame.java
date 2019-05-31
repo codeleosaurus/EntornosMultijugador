@@ -124,7 +124,7 @@ public class SpacewarGame {
 				// Handle collision
 				for (Player player : getPlayers()) {
 					if ((projectile.getOwner().getPlayerId() != player.getPlayerId()) && player.intersect(projectile)) {
-						System.out.println("Player " + player.getPlayerId() + " was hit!!!");
+						// System.out.println("Player " + player.getPlayerId() + " was hit!!!");
 						projectile.setHit(true);
 						//aqui se actualiza la vida, se resta bien 
 						player.setLives(player.getLives()-1);
@@ -132,7 +132,6 @@ public class SpacewarGame {
 							player.setLives(0);
 						}
 						//System.out.println(player.getLives());
-						//debemos comprobar que las vidas se quitan a quien deben
 						break;
 					}
 				}

@@ -11,14 +11,13 @@ public class Player extends Spaceship {
 	private final int playerId;
 	private final String shipType;
 	private int lives;
-	private int points;
+	
 
-	public Player(int playerId, WebSocketSession session, int lives, int points) {
+	public Player(int playerId, WebSocketSession session, int lives) {
 		this.playerId = playerId;
 		this.session = session;
 		this.shipType = this.getRandomShipType();
 		this.lives = lives;
-		this.points= points;
 	}
 	
 	public int getPlayerId() {
@@ -41,12 +40,6 @@ public class Player extends Spaceship {
 	}
 	 public void setLives(int liv) {
 	        this.lives = liv;
-	    }
-	 public int getPoints() {
-			return points;
-		}
-	 public void setPoints(int po) {
-	        this.points = po;
 	    }
 	private String getRandomShipType() {
 		String[] randomShips = { "blue", "darkgrey", "green", "metalic", "orange", "purple", "red" };

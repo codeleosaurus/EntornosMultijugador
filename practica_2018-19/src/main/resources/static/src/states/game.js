@@ -96,15 +96,15 @@ Spacewar.gameState.prototype = {
 		if (game.global.DEBUG_MODE) {
 			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
 		}
-		/*if (vidas==0){
+		if (vidas==0){
 			delete game.global.myPlayer.image;
 			game.state.start('endingState')
-		}*/
+		}
 		
 		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
 		//que recoge la vida. Creo que hay que poner un post en la parte de java.	  
 		
-		/* getPlayer(callback) {
+		 getPlayer(callback) {
 			    $.ajax({
 			      method: "GET",
 			      url: "/game/" + game.player.lives,
@@ -118,7 +118,7 @@ Spacewar.gameState.prototype = {
 			      myPlayer.vidas=aux;
 
 			    });
-			  },*/
+			  },
 		  
 	}
 }
