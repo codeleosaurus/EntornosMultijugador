@@ -69,16 +69,18 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 						node.path("movement").get("brake").asBoolean(),
 						node.path("movement").get("rotLeft").asBoolean(),
 						node.path("movement").get("rotRight").asBoolean());
-				
-				//mete las vidas aqui
-				msg.put("vidas", player.getLives());
-				msg.put("puntuacion", player.getPoints());
-				//esta mal y peta
 				if (node.path("bullet").asBoolean()) {
 					Projectile projectile = new Projectile(player, this.projectileId.incrementAndGet());
 					game.addProjectile(projectile.getId(), projectile);
 				}
 				break;
+				
+			case "UPDATE LIVES":
+				msg.put("vidas", player.getLives());
+				msg.put("puntuacion", player.getPoints());
+				
+				break;
+				
 			default:
 				break;
 			}
@@ -88,16 +90,6 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			e.printStackTrace(System.err);
 		}
 	}
-	/*@PostMapping(value = "/game")
-	public ResponseEntity<Player> isReady(@RequestBody Player player) {
-		int aux;
-		if (player != null) {
-		aux= player.getLives();
-			return new ResponseEntity<>(player, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}*/
 	@Override
 	//cuando se cierra la conexion 
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
