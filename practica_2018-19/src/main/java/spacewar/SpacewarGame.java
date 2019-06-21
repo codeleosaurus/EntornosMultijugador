@@ -85,7 +85,7 @@ public class SpacewarGame {
 	public void broadcast(String message) {
 		for (Player player : getPlayers()) {
 			try {
-				player.getSession().sendMessage(new TextMessage(message.toString()));
+				player.sendMessage((message.toString()));
 			} catch (Throwable ex) {
 				System.err.println("Execption sending message to player " + player.getSession().getId());
 				ex.printStackTrace(System.err);
@@ -139,7 +139,7 @@ public class SpacewarGame {
 						break;
 					}
 				}
-
+				
 				ObjectNode jsonProjectile = mapper.createObjectNode();
 				jsonProjectile.put("id", projectile.getId());
 
@@ -167,7 +167,7 @@ public class SpacewarGame {
 			json.put("event", "GAME STATE UPDATE");
 			json.putPOJO("players", arrayNodePlayers);
 			json.putPOJO("projectiles", arrayNodeProjectiles);
-
+			
 			this.broadcast(json.toString());
 		} catch (Throwable ex) {
 

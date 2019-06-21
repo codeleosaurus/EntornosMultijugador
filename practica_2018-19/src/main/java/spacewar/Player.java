@@ -12,7 +12,8 @@ public class Player extends Spaceship {
 	private final String shipType;
 	private int lives;
 	private int points;
-
+	//pasar la vida a SpaceWar.java
+	
 	public Player(int playerId, WebSocketSession session, int lives, int points) {
 		this.playerId = playerId;
 		this.session = session;
@@ -30,7 +31,9 @@ public class Player extends Spaceship {
 	}
 
 	public void sendMessage(String msg) throws Exception {
+		synchronized(this.session) {
 		this.session.sendMessage(new TextMessage(msg));
+		}
 	}
 
 	public String getShipType() {

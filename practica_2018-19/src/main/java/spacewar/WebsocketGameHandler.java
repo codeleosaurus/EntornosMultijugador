@@ -24,6 +24,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 	private AtomicInteger projectileId = new AtomicInteger(0);
 
 	@Override
+	//poner session en exclusion mutua
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		//el 3 es porque tiene 3 vidas, y el 0 por la puntuacion inicial
 		//aqui se crea el jugador cuando se establece la conexion 
@@ -35,7 +36,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 		msg.put("id", player.getPlayerId());
 		msg.put("shipType", player.getShipType());
 		msg.put("vidas", player.getLives());
-		player.getSession().sendMessage(new TextMessage(msg.toString()));
+		player.sendMessage(msg.toString());
 		game.addPlayer(player);
 	}
 
@@ -54,7 +55,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 				msg.put("shipType", player.getShipType());
 				msg.put("vidas", player.getLives());
 				msg.put("puntuacion", player.getPoints());
-				player.getSession().sendMessage(new TextMessage(msg.toString()));
+				player.sendMessage(msg.toString());
 				break;
 				//cuando se une a la room
 			case "JOIN ROOM":
@@ -75,11 +76,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 				}
 				break;
 				
-			case "UPDATE LIVES":
-				msg.put("vidas", player.getLives());
-				msg.put("puntuacion", player.getPoints());
-				
-				break;
+			//no hay que crear un nuevo mensaje
 				
 			default:
 				break;
