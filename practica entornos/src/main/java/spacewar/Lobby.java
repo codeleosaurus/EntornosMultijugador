@@ -70,6 +70,7 @@ public class Lobby {
 	}
 	
 	//toi probando gishun ^^
+	//toi haciendo otra prueba en gishun esta es más compleja
 	
 	//////////////////////////////
 	//MÉTODOS DE ACCESO AL LOBBY//
