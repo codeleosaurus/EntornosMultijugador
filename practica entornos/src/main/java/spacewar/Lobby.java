@@ -69,6 +69,8 @@ public class Lobby {
 		
 	}
 	
+	//toi probando gishun ^^
+	
 	//////////////////////////////
 	//MÉTODOS DE ACCESO AL LOBBY//
 	//////////////////////////////
