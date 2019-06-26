@@ -69,10 +69,6 @@ public class Lobby {
 		
 	}
 	
-	//toi probando gishun ^^
-	//toi haciendo otra prueba en gishun esta es más compleja
-	//pruebaaaaaaaas
-	
 	//////////////////////////////
 	//MÉTODOS DE ACCESO AL LOBBY//
 	//////////////////////////////
@@ -299,14 +295,47 @@ public class Lobby {
 	//MÉTODOS DE GESTIÓN DE LA WAITLIST//
 	/////////////////////////////////////
 
-	//falta por hacer
+	//MÉTODO QUE SACA A UN JUGADOR DE SU LISTA DE ESPERA AUTOMÁTICAMENTE
+	//PRUEBA A SACAR UN JUGADOR DE LA LISTA DE JUGADORES EN ESPERA, SI EXISTE ALGUNO,
+	//ACCEDE A LA SALA QUE TIENE ASIGNADA Y LO SACA DE LA LISTA DE ESPERA, LO DEVUELVE AL LOBBY Y ACTUALIZA LA INFORMACIÓN
+	
 	private void removeFromWaitlist() {
-		// TODO Auto-generated method stub
+		
+		Player player = lastInWaitlists.poll();
+		ObjectNode msg = mapper.createObjectNode();
+		
+		if(player != null) {
+			
+			Room room;
+			
+			synchronized(player.getSession()) {
+				room = (Room) player.getSession().getAttributes().get(ROOM_ATTRIBUTE);
+			}
+			
+			System.out.println("[ROOM] [PLAYER INFO]  Player " + player.getName() + " removed from the waitlist");
+			
+			joinLobby(player);
+			
+			msg.put("event", "LEAVING WAITLIST");
+			
+			try {
+				player.sendMessage(msg.toString());
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		}else {
+			
+			System.out.println("[LOBBY] [ROOM ERROR] Unable to remove player from waitlist. May have selected manual leaving");
+			
+		}	
 	}
 	
-	//MÉTODO QUE SACA DE LA LISTA DE ESPERA A UN JUGADOR EN LA SALA EN LA QUE ESTUVIESE ESPERANDO PARA ENTRAR
-	//CAMBIA SU ATRIBUTO DE SALA Y ACTUALIZA SU INFORMACIÓN SOBRE LAS SALAS TRAS DEVOLVERLE AL LOBBY
-	//EN CASO DE QUE NO PUEDA SACARLE DE UNA LISTA DE ESPERA ACTUALIZA SU INFORMACIÓN POR SI ACASO
+	//ESTE MÉTODO SACA A UN JUGADOR DE LA LISTA DE ESPERA DE UNA SALA CUANDO EL JUGADOR DECIDE SALIR DE ELLA MANUALMENTE
+	//SE ACCEDE A LA SALA PARA INTENTAR SACARLO DE SU PROPIA LISTA DE ESPERA Y SI SE CONSIGUE SE ELIMINA SU ATRIBUTO DE SALA
+	//SE DEVUELVE AL JUGADOR AL LOBBY Y SE ACTUALIZA SU INFORMACIÓN SOBRE EL RESTO DE SALAS MEDIANTE UN MENSAJE
+	
 	public void leaveWaitlist(Player player) throws Exception {
 		
 		ObjectNode msg = mapper.createObjectNode();
@@ -340,15 +369,19 @@ public class Lobby {
 		player.sendMessage(msg.toString());
 	}
 	
-	//falta por hacer
-	private void checkPeopleWaitingToJoin(Room room) {
-		/*
-		// Comprobamos si hay algún player en la waiting room
-		addPlayerToRoomFromWaitingList(sala);
+	//MÉTODO QUE COMPRUEBA SI PARA UNA SALA HAY ALGÚN JUGADOR DISPONIBLE AL QUE AÑADIR
+	//PRIMERO INTENTA METER EN LA SALA A LOS JUGADORES QUE ESTUVIERAN ESPERANDO EN LA LISTA DE ESPERA
+	//DESPUÉS, COMPRUEBA SI EN LAS COLAS DE MATCHMAKING HAY ALGÚN JUGADOR DISPONIBLE PARA UNIRSE
 
-		// Comprobamos si hay gente esperando al matchmaking
-		checkMatchmaking(sala);
-		*/
+	private void checkPeopleWaitingToJoin(Room room) {
+
+		try {
+			tryJoinRoomFromWaitlist(room);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		checkMatchmaking(room);
 	}
 	
 	////////////////////////////////////////
@@ -532,6 +565,41 @@ public class Lobby {
 		broadcastRoomListToLobby();
 	}
 	
+	//MÉTODO QUE INTENTA AÑADIR A UN JUGADOR QUE ESTUVIERA EN LA LISTA DE ESPERA A DICHA SALA
+	//EMPLEA EL MÉTODO DE LA CLASE ROOM PARA ELLO. TRAS COMPROBAR QUE SE HAYA AÑADIDO CORRECTAMENTE,
+	//ENVÍA UN MENSAJE DE CONFIRMACIÓN Y ACTUALIZA LA INFORMACIÓN PARA EL RESTO DE JUGADORES
+	//DESPUÉS, INTENTA INICIAR LA PARTIDA SI LA SALA SE LLENA Y SI LA PARTIDA YA HA COMENZADO UNE AL JUGADOR A LA MISMA
+	
+	public void tryJoinRoomFromWaitlist(Room room) throws Exception {
+	
+		ObjectNode msg = mapper.createObjectNode();
+		Player joiningPlayer = room.tryAddPlayerFromWaitlist();
+		
+		if(joiningPlayer != null) {
+		
+			msg.put("event", "JOINING ROOM");
+			msg.put("roomName", room.getName());
+			joiningPlayer.sendMessage(msg.toString());
+			broadcastRoomInfoToRoom(room);
+			broadcastRoomListToLobby();
+			
+			if(room.startGameAuto()) {
+				
+				for(Player p : room.getPlayers()) {
+					
+					playersInGame.put(p.getName(), p);
+					broadcastPlayerListToAll();	
+				}	
+			}
+			
+			if(room.hasStarted()) {
+				
+				room.getGame().sendBeginningMsgToPlayer(joiningPlayer);
+				playersInGame.put(joiningPlayer.getName(), joiningPlayer);
+				broadcastPlayerListToAll();		
+			}
+		}
+	}
 	
 	/////////////////////////////////
 	//MÉTODOS DE GESTIÓN DE PARTIDA//
