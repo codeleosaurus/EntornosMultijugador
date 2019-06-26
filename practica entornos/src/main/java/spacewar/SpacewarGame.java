@@ -32,8 +32,8 @@ public class SpacewarGame {
 	
 	private Map<String, Player> players = new ConcurrentHashMap<>();
 	private Map<Integer, Projectile> projectiles = new ConcurrentHashMap<>();
-	private AtomicInteger numPlayers = new AtomicInteger();
-
+	public AtomicInteger projectileId = new AtomicInteger(0);
+	
 	//HE AÑADIDO LA DIFICULTAD
 	
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -152,11 +152,12 @@ public class SpacewarGame {
 		//players.put(player.getSession().getName(), player);
 		players.put(player.getName(), player);
 		
-		int count = numPlayers.getAndIncrement();
+		/*int count = numPlayers.getAndIncrement();
 		
 		if (count == 0) {
 			this.startGameLoop();
 		}
+		*/
 	}
 
 	public Collection<Player> getPlayers() {
@@ -166,10 +167,12 @@ public class SpacewarGame {
 	public void removePlayer(Player player) {
 		players.remove(player.getSession().getId());
 
+		/*
 		int count = this.numPlayers.decrementAndGet();
 		if (count == 0) {
 			this.stopGameLoop();
 		}
+		*/
 	}
 
 	public void addProjectile(int id, Projectile projectile) {

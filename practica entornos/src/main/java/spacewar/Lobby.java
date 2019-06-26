@@ -1,6 +1,5 @@
 package spacewar;
 
-import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -21,7 +20,6 @@ public class Lobby {
 	//DECLARACIÓN DE ATRIBUTOS DEL LOBBY//
 	//////////////////////////////////////
 	
-	private static final String PLAYER_ATTRIBUTE = "PLAYER";
 	private static final String ROOM_ATTRIBUTE = "ROOM";
 	private ObjectMapper mapper = new ObjectMapper();
 	
@@ -312,19 +310,24 @@ public class Lobby {
 				room = (Room) player.getSession().getAttributes().get(ROOM_ATTRIBUTE);
 			}
 			
-			System.out.println("[ROOM] [PLAYER INFO]  Player " + player.getName() + " removed from the waitlist");
+			if(room.waitlist.remove(player)) {
+				
+				synchronized(player.getSession()) {
+					player.getSession().getAttributes().remove(ROOM_ATTRIBUTE);
+				}
+				
+				System.out.println("[ROOM] [PLAYER INFO]  Player " + player.getName() + " removed from the waitlist");
 			
-			joinLobby(player);
+				joinLobby(player);
 			
-			msg.put("event", "LEAVING WAITLIST");
+				msg.put("event", "LEAVING WAITLIST");
 			
-			try {
-				player.sendMessage(msg.toString());
-			}catch(Exception e) {
-				e.printStackTrace();
+				try {
+					player.sendMessage(msg.toString());
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
-			
-			
 		}else {
 			
 			System.out.println("[LOBBY] [ROOM ERROR] Unable to remove player from waitlist. May have selected manual leaving");
@@ -588,8 +591,9 @@ public class Lobby {
 				for(Player p : room.getPlayers()) {
 					
 					playersInGame.put(p.getName(), p);
-					broadcastPlayerListToAll();	
 				}	
+
+				broadcastPlayerListToAll();	
 			}
 			
 			if(room.hasStarted()) {
@@ -605,37 +609,38 @@ public class Lobby {
 	//MÉTODOS DE GESTIÓN DE PARTIDA//
 	/////////////////////////////////
 	
-	//falta por hacer
-	public void startGameManual(Room room) {
-		/*
-		 * if (sala.tryStartGame()) {
-					for (Player p : sala.getPlayers()) {
-						inGamePlayers.put(p.getPlayerName(), p);
-					}
-					sendPlayerListMessage();
-					sendGetRoomsMessageAll();
-				}
-		 */
+	//ESTE MÉTODO INTENTA COMENZAR LA PARTIDA MANUALMENTE A ELECCIÓN DEL CREADOR DE LA SALA
+	//EMPLEA EL MÉTODO DE INICIO DE PARTIDA MANUAL DE LA CLASE ROOM. SI LO CONSIGUE, METE A TODOS LOS
+	//JUGADORES EN LA LISTA DE JUGADORES EN PARTIDA Y ACTUALIZA LA INFORMACIÓN NECESARIA PARA EL RESTO
+	
+	public void startGameManual(Room room) throws Exception {
+		
+		if (room.startGameManual()) {
+			
+			for (Player p : room.getPlayers()) {
+				
+				playersInGame.put(p.getName(), p);
+			}
+			
+			broadcastPlayerListToAll();
+			broadcastRoomListToLobby();
+		}
 	}
 	
-	//falta por hacer
+	//ESTE MÉTODO ACTUALIZA LA POSICIÓN Y EL MOVIMIENTO DE UN JUGADOR
+	//TAMBIÉN CREA LAS BALAS NECESARIAS EN CASO DE QUE EL JUGADOR HAYA DISPARADO
+
 	public void updatePlayerMovement(Player player, Room room, JsonNode node) {
-		/*
-		 * player.loadMovement(node.path("movement").get("thrust").asBoolean(),
-						node.path("movement").get("brake").asBoolean(),
-						node.path("movement").get("rotLeft").asBoolean(),
-						node.path("movement").get("rotRight").asBoolean(), node.path("propeller").asBoolean());
-				if (node.path("bullet").asBoolean()) {
-					Projectile projectile = new Projectile(player, sala.getGame().projectileId.incrementAndGet());
-					// Gestiona el número de balas
-					if (projectile.getOwner().getAmmo() > 0) {
-						projectile.getOwner().decreaseAmmo();
-					}
-					if (projectile.getOwner().getAmmo() > 0) {
-						sala.getGame().addProjectile(projectile.getId(), projectile);
-					}
-				}
-		 */
+
+		player.loadMovement(node.path("movement").get("thrust").asBoolean(),
+							node.path("movement").get("brake").asBoolean(),
+							node.path("movement").get("rotLeft").asBoolean(),
+							node.path("movement").get("rotRight").asBoolean());
+							   
+		if (node.path("bullet").asBoolean()) {
+			Projectile projectile = new Projectile(player, room.getGame().projectileId.incrementAndGet());
+			room.getGame().addProjectile(projectile.getId(), projectile);
+		}
 	}
 	
 	///////////////////////////////
@@ -711,9 +716,4 @@ public class Lobby {
 		}
 		*/
 	}
-	
-	//////////////////////
-	//MÉTODOS DE CONTROL//
-	//////////////////////
-
 }
