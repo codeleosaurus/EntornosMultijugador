@@ -5,7 +5,7 @@ Spacewar.menuState = function(game) {}
 		clicked = true;
 		}
 	
-	console.log("menu");
+
 
 Spacewar.menuState.prototype = {
 

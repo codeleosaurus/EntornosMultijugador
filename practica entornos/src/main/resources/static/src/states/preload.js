@@ -19,10 +19,6 @@ Spacewar.preloadState.prototype = {
 		game.load.image("matchmaking", "assets/images/matchmakingFondo.png");
 		game.load.image("ending", "assets/images/endingFondo.png");
 		game.load.image("replay", "assets/images/replay.png");
-		
-		//esto es provisional para ver si funciona
-		game.load.image("shrek", "assets/images/shrek.jpg");
-		
 		//explosiones y naves
 		game.load.atlas('spacewar', 'assets/atlas/spacewar.png',
 				'assets/atlas/spacewar.json',
