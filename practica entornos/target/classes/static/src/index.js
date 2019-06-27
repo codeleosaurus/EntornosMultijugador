@@ -1,7 +1,15 @@
 window.onload = function() {
-
+	$('#modal').modal({ backdrop: 'static', keyboard: false });
 	game = new Phaser.Game(1024, 600, Phaser.AUTO, 'gameDiv')
+	$("#chatInput").keydown(function (e) {	// Cuando se pulse una tecla sobre el input del chat ...
+		if (e.keyCode === 13) {  			// Si la tecla es enter
+			submitChatMsg();				// enviamos el mensaje al servidor
+		}
+	});
 
+	$('.dropdown-menu').click(function(e) {
+		e.stopPropagation();
+	});
 	// GLOBAL VARIABLES
 	game.global = {
 		FPS : 30,
@@ -11,10 +19,46 @@ window.onload = function() {
 		otherPlayers : [],
 		projectiles : []
 	}
-
-	// WEBSOCKET CONFIGURATOR
-	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar")
+	// PHASER SCENE CONFIGURATOR
+	game.state.add('bootState', Spacewar.bootState)
+	game.state.add('preloadState', Spacewar.preloadState)
+	game.state.add('menuState', Spacewar.menuState)
+	game.state.add('lobbyState', Spacewar.lobbyState)
+	game.state.add('matchmakingState', Spacewar.matchmakingState)
+	game.state.add('roomState', Spacewar.roomState)
+	game.state.add('gameState', Spacewar.gameState)
+	game.state.add('endState', Spacewar.ending)
+	game.state.start('bootState')
 	
+	///////////////////////////////////////////////////////////////
+	////////    LA FUNCION CUANDO SE ABRE EL CALCETIN    /////////
+	//////////////////////////////////////////////////////////////
+	function openWebsocket() {
+	name = $("#nameInput").val();
+	if (name == "" | name.length < 4 | name.length > 20) {
+		console.log("[ERROR] Player name is too short or too long!")
+		return;
+	}
+	var splChars = "*|,\":<>[]{}`'^´;()@&$#% €_-+*/";
+	for (i = 0; i < name.length; i++) {
+		if (splChars.indexOf(name.charAt(i)) != -1) {
+			// Caracteres no permitidos en el string!
+			console.log("[ERROR] Invalid characters in player name!")
+			return;
+		}
+	}
+	
+	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar")
+	calcetinDeWeb();
+	}
+	////////////////////////////////////////////////////////////////
+	/////////         WEBSOCKET CONFIGURATOR     //////////////////
+	///////////////////////////////////////////////////////////////
+	//aqui hay que ir metiendo los mensajes que vamos enviando del server y el comportamiento que queremos
+	//tambien debo poner una funcion para que una vez introducido el nombre lo gestione y te cambie de
+	//estado
+	//anadir un fonfo chulo y conseguir que el coso de meter el nombre reciba un nombre y lo envie
+	function calcetinDeWeb(){
 	game.global.socket.onopen = () => {
 		if (game.global.DEBUG_MODE) {
 			console.log('[DEBUG] WebSocket connection opened.')
@@ -116,16 +160,4 @@ window.onload = function() {
 			break
 		}
 	}
-
-	// PHASER SCENE CONFIGURATOR
-	game.state.add('bootState', Spacewar.bootState)
-	game.state.add('preloadState', Spacewar.preloadState)
-	game.state.add('menuState', Spacewar.menuState)
-	game.state.add('lobbyState', Spacewar.lobbyState)
-	game.state.add('matchmakingState', Spacewar.matchmakingState)
-	game.state.add('roomState', Spacewar.roomState)
-	game.state.add('gameState', Spacewar.gameState)
-	game.state.add('endState', Spacewar.ending)
-	game.state.start('bootState')
-
-}
+	};
