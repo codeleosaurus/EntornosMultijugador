@@ -30,6 +30,7 @@ public class Lobby {
 	//JUGADORES
 	private ConcurrentHashMap<String, Player> playersInLobby;
 	private ConcurrentHashMap<String, Player> playersInGame;
+	public ConcurrentHashMap<String, Player> allPlayers;
 	
 	//MATCHMAKING
 	private BlockingQueue<Player> easyDuelMatchmaking;
@@ -54,6 +55,7 @@ public class Lobby {
 		
 		playersInLobby = new ConcurrentHashMap<>();
 		playersInGame = new ConcurrentHashMap<>();
+		allPlayers = new ConcurrentHashMap<>();
 		
 		easyDuelMatchmaking = new LinkedBlockingQueue<>();
 		mediumDuelMatchmaking = new LinkedBlockingQueue<>();
@@ -670,8 +672,39 @@ public class Lobby {
 	
 	//falta por hacer
 	public void sendRanking(Player player) {
-		// TODO Auto-generated method stub
 		
+		
+		
+		/*
+		ObjectNode msg = mapper.createObjectNode();
+
+		msg.put("event", "GET RANKING");
+		List<Player> ranking = new LinkedList<Player>();
+		for (Player p : globalPlayers.values()) {
+			ranking.add(p);
+		}
+		// Solo deja comparar tipos no primitivos?
+		ranking.sort((a,b)->new Integer(b.getScore()).compareTo(new Integer(a.getScore())));
+		
+		ArrayNode arrayNode = mapper.createArrayNode();
+		int i = 0;
+		while (i < 10 && i < ranking.size()) {
+			ObjectNode jsonPlayer = mapper.createObjectNode();
+			jsonPlayer.put("playerName", ranking.get(i).getPlayerName());
+			jsonPlayer.put("score", ranking.get(i).getScore());
+			
+			arrayNode.addPOJO(jsonPlayer);
+			i++;
+		}
+		
+		msg.putPOJO("ranking", arrayNode);
+		try {
+			player.sendMessage(msg.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 	}
 
 	//falta por hacer
@@ -709,10 +742,7 @@ public class Lobby {
 
 	private synchronized void broadcast(String msgText) throws Exception {
 		
-		for(Player player : playersInLobby.values()) {
-			player.sendMessage(msgText);
-		}
-		for(Player player : playersInGame.values()) {
+		for(Player player : allPlayers.values()) {
 			player.sendMessage(msgText);
 		}
 	}

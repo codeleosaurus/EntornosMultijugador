@@ -50,12 +50,22 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 				session.getAttributes().put(ROOM_ATTRIBUTE, "");
 			}
 			
+			System.out.println("[SYSTEM] [INFO] Updated session attributes");
+			
 			openSessions.put(name, session);
+			
+			System.out.println("[SYSTEM] [INFO] Added session to open session list");
+			
+			lobby.allPlayers.put(name, player);
+			
+			System.out.println("[SYSTEM] [INFO] Added player to global player list");
 			
 			ObjectNode msg = mapper.createObjectNode();
 			msg.put("event", "INIT SESSION"); 
 			msg.put("validname", true);	      
 			player.sendMessage(msg.toString());
+			
+			System.out.println("[SYSTEM] [INFO] Confirmation message sent to player");
 			
 		}else {
 			
@@ -97,10 +107,6 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			///////////////////////////////////////
 				
 			//ENTRAR AL MATCHMAKING AUTOMÁTICO
-			case "HOLA MUNDO":
-				String mensaje = node.get("data").asText();
-				System.out.println(mensaje);
-				break;
 				
 			case "JOIN MATCHMAKING":
 				lobby.joinMatchmaking(player, node.get("diff").asText(), node.get("mode").asText());
@@ -198,8 +204,10 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 		
 		lobby.leaveLobby(player);
 		
+		lobby.allPlayers.remove(player.getName());
+		
 		synchronized(session) {
-			if(openSessions.containsKey(player.getName())) openSessions.remove(player.getName(), session);
+			if(openSessions.containsKey(player.getName())) openSessions.remove(player.getName());
 		}
 		
 		System.out.println("[SYSTEM] [INFO] Player " + player.getName() + " disconnected from the server");
