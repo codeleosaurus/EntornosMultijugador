@@ -22,7 +22,7 @@ Spacewar.menuState.prototype = {
 				console.log("[DEBUG] Forcing joining server...");
 			}
 			let message = {
-				event : 'JOIN'
+				event : 'JOIN LOBBY'
 			}
 			game.global.socket.send(JSON.stringify(message))
 		}

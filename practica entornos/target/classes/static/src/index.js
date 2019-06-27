@@ -1,7 +1,7 @@
 window.onload = function() {
 
 	game = new Phaser.Game(1024, 600, Phaser.AUTO, 'gameDiv')
-
+	var name= prompt("Write your name", "shrek")
 	// GLOBAL VARIABLES
 	game.global = {
 		FPS : 30,
@@ -13,7 +13,7 @@ window.onload = function() {
 	}
 
 	// WEBSOCKET CONFIGURATOR
-	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar")
+	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar"+name)
 	
 	game.global.socket.onopen = () => {
 		if (game.global.DEBUG_MODE) {
@@ -31,21 +31,19 @@ window.onload = function() {
 		var msg = JSON.parse(message.data)
 		
 		switch (msg.event) {
-		case 'JOIN':
+		case 'INIT SESSION':
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] JOIN message recieved')
 				console.dir(msg)
+				
+			}
+			game.global.isValid=msg.validName;
+			if(validName){
+				confirma(true);
+			}else{
+				confirm(false);
 			}
 			
-			//AL FINAL ID O NAME O LAS DOS ?? JAJA MISMUERT
-			
-			game.global.myPlayer.id = msg.id
-			game.global.myPlayer.name = msg.name
-			
-			game.global.myPlayer.shipType = msg.shipType
-			if (game.global.DEBUG_MODE) {
-				console.log('[DEBUG] ID assigned to player: ' + game.global.myPlayer.id)
-			}
 			break
 		case 'NEW ROOM' :
 			if (game.global.DEBUG_MODE) {
@@ -63,7 +61,7 @@ window.onload = function() {
 			}
 			if (typeof game.global.myPlayer.image !== 'undefined') {
 				for (var player of msg.players) {
-					//if (game.global.myPlayer.name.equals(player.name)) {
+					// if (game.global.myPlayer.name.equals(player.name)) {
 					if (game.global.myPlayer.id == player.id) {
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
@@ -127,5 +125,13 @@ window.onload = function() {
 	game.state.add('gameState', Spacewar.gameState)
 	game.state.add('endState', Spacewar.ending)
 	game.state.start('bootState')
+	
+}
+function confirmation(confirm) {
+	if (confirm){
+		game.state.start('bootState');
+	}else if(confirm==false){
+		console.log("error");
+	}
 
 }
