@@ -30,6 +30,9 @@ Spacewar.lobbyState.prototype = {
 			    );
 		 roomButt.inputEnabled = true;
 		 //playbutton.events.onInputDown.add(crearSala, this);
+		 
+		 
+		 
 
 		
 	},

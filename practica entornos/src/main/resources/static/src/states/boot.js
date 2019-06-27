@@ -10,6 +10,7 @@ Spacewar.bootState.prototype = {
 		if (game.global.DEBUG_MODE) {
 			console.log("[DEBUG] Entering **BOOT** state");
 		}
+	
 	},
 
 	preload : function() {

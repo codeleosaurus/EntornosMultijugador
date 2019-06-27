@@ -13,7 +13,7 @@ window.onload = function() {
 	}
 
 	// WEBSOCKET CONFIGURATOR
-	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar/"+name)
+	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar" +"/"+ name)
 	
 	game.global.socket.onopen = () => {
 		if (game.global.DEBUG_MODE) {
@@ -37,7 +37,7 @@ window.onload = function() {
 				console.dir(msg)
 				
 			nameConfirmation(msg.validname);	
-				/* 
+				
 			}
 			game.global.isValid=msg.validName;
 			if(validName){
@@ -45,18 +45,18 @@ window.onload = function() {
 			}else{
 				confirm(false);
 			}
-			*/
+			
 			
 			break
-		/*case 'NEW ROOM' :
+		case 'NEW ROOM' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] NEW ROOM message recieved')
 				console.dir(msg)
 			}
 			game.global.myPlayer.room = {
 					name : msg.room
-			}*/
-			/*break
+			}
+			break
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] GAME STATE UPDATE message recieved')
@@ -115,7 +115,7 @@ window.onload = function() {
 		default :
 			console.dir(msg)
 			break
-		}*/
+		}
 	}
 
 	// PHASER SCENE CONFIGURATOR
@@ -131,7 +131,7 @@ window.onload = function() {
 	
 }
 
-}}
+
 function nameConfirmation(validname) {
 	
 	if (validname){
