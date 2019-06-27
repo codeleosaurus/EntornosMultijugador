@@ -33,9 +33,11 @@ window.onload = function() {
 		switch (msg.event) {
 		case 'INIT SESSION':
 			if (game.global.DEBUG_MODE) {
-				console.log('[DEBUG] JOIN message recieved')
+				console.log('[DEBUG] [MSG INFO] INIT SESSION message recieved')
 				console.dir(msg)
 				
+			nameConfirmation(msg.validname);	
+				/* 
 			}
 			game.global.isValid=msg.validName;
 			if(validName){
@@ -43,6 +45,7 @@ window.onload = function() {
 			}else{
 				confirm(false);
 			}
+			*/
 			
 			break
 		case 'NEW ROOM' :
@@ -127,11 +130,13 @@ window.onload = function() {
 	game.state.start('bootState')
 	
 }
-function confirmation(confirm) {
-	if (confirm){
+function nameConfirmation(validname) {
+	
+	if (validname){
+	}
 		game.state.start('bootState');
-	}else if(confirm==false){
-		console.log("error");
+	}else{
+		if (game.global.DEBUG_MODE) console.log("[DEBUG] [ERROR] Confirmation name error. Name was not valid");
 	}
 
 }
