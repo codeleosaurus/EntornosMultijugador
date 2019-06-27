@@ -164,7 +164,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			////////////////////
 				
 			case "CHAT MESSAGE":
-				lobby.newChatMsg(player, node.get("text").asText());
+				lobby.newChatMsg(node.get("text").asText());
 				break;
 				
 			default:

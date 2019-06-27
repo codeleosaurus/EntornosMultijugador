@@ -16,7 +16,7 @@ public class Application implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(gameHandler(), "/spacewar/{playerName]");
+		registry.addHandler(gameHandler(), "/spacewar");
 	}
 
 	@Bean
