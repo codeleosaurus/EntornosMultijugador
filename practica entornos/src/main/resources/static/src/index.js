@@ -1,15 +1,15 @@
 window.onload = function() {
-	$('#modal').modal({ backdrop: 'static', keyboard: false });
-	game = new Phaser.Game(1024, 600, Phaser.AUTO, 'gameDiv')
-	$("#chatInput").keydown(function (e) {	// Cuando se pulse una tecla sobre el input del chat ...
-		if (e.keyCode === 13) {  			// Si la tecla es enter
-			submitChatMsg();				// enviamos el mensaje al servidor
-		}
-	});
+	
+	//var name = prompt("Please enter your name", "Shrek");
 
-	$('.dropdown-menu').click(function(e) {
-		e.stopPropagation();
-	});
+	var config = {
+		    width: 1024,
+		    height: 600,
+		    type: Phaser.AUTO,
+		    parent: 'gameDiv',
+		    
+		};
+	game = new Phaser.Game(config)
 	// GLOBAL VARIABLES
 	game.global = {
 		FPS : 30,
@@ -20,6 +20,7 @@ window.onload = function() {
 		projectiles : []
 	}
 	// PHASER SCENE CONFIGURATOR
+	
 	game.state.add('bootState', Spacewar.bootState)
 	game.state.add('preloadState', Spacewar.preloadState)
 	game.state.add('menuState', Spacewar.menuState)
@@ -28,29 +29,38 @@ window.onload = function() {
 	game.state.add('roomState', Spacewar.roomState)
 	game.state.add('gameState', Spacewar.gameState)
 	game.state.add('endState', Spacewar.ending)
-	game.state.start('bootState')
+	//game.state.start('bootState')
 	
+}
+
 	///////////////////////////////////////////////////////////////
 	////////    LA FUNCION CUANDO SE ABRE EL CALCETIN    /////////
 	//////////////////////////////////////////////////////////////
 	function openWebsocket() {
-	name = $("#nameInput").val();
+	/*console.log(name);
 	if (name == "" | name.length < 4 | name.length > 20) {
 		console.log("[ERROR] Player name is too short or too long!")
 		return;
+		
 	}
-	var splChars = "*|,\":<>[]{}`'^´;()@&$#% €_-+*/";
-	for (i = 0; i < name.length; i++) {
+	console.log(name);
+	var splChars = "*|,\":<>[]{}`'^´;()@&$#% €_-+*/
+	/*for (i = 0; i < name.length; i++) {
 		if (splChars.indexOf(name.charAt(i)) != -1) {
 			// Caracteres no permitidos en el string!
 			console.log("[ERROR] Invalid characters in player name!")
 			return;
+		}*/
+		game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar" + name)
+		game.global.socket.onopen = () => {
+			if (game.global.DEBUG_MODE) {
+				console.log('[DEBUG] WebSocket connection opened.')
+			}
 		}
+		calcetinDeWeb();
 	}
 	
-	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar")
-	calcetinDeWeb();
-	}
+	
 	////////////////////////////////////////////////////////////////
 	/////////         WEBSOCKET CONFIGURATOR     //////////////////
 	///////////////////////////////////////////////////////////////
@@ -59,11 +69,7 @@ window.onload = function() {
 	//estado
 	//anadir un fonfo chulo y conseguir que el coso de meter el nombre reciba un nombre y lo envie
 	function calcetinDeWeb(){
-	game.global.socket.onopen = () => {
-		if (game.global.DEBUG_MODE) {
-			console.log('[DEBUG] WebSocket connection opened.')
-		}
-	}
+	
 
 	game.global.socket.onclose = () => {
 		if (game.global.DEBUG_MODE) {
@@ -74,24 +80,25 @@ window.onload = function() {
 	game.global.socket.onmessage = (message) => {
 		var msg = JSON.parse(message.data)
 		
-		switch (msg.event) {
-		case 'JOIN':
-			if (game.global.DEBUG_MODE) {
-				console.log('[DEBUG] JOIN message recieved')
-				console.dir(msg)
-			}
-			
-			//AL FINAL ID O NAME O LAS DOS ?? JAJA MISMUERT
-			
-			game.global.myPlayer.id = msg.id
-			game.global.myPlayer.name = msg.name
-			
-			game.global.myPlayer.shipType = msg.shipType
-			if (game.global.DEBUG_MODE) {
-				console.log('[DEBUG] ID assigned to player: ' + game.global.myPlayer.id)
-			}
+			switch (msg.event) {
+			case 'CONFIRMATION':
+				handleConfirmation(msg);
+				break
+			case 'JOIN':
+				if (game.global.DEBUG_MODE) {
+					console.log('[DEBUG] JOIN message received')
+					console.dir(msg)
+					console.log(name);
+				}
+				game.global.myPlayer.id = msg.id
+				game.global.myPlayer.shipType = msg.shipType
+				var i = msg.id;
+				if (game.global.DEBUG_MODE) {
+					console.log('[DEBUG] ID assigned to player: ' + game.global.myPlayer.id)
+				}
+				break
 			break
-		case 'NEW ROOM' :
+			case 'NEW ROOM' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] NEW ROOM message recieved')
 				console.dir(msg)
@@ -100,7 +107,7 @@ window.onload = function() {
 					name : msg.room
 			}
 			break
-		case 'GAME STATE UPDATE' :
+			case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] GAME STATE UPDATE message recieved')
 				console.dir(msg)
@@ -148,16 +155,33 @@ window.onload = function() {
 				}
 			}
 			break
-		case 'REMOVE PLAYER' :
+			case 'REMOVE PLAYER' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] REMOVE PLAYER message recieved')
 				console.dir(msg.players)
 			}
 			game.global.otherPlayers[msg.id].image.destroy()
 			delete game.global.otherPlayers[msg.id]
-		default :
+			default :
 			console.dir(msg)
 			break
 		}
 	}
-	};
+	/*function handleConfirmation(confirm) {
+		switch (confirm.type) {
+			case 'CORRECT NAME':
+				game.state.start('bootState');
+				break
+			case 'JOIN MATCHMAKING':
+				game.state.start('matchmakingState');
+				break
+			case 'LEAVE MATCHMAKING':
+				game.state.start('menuState');
+				break
+			default:
+				console.log("[CONFIRM] Unknown confirmation received, type: " + confirm.type);
+				break
+		}
+	
+	}*/
+};
