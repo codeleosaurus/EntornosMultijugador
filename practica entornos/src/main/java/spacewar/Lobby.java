@@ -1,5 +1,6 @@
 package spacewar;
 
+import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -647,16 +648,19 @@ public class Lobby {
 	//MÉTODOS DE GESTIÓN DEL CHAT//
 	///////////////////////////////
 	
-	//falta por hacer
-	public void newChatMsg(String text) {
-		/*
-		 * String text = node.get("text").asText();
-				System.out.println("[CHAT] Message received [" + player.getPlayerName() + "]: " + text);
-				msg.put("event", "CHAT MSG");
-				msg.put("text", text);
-				msg.put("player", player.getName());
-				sendMessageToAll(msg.toString());
-		 */
+	//MÉTODO QUE RECIBE EL MENSAJE DE CHAT DE UN JUGADOR E INFORMA SOBRE ELLO.
+	//ACTO SEGUIDO ENVÍA UN MENSAJE A TODOS LOS JUGADORES CONECTADOS CON EL TEXTO DEL MENSAJE DE CHAT
+
+	public void newChatMsg(Player player, String msgText) {
+		
+		ObjectNode msg = mapper.createObjectNode();
+		
+		System.out.println("[LOBBY] [CHAT INFO] Message received. [" + player.getName() + "]: " + msgText);
+		
+		msg.put("event", "CHAT MSG");
+		msg.put("msg text", msgText);
+		msg.put("player", player.getName());
+		broadcast(msg.toString());
 		
 	}
 	
@@ -700,20 +704,16 @@ public class Lobby {
 		
 	}
 	
-	//falta por hacer
-	private void broadcast(String msg) {
+	//MÉTODO QUE ENVÍA UN MENSAJE A TODOS LOS JUGADORES,
+	//TANTO LOS QUE ESTÁN EN EL LOBBY COMO LOS QUE ESTÁN EN PARTIDA
+
+	private synchronized void broadcast(String msgText) throws Exception {
 		
-		//HAY QUE CAMBIAR LA FORMA EN LA QUE SE HACE BROADCAST. DESDE AQUÍ NO SE ACCEDE A LA SESIÓN
-		/*
-		for(WebSocketSession session : openSessions.values()) {
-			try {
-				synchronized(session) {
-					session.sendMessage(new TextMessage(msg));
-				}
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
+		for(Player player : playersInLobby.values()) {
+			player.sendMessage(msgText);
 		}
-		*/
+		for(Player player : playersInGame.values()) {
+			player.sendMessage(msgText);
+		}
 	}
 }
