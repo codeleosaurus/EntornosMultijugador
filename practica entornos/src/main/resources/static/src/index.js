@@ -13,7 +13,7 @@ window.onload = function() {
 	}
 
 	// WEBSOCKET CONFIGURATOR
-	game.global.socket = new WebSocket("ws://localhost:8080/spacewar" +"/"+ name)
+	game.global.socket = new WebSocket("ws://localhost:8080/spacewar/"+name)
 	
 	game.global.socket.onopen = () => {
 		if (game.global.DEBUG_MODE) {
@@ -36,8 +36,10 @@ window.onload = function() {
 				console.log('[DEBUG] [MSG INFO] INIT SESSION message recieved')
 				console.dir(msg)
 				
-			nameConfirmation(msg.validname);	
+			nameConfirmation(msg.validname);
 				
+			}
+				/* 
 			}
 			game.global.isValid=msg.validName;
 			if(validName){
@@ -45,18 +47,18 @@ window.onload = function() {
 			}else{
 				confirm(false);
 			}
-			
+			*/
 			
 			break
-		case 'NEW ROOM' :
+		/*case 'NEW ROOM' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] NEW ROOM message recieved')
 				console.dir(msg)
 			}
 			game.global.myPlayer.room = {
 					name : msg.room
-			}
-			break
+			}*/
+			/*break
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] GAME STATE UPDATE message recieved')
@@ -115,6 +117,7 @@ window.onload = function() {
 		default :
 			console.dir(msg)
 			break
+		}*/
 		}
 	}
 
@@ -130,8 +133,6 @@ window.onload = function() {
 	game.state.start('bootState')
 	
 }
-
-
 function nameConfirmation(validname) {
 	
 	if (validname){

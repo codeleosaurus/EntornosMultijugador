@@ -97,10 +97,6 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			///////////////////////////////////////
 				
 			//ENTRAR AL MATCHMAKING AUTOMÁTICO
-			case "HOLA MUNDO":
-				String mensaje = node.get("data").asText();
-				System.out.println(mensaje);
-				break;
 				
 			case "JOIN MATCHMAKING":
 				lobby.joinMatchmaking(player, node.get("diff").asText(), node.get("mode").asText());
