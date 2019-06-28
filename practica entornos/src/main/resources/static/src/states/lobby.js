@@ -56,15 +56,17 @@ Spacewar.lobbyState.prototype = {
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "lobby");
 		menubackground.height = game.height;
 		menubackground.width = game.width;
-		
+		//creamos el boton del matchmaking y le damos posicion
 		 var matchmaking = game.add.sprite(
 			      game.world.centerX -250,
 			      game.world.centerY + 150,
 			      "matchmakingButt"
 			    );
+		 //le ponemos el input a true y le asignamos el evento de matchmaking 
+		 //al hacer click
 		 matchmaking.inputEnabled = true;
 		 matchmaking.events.onInputDown.add(selecMatchmaking,this);
-		 //playbutton.events.onInputDown.add(crearSala, this);
+		
 		 var roomCreate = game.add.sprite(
 			      game.world.centerX +55,
 			      game.world.centerY + 150,

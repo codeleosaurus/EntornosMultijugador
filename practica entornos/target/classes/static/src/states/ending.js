@@ -1,8 +1,7 @@
 Spacewar.endState = function(game) {}
 var puntuacion;
-var replay= false;
 function newGame(){
-	replay=true;
+	game.state.start('menuState')
 }
 
 Spacewar.lobbyState.prototype = {
@@ -26,15 +25,11 @@ Spacewar.lobbyState.prototype = {
 			      game.world.centerY + 100,
 			      "replay"
 			    );
-		
-		//falta crear el botón
 		replayButton.inputEnabled = true;
 		replayButton.events.onInputDown.add(newGame, this);
 	},
 
 	update : function() {
-		if (replay == true){
-			game.state.start('menuState')
-		}
+		
 	}
 }

@@ -2,7 +2,16 @@ Spacewar.matchmakingState = function(game) {}
 function leaveMatchmaking(){
 	game.state.start('lobbyState')
 }
-
+//al recibir un mensaje del servidor de que estan todos los jugadores
+//deberia pasar a room
+function toRoom{
+	if (typeof game.global.myPlayer.room !== 'undefined') {
+		if (game.global.DEBUG_MODE) {
+			console.log("[DEBUG] Joined room " + game.global.myPlayer.room);
+		}
+		game.state.start('roomState')
+	}
+}
 Spacewar.matchmakingState.prototype = {
 
 	init : function() {
@@ -36,12 +45,6 @@ Spacewar.matchmakingState.prototype = {
 	
 	},
 //hay que cambiar el update por un mensaje del server pero no estoy seguro de como
-	update : function() {
-		if (typeof game.global.myPlayer.room !== 'undefined') {
-			if (game.global.DEBUG_MODE) {
-				console.log("[DEBUG] Joined room " + game.global.myPlayer.room);
-			}
-			game.state.start('roomState')
-		}
+	update : function() {	
 	}
 }
