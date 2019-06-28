@@ -19,6 +19,8 @@ Spacewar.preloadState.prototype = {
 		game.load.image("matchmaking", "assets/images/matchmakingFondo.png");
 		game.load.image("ending", "assets/images/endingFondo.png");
 		game.load.image("replay", "assets/images/replay.png");
+		game.load.image("join", "assets/images/join.png");
+		game.load.image("createroom", "assets/images/crearSala.png");
 		//explosiones y naves
 		game.load.atlas('spacewar', 'assets/atlas/spacewar.png',
 				'assets/atlas/spacewar.json',
@@ -30,7 +32,7 @@ Spacewar.preloadState.prototype = {
 	},
 
 	create : function() {
-		game.state.start('menuState')
+		game.state.start('lobbyState')
 	},
 
 	update : function() {
