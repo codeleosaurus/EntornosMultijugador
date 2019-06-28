@@ -1,8 +1,9 @@
 Spacewar.menuState = function(game) {}
 	 
-	clicked = false;
-	function listener(){
-		clicked = true;
+
+	function play(){
+		if (typeof game.global.myPlayer.id !== 'undefined') {
+		      game.state.start('lobbyState')
 		}
 	
 
@@ -40,14 +41,11 @@ Spacewar.menuState.prototype = {
 			      "play"
 			    );
 		 playbutton.inputEnabled = true;
-		 playbutton.events.onInputDown.add(listener, this);
+		 playbutton.events.onInputDown.add(play, this);
 
 	},
-		//ahora pasaría solo cuando demos click al boton
 	update : function() {
-		 if (clicked && typeof game.global.myPlayer.id !== 'undefined') {
-		      clicked = false;
-		      game.state.start('lobbyState')
+		 
 		}
 	}
 }

@@ -1,17 +1,13 @@
 Spacewar.lobbyState = function(game) {}
 	//esta variable hace que cuando selecciones la sala en la que vas a entrar se ponga a true
-selected=false;
-clickR=false;
-clickM=false;
-
-function crearSala(){
-clickR = true;		
+function onSelect(){
+	
 }
+
 function matchmaking(){
 	clickM = true;		
 	}
 function crearSala(){
-	if(clickR==true){
 		var roomName= prompt("Write the rooms name", "Villa oculta de la hoja")
 		var dif= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
 		console.log(dif);
@@ -25,15 +21,21 @@ function crearSala(){
 		}
 		var mode=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
 		console.log(dif);
-		clickR=false;
-		msg.event = 'CREATE ROOM'
-			msg.roomName = roomName;
-			msg.roomDiff=dif;
-			msg.roomType = roomType;
-			console.log("Mensaje pa tu body ")
-			game.global.socket.send(JSON.stringify(msg))
-	}
+		let evento = new Object();
+			evento.event = 'CREATE ROOM'
+			evento.roomName = roomName;
+			evento.roomDiff=dif;
+			evento.roomType = mode;
+			console.log("Room created, sending message to server")
+			game.global.socket.send(JSON.stringify(evento))
+	
 }
+function selecMatchmaking(){
+	console.log("Bernarda");
+}
+
+
+
 Spacewar.lobbyState.prototype = {
 
 	init : function() {
@@ -52,20 +54,21 @@ Spacewar.lobbyState.prototype = {
 		menubackground.height = game.height;
 		menubackground.width = game.width;
 		
-		 var roomButt = game.add.sprite(
-			      game.world.centerX -400,
+		 var matchmaking = game.add.sprite(
+			      game.world.centerX -250,
 			      game.world.centerY + 150,
-			      "room"
+			      "matchmakingButt"
 			    );
-		 roomButt.inputEnabled = true;
+		 matchmaking.inputEnabled = true;
+		 matchmaking.events.onInputDown.add(selecMatchmaking,this);
 		 //playbutton.events.onInputDown.add(crearSala, this);
 		 var roomCreate = game.add.sprite(
-			      game.world.centerX -35,
+			      game.world.centerX +55,
 			      game.world.centerY + 150,
 			      "createroom"
 			    );
-		 roomButt.inputEnabled = true;
-		 roomButt.events.onInputDown.add(crearSala,this);
+		 roomCreate.inputEnabled = true;
+		 roomCreate.events.onInputDown.add(crearSala,this);
 		 
 			
 		
