@@ -689,6 +689,8 @@ public class Lobby {
 			rankingList.add(p);
 		}
 		
+		System.out.println("[LOBBY] [MSG INFO] Creating ranking...");
+		
 		Collections.sort(rankingList, new Comparator<Player>(){
 			@Override
 			public int compare(Player p1, Player p2) {
@@ -700,6 +702,8 @@ public class Lobby {
 		ArrayNode playerList = mapper.createArrayNode();
 		
 		int i = 0;
+		
+		System.out.println("[LOBBY] [MSG INFO] Creating ranking message...");
 		
 		while (i < RANKING_SIZE && i < rankingList.size()) {
 			
@@ -716,48 +720,153 @@ public class Lobby {
 		
 		try {
 			player.sendMessage(msg.toString());
+			System.out.println("[LOBBY] [MSG INFO] Successfully sent msg to player " + player.getName() + " in sendRanking method");
 		} catch (Exception e) {
+			System.out.println("[LOBBY] [MSG ERROR] Error sending msg to player " + player.getName() + " in sendRanking method");
 			e.printStackTrace();
 		}
 	}
 
-	//falta por hacer
+	//MÉTODO QUE CREA UN ARRAY CON LA INFORMACIÓN DE CADA SALA USANDO EL MÉTODO GETROOMINFO DE LA CLASE ROOM
+	//Y DESPUÉS LO ENVÍA A UN JUGADOR EN CONCRETO
+	
 	private void sendRoomListToPlayer(Player player) {
-		// TODO Auto-generated method stub
+		
+		System.out.println("[LOBBY] [MSG INFO] Creating room list message...");
+		
+		ArrayNode roomArray = mapper.createArrayNode();
+		
+		for(Room room : rooms.values()) {
+			
+			ObjectNode roomJSON = mapper.createObjectNode();
+			roomJSON = room.getRoomInfo(roomJSON);
+			roomArray.addPOJO(roomJSON);
+		}
+		
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "ROOM LIST");
+		msg.putPOJO("roomList", roomArray);
+		
+		try {
+			player.sendMessage(msg.toString());
+			System.out.println("[LOBBY] [MSG INFO] Successfully sent msg to player " + player.getName() + " in sendRoomListToPlayer method");
+		} catch (Exception e) {
+			System.out.println("[LOBBY] [MSG ERROR] Error sending msg to player " + player.getName() + " in sendRoomListToPlayer method");
+			e.printStackTrace();
+		}
 		
 	}
 
-	//falta por hacer
+	//MÉTODO QUE SIGUE EL MISMO PROCESO QUE SENDROOMLISTTOPLAYER PERO LUEGO EMPLEA EL MÉTODO BROADCASTMSGTOLOBBY
+	//PARA ENVIARLO A TODOS LOS JUGADORES DEL LOBBY EN VEZ DE A UNO SOLO
+	
 	private void broadcastRoomListToLobby() {
-		// TODO Auto-generated method stub
+
+		System.out.println("[LOBBY] [MSG INFO] Creating room list message...");
+		
+		ArrayNode roomArray = mapper.createArrayNode();
+		
+		for(Room room : rooms.values()) {
+			
+			ObjectNode roomJSON = mapper.createObjectNode();
+			roomJSON = room.getRoomInfo(roomJSON);
+			roomArray.addPOJO(roomJSON);
+		}
+		
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "ROOM LIST");
+		msg.putPOJO("roomList", roomArray);
+		
+		broadcastMsgToLobby(msg.toString());
+		System.out.println("[LOBBY] [MSG INFO] Successfully broadcasted room list to lobby");
 		
 	}
 
-	//falta por hacer
+	//MÉTODO QUE ENVÍA A TODOS LOS JUGADORES UNA LISTA CON LOS JUGADORES QUE SE ENCUENTRAN
+	//ACTUALMENTE EN PARTIDA
+	
 	private void broadcastPlayerListToAll() {
-		// TODO Auto-generated method stub
+
+		ArrayNode playerArray = mapper.createArrayNode();
 		
+		System.out.println("[LOBBY] [MSG INFO] Creating player list message...");
+		
+		for (Player player : playersInGame.values()) {
+			
+			ObjectNode playerJSON = mapper.createObjectNode();
+			playerJSON.put("playerName", player.getName());
+			playerArray.addPOJO(playerJSON);
+		}
+		
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "PLAYER LIST");
+		msg.putPOJO("playersInGame", playerArray);
+		
+		broadcast(msg.toString());
+		System.out.println("[LOBBY] [MSG INFO] Successfully broadcasted player list to all players");
 	}
 
-	//falta por hacer
+	//MÉTODO QUE ENVÍA UN MENSAJE A LOS JUGADORES EN EL LOBBY (NO A LOS QUE ESTÁN EN SALA O INGAME)
+	
+	//MÉTODO QUE ENVÍA UN MENSAJE A TODOS LOS JUGADORES QUE ESTÁN EN EL LOBBY
+	//NOTA: NO ENVÍA EL MENSAJE A LOS QUE NO ESTÁN EN PARTIDA PERO ESTÁN DENTRO DE UNA SALA
+	
 	private void broadcastMsgToLobby(String msg) {
-		// TODO Auto-generated method stub
+		
+		for(Player player : playersInLobby.values()) {
+			try {
+				player.sendMessage(msg);
+			} catch (Exception e) {
+				System.out.println("[LOBBY] [MSG ERROR] Error sending msg to player " + player.getName() + " in broadcastMsgToLobby method");
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	
-	//falta por hacer
+	//MÉTODO QUE ENVÍA INFORMACIÓN SOBRE TODOS LOS INTEGRANTES DE UNA SALA AL RESTO DE INTEGRANTES
+	//EMPLEA EL MÉTODO BROADCAST DE LA PROPIA CLASE SALA PARA ENVIAR EL MENSAJE
+	
 	private void broadcastRoomInfoToRoom(Room room) {
-		// TODO Auto-generated method stub
+
+		ArrayNode playerArray = mapper.createArrayNode();
+		
+		System.out.println("[LOBBY] [MSG INFO] Creating room info message...");
+		
+		for (Player player : room.getPlayers()) {
+			
+			ObjectNode playerJSON = mapper.createObjectNode();
+			playerJSON.put("playerName", player.getName());
+			playerJSON.put("hp", player.getLives());
+			playerJSON.put("points", player.getPoints());
+
+			playerArray.addPOJO(playerJSON);
+		}
+		
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "ROOM INFO");
+		msg.putPOJO("playerList", playerArray);
+		msg.put("roomName", room.getName());
+		
+		room.broadcast(msg.toString());
+		System.out.println("[LOBBY] [MSG INFO] Successfully broadcasted room info to room");
 		
 	}
+	
+	//MÉTODO QUE ENVÍA UN MENSAJE A TODOS LOS JUGADORES
 	
 	//MÉTODO QUE ENVÍA UN MENSAJE A TODOS LOS JUGADORES,
 	//TANTO LOS QUE ESTÁN EN EL LOBBY COMO LOS QUE ESTÁN EN PARTIDA
 
-	private synchronized void broadcast(String msgText) throws Exception {
+	private void broadcast(String msgText){
 		
 		for(Player player : allPlayers.values()) {
+			try {
 			player.sendMessage(msgText);
+			}catch(Exception e) {
+				System.out.println("[LOBBY] [MSG ERROR] Error sending msg to player " + player.getName() + " in broadcast method");
+				e.printStackTrace();
+			}
 		}
 	}
 }

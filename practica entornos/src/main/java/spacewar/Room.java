@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 /*
 enum Difficulty{
 	EASY, MEDIUM, HARD
@@ -304,12 +306,15 @@ public class Room {
 		}
 	}
 	
-	
-	
-	//MÉTODO PARA OBTENER PUNTUACIONES?
-	/*
-	public ConcurrentHashMap<String, Integer> getScores(){
-		return game.getScores();
-	}*/
+	public ObjectNode getRoomInfo(ObjectNode roomJSON) {
+		
+		roomJSON.put("roomName", getName());
+		roomJSON.put("started", hasStarted());
+		roomJSON.put("finished",  hasFinished());
+		roomJSON.put("numberOfPlayers", getNumberOfPlayers());
+		roomJSON.put("maxPlayers", MAX_PLAYERS);
+		
+		return roomJSON;
+	}
 
 }
