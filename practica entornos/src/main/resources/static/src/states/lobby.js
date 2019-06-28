@@ -1,12 +1,12 @@
 Spacewar.lobbyState = function(game) {}
-	//esta variable hace que cuando selecciones la sala en la que vas a entrar se ponga a true
+//funciones que se llaman al pulsar los botones
 function onSelect(){
-	
+	//aqui hay que hacer una funcion que haga que al seleccionar una sala y darle a confirmar llame a join room
+	//let evento = new Object();
+	//evento.event = 'JOIN ROOM'
+		//evento.roomName = selRoom;
+	//de momento esta comentada porque no tenemos manera de seleccionar las salas disponibles 
 }
-
-function matchmaking(){
-	clickM = true;		
-	}
 function crearSala(){
 		var roomName= prompt("Write the rooms name", "Villa oculta de la hoja")
 		var dif= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
@@ -31,7 +31,10 @@ function crearSala(){
 	
 }
 function selecMatchmaking(){
-	console.log("Bernarda");
+	let evento = new Object();
+	evento.event = 'JOIN MATCHMAKING'
+	game.state.start('matchmakingState')
+	
 }
 
 
@@ -77,12 +80,4 @@ Spacewar.lobbyState.prototype = {
 	update : function() {
 			
 		}
-	
-		
-		
-		//jugador, roomtipe(string), string dificultad(roomdis)easymeadiumhard,roomname
-		//nombre de la sala dificultad y modo
-		//if (selected == true){
-			//game.state.start('matchmakingState')
-		//}
 	}
