@@ -4,7 +4,49 @@ Spacewar.gameState = function(game) {
 	this.numStars = 100 // Should be canvas size dependant
 	this.maxProjectiles = 800 // 8 per player
 }
-var vidas;
+function actualizarVida(){
+	//cada vez que le llega un mensaje comprueba la vida que viene del servidor y hace una regla de 3 para calcular
+	//el porcentaje que se encoge la barra
+	//(vidaActual*barraVida)/vidaTotal
+	
+	//if (vida==0){
+	//game.state.start('endState')
+	//}
+}
+function muerte{
+	
+}
+function updateMove{
+	let msg = new Object()
+	msg.event = 'UPDATE MOVEMENT'
+		
+	msg.movement = {
+		thrust : false,
+		brake : false,
+		rotLeft : false,
+		rotRight : false
+	}
+
+	msg.bullet = false
+
+	if (this.wKey.isDown)
+		msg.movement.thrust = true;
+	if (this.sKey.isDown)
+		msg.movement.brake = true;
+	if (this.aKey.isDown)
+		msg.movement.rotLeft = true;
+	if (this.dKey.isDown)
+		msg.movement.rotRight = true;
+	if (this.spaceKey.isDown) {
+		msg.bullet = this.fireBullet()
+	}
+
+	if (game.global.DEBUG_MODE) {
+		console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
+	}
+	game.global.socket.send(JSON.stringify(msg))
+}
+
 Spacewar.gameState.prototype = {
 
 	init : function() {
@@ -66,60 +108,14 @@ Spacewar.gameState.prototype = {
 				Phaser.Keyboard.SPACEBAR ]);
 
 		game.camera.follow(game.global.myPlayer.image);
+		var vidas=game.add.sprite(
+				 game.world.centerX-400,
+				 game.world.centerY -260,
+				 "vida"
+				 );
 	},
 	//aqui actualiza lo de la posicion es donde llega el mensaje que se hace en el servidor
 	update : function() {
-		let msg = new Object()
-		msg.event = 'UPDATE MOVEMENT'
-			
-		msg.movement = {
-			thrust : false,
-			brake : false,
-			rotLeft : false,
-			rotRight : false
-		}
-
-		msg.bullet = false
-
-		if (this.wKey.isDown)
-			msg.movement.thrust = true;
-		if (this.sKey.isDown)
-			msg.movement.brake = true;
-		if (this.aKey.isDown)
-			msg.movement.rotLeft = true;
-		if (this.dKey.isDown)
-			msg.movement.rotRight = true;
-		if (this.spaceKey.isDown) {
-			msg.bullet = this.fireBullet()
-		}
-
-		if (game.global.DEBUG_MODE) {
-			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
-		}
-		/*if (vidas==0){
-			delete game.global.myPlayer.image;
-			game.state.start('endingState')
-		}*/
-		
-		//de momento esto esta mal porque no me acuerdo de como se hacia pero se supone 
-		//que recoge la vida. Creo que hay que poner un post en la parte de java.	  
-		
-		/* getPlayer(callback) {
-			    $.ajax({
-			      method: "GET",
-			      url: "/game/" + game.player.lives,
-			      processData: false,
-			      headers: {
-			        "Content-Type": "application/json"
-			      }
-			    }).done(function(data) {
-			    	//la primera parte es la variable local, la segunda la que viene del server
-			      game.player = JSON.parse(JSON.stringify(data));
-			      myPlayer.vidas=aux;
-
-			    });
-			  },*/
-		game.global.socket.send(JSON.stringify(msg))
-		  
+		updateMove();		  
 	}
 }
