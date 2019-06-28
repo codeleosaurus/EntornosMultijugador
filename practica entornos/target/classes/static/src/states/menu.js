@@ -29,9 +29,6 @@ Spacewar.menuState.prototype = {
 	},
 
 	create : function() {
-		
-		
-		
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "menu");
 		menubackground.height = game.height;
 		menubackground.width = game.width;
@@ -47,11 +44,10 @@ Spacewar.menuState.prototype = {
 
 	},
 		//ahora pasaría solo cuando demos click al boton
-	update : function() { 
-		game.global.myPlayer.id !== 'undefined' 
+	update : function() {
+		 if (clicked && typeof game.global.myPlayer.id !== 'undefined') {
 		      clicked = false;
-		 if (clicked && typeoflse){
 		      game.state.start('lobbyState')
-		 }
+		}
 	}
 }

@@ -1,6 +1,10 @@
 package spacewar;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -13,6 +17,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Lobby {
@@ -22,6 +27,7 @@ public class Lobby {
 	//////////////////////////////////////
 	
 	private static final String ROOM_ATTRIBUTE = "ROOM";
+	private static final int RANKING_SIZE = 10;
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	//SALAS
@@ -670,41 +676,49 @@ public class Lobby {
 	//MÉTODOS DE COMUNICACIÓN Y PASO DE MENSAJES//
 	//////////////////////////////////////////////
 	
-	//falta por hacer
+	//MÉTODO QUE CREA UNA LISTA DE JUGADORES ORDENADOS EN FUNCIÓN DE SU PUNTUACIÓN
+	//DESPUÉS, GUARDA LOS PRIMEROS (DEPENDIENDO DEL TAMAÑO SELECCIONADO DEL RANKING)
+	//EN UN MENSAJE, Y SE LO ENVÍA AL CLIENTE
+
 	public void sendRanking(Player player) {
 		
 		
+		List<Player> rankingList = new LinkedList<Player>();
 		
-		/*
-		ObjectNode msg = mapper.createObjectNode();
-
-		msg.put("event", "GET RANKING");
-		List<Player> ranking = new LinkedList<Player>();
-		for (Player p : globalPlayers.values()) {
-			ranking.add(p);
+		for(Player p : allPlayers.values()) {
+			rankingList.add(p);
 		}
-		// Solo deja comparar tipos no primitivos?
-		ranking.sort((a,b)->new Integer(b.getScore()).compareTo(new Integer(a.getScore())));
 		
-		ArrayNode arrayNode = mapper.createArrayNode();
+		Collections.sort(rankingList, new Comparator<Player>(){
+			@Override
+			public int compare(Player p1, Player p2) {
+				return p2.getPoints() - p1.getPoints();
+			}
+		});
+		
+		
+		ArrayNode playerList = mapper.createArrayNode();
+		
 		int i = 0;
-		while (i < 10 && i < ranking.size()) {
-			ObjectNode jsonPlayer = mapper.createObjectNode();
-			jsonPlayer.put("playerName", ranking.get(i).getPlayerName());
-			jsonPlayer.put("score", ranking.get(i).getScore());
+		
+		while (i < RANKING_SIZE && i < rankingList.size()) {
 			
-			arrayNode.addPOJO(jsonPlayer);
+			ObjectNode playerJSON = mapper.createObjectNode();
+			playerJSON.put("playerName", rankingList.get(i).getName());
+			playerJSON.put("score", rankingList.get(i).getPoints());
+			playerList.addPOJO(playerJSON);
 			i++;
 		}
 		
-		msg.putPOJO("ranking", arrayNode);
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "RANKING");
+		msg.putPOJO("rankingList", playerList);
+		
 		try {
 			player.sendMessage(msg.toString());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
 	}
 
 	//falta por hacer

@@ -47,7 +47,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 				
 			synchronized(session) {
 				session.getAttributes().put(PLAYER_ATTRIBUTE, player);
-				session.getAttributes().put(ROOM_ATTRIBUTE, "");
+				//session.getAttributes().put(ROOM_ATTRIBUTE, "");
 			}
 			
 			System.out.println("[SYSTEM] [INFO] Updated session attributes");
