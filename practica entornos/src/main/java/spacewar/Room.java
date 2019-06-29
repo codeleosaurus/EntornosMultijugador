@@ -4,14 +4,10 @@ import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-/*
-enum Difficulty{
-	EASY, MEDIUM, HARD
-}*/
 
 public class Room {
 	
@@ -27,8 +23,8 @@ public class Room {
 	private SpacewarGame game;
 	
 	//CONTROL DEL ESTADO DE LA SALA 
-	private boolean started;	//<--------------QUIZÁS PODRÍAMOS USAR ATOMICBOOLEAN PARA UNA MEJOR SINCRONIZACIÓN PERO HABRÍA QUE CAMBIAR COMO SE ACCEDE A ESTOS DATOS
-	private boolean finished;
+	private AtomicBoolean started;
+	private AtomicBoolean finished;
 	
 	//ATRIBUTOS DE LA SALA
 	private final String name;
@@ -48,8 +44,8 @@ public class Room {
 		this.MAX_PLAYERS = max_players;
 		this.diff = diff;
 		
-		this.started = false;
-		this.finished = false;
+		this.started = new AtomicBoolean(false);
+		this.finished = new AtomicBoolean(false);
 		
 		this.players = new ConcurrentHashMap<>();
 		this.n_players = new AtomicInteger(0);
@@ -70,7 +66,7 @@ public class Room {
 		
 		try {
 			
-			if(!finished && !players.containsKey(player.getSession().getId())) {
+			if(!hasFinished() && !players.containsKey(player.getSession().getId())) {
 			
 				if(!isFull()) {
 				
@@ -141,7 +137,6 @@ public class Room {
 			
 		tryEndGame();
 	}
-	
 	
 	////////////////////////////////////
 	//MÉTODOS DE GESTIÓN DE LA PARTIDA//
@@ -250,27 +245,27 @@ public class Room {
 	//COMPROBACIONES DE ESTADO DE LA SALA//
 	///////////////////////////////////////
 	
-	public synchronized boolean hasStarted() {
-		return started;
+	public boolean hasStarted() {
+		return this.started.get();
 	}
 	
-	public synchronized boolean hasFinished() {
-		return finished;
+	public boolean hasFinished() {
+		return this.finished.get();
 	}
 	
-	public synchronized void setStarted(boolean state) {
-		this.started = state;
+	public void setStarted(boolean state) {
+		this.started.set(state);
 	}
 	
-	public synchronized void setFinished(boolean state) {
-		this.finished = state;
+	public void setFinished(boolean state) {
+		this.finished.set(state);
 	}
 	
-	public synchronized boolean isFull() {
+	public boolean isFull() {
 		return n_players.get() == MAX_PLAYERS;
 	}
 	
-	public synchronized boolean isEmpty() {
+	public boolean isEmpty() {
 		return n_players.get() <= 0;
 	}
 	
