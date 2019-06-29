@@ -54,7 +54,7 @@ public class Room {
 		this.players = new ConcurrentHashMap<>();
 		this.n_players = new AtomicInteger(0);
 		this.waitlist = new LinkedBlockingQueue<Player>();
-		this.game = new SpacewarGame(diff);
+		this.game = new SpacewarGame(diff, this);
 	}
 	
 	///////////////////////////////////
@@ -260,6 +260,10 @@ public class Room {
 	
 	public synchronized void setStarted(boolean state) {
 		this.started = state;
+	}
+	
+	public synchronized void setFinished(boolean state) {
+		this.finished = state;
 	}
 	
 	public synchronized boolean isFull() {

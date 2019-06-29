@@ -49,7 +49,7 @@ public class Player extends Spaceship {
 		this.alive = new AtomicBoolean(true);
 	}
 	
-	//GET Y SET DEL ID DEL JUGADOR
+	//GET Y SET 
 
 	public int getPlayerId() {
 		return this.playerId.get();
@@ -88,6 +88,10 @@ public class Player extends Spaceship {
 	    this.hp.set(liv);
 	 }
 	 
+	 public int decreaseHP() {
+		return this.hp.decrementAndGet();
+	 }
+	 
 	 public int getPoints() {
 		return points.get();
 	 }
@@ -107,5 +111,18 @@ public class Player extends Spaceship {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public boolean isAlive() {
+		return this.alive.get();
+	}
+	
+	public void setAlive(boolean state) {
+		this.alive.set(state);
+	}
+
+	public void increasePoints(int points) {
+		this.points.addAndGet(points);
+		
 	}
 }

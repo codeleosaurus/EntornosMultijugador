@@ -18,31 +18,29 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SpacewarGame {
 
-	//public final static SpacewarGame INSTANCE = new SpacewarGame();
-
 	private final static int FPS = 30;
 	private static long TICK_DELAY;
 	public final static boolean DEBUG_MODE = true;
 	public final static boolean VERBOSE_MODE = true;
-	int vidas;
+	public final static int HIT_POINTS = 5;
+	public final static int KILL_POINTS = 10;
 	ObjectMapper mapper = new ObjectMapper();
 	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-	// GLOBAL GAME ROOM
+	
+	public Room room;
+	
+	public boolean started = false;
+	public boolean finished = false;
 	
 	private Map<String, Player> players = new ConcurrentHashMap<>();
 	private Map<Integer, Projectile> projectiles = new ConcurrentHashMap<>();
 	public AtomicInteger projectileId = new AtomicInteger(0);
 	
-	//HE AÑADIDO LA DIFICULTAD
+	///////////////
+	//CONSTRUCTOR//
+	///////////////
 	
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//FALTA POR ACTUALIZAR TODA ESTA CLASE
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	public SpacewarGame(String diff) {
+	public SpacewarGame(String diff, Room room) {
 		switch(diff) {
 		case "EASY":
 			TICK_DELAY = 1000 / FPS;
@@ -56,16 +54,16 @@ public class SpacewarGame {
 		default:
 			break;
 		}
+		
+		this.room = room;
 	}
 	
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//FALTA POR ACTUALIZAR TODA ESTA CLASE
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/////////////////////////
+	//MÉTODO DE GAME UPDATE//
+	/////////////////////////
 	
 	private void tick() {
-		ObjectNode json = mapper.createObjectNode();
+		ObjectNode msg = mapper.createObjectNode();
 		ArrayNode arrayNodePlayers = mapper.createArrayNode();
 		ArrayNode arrayNodeProjectiles = mapper.createArrayNode();
 
@@ -73,156 +71,254 @@ public class SpacewarGame {
 		Set<Integer> bullets2Remove = new HashSet<>();
 		boolean removeBullets = false;
 		
-//aqui dentro se lleva todo lo que va de colisiones, meter que se reste 1 a la vida al detectarse una 
-		
 		try {
-			// Update players
+			String winnerPlayer = null;
+			
 			for (Player player : getPlayers()) {
-				player.calculateMovement();
-
-				ObjectNode jsonPlayer = mapper.createObjectNode();
-				jsonPlayer.put("id", player.getPlayerId());
-				jsonPlayer.put("name", player.getName());
-				jsonPlayer.put("shipType", player.getShipType());
-				jsonPlayer.put("posX", player.getPosX());
-				jsonPlayer.put("posY", player.getPosY());
-				jsonPlayer.put("facingAngle", player.getFacingAngle());
-				arrayNodePlayers.addPOJO(jsonPlayer);
+				
+				ObjectNode playerJSON = mapper.createObjectNode();
+				
+				if(player.getLives()>0) {
+					
+					player.calculateMovement();
+					
+					playerJSON.put("id", player.getPlayerId());
+					playerJSON.put("playerName", player.getName());
+					playerJSON.put("shipType", player.getShipType());
+					playerJSON.put("posX", player.getPosX());
+					playerJSON.put("posY", player.getPosY());
+					playerJSON.put("facingAngle", player.getFacingAngle());
+					playerJSON.put("hp", player.getLives());
+					playerJSON.put("points", player.getPoints());
+					
+					if(players.size() == 1) winnerPlayer = player.getSession().getId();
+					
+				}else if(player.isAlive()) {
+					
+					player.setAlive(false);
+					
+					playerJSON.put("id", player.getPlayerId());
+					
+					players.remove(player.getSession().getId());
+					
+					System.out.println("[GAME] [PLAYER INFO] Player " + player.getName() + " has been defeated");
+					
+					if(players.size() == 0) winnerPlayer = player.getSession().getId();
+				}
+				
+				playerJSON.put("alive", player.isAlive());
+				arrayNodePlayers.addPOJO(playerJSON);
+				
+			}
+			
+			if(winnerPlayer != null) {
+				
+				players.remove(winnerPlayer);
+				finishGame(winnerPlayer);
 			}
 
-			// Update bullets and handle collision
 			for (Projectile projectile : getProjectiles()) {
 				projectile.applyVelocity2Position();
-
-				// Handle collision
-				//ACTUALIZADO PARA QUE COMPARE NOMBRE EN VEZ DE ID
-				//UPDATE: LO HE VUELTO A PONER EN FUNCIÓN DEL ID..
 				
 				for (Player player : getPlayers()) {
-					//if (!(projectile.getOwner().getName().equals(player.getName())) && player.intersect(projectile)) {
-					if (projectile.getOwner().getPlayerId() != player.getPlayerId() && player.intersect(projectile)) {
-						System.out.println("Player " + player.getName() + " was hit!!!");
+					
+					if (player.isAlive() && (projectile.getOwner().getPlayerId() != player.getPlayerId()) && player.intersect(projectile)) {
+						
 						projectile.setHit(true);
-						//aqui se actualiza la vida, se resta bien 
-						player.setLives(player.getLives()-1);
-						//las vidas se restan a todos los jugadores en vez de al que ha sido golpeado, debe ponerse de modo
-						//que se le resten al jugador en funcion de su id
-						if(player.getLives()<=0) {
-							player.setLives(0);
+						player.decreaseHP();
+						
+						if(player.isAlive()) {
+							if(player.getLives() != 0) {
+								projectile.getOwner().increasePoints(HIT_POINTS);
+							}else {
+								projectile.getOwner().increasePoints(KILL_POINTS);
+							}
 						}
+					
 						break;
 					}
 				}
 				
-				ObjectNode jsonProjectile = mapper.createObjectNode();
-				jsonProjectile.put("id", projectile.getId());
+				ObjectNode projectileJSON = mapper.createObjectNode();
+				projectileJSON.put("id", projectile.getId());
 
 				if (!projectile.isHit() && projectile.isAlive(thisInstant)) {
-					jsonProjectile.put("posX", projectile.getPosX());
-					jsonProjectile.put("posY", projectile.getPosY());
-					jsonProjectile.put("facingAngle", projectile.getFacingAngle());
-					jsonProjectile.put("isAlive", true);
+					
+					projectileJSON.put("posX", projectile.getPosX());
+					projectileJSON.put("posY", projectile.getPosY());
+					projectileJSON.put("facingAngle", projectile.getFacingAngle());
+					projectileJSON.put("isAlive", true);
+					
 				} else {
+					
 					removeBullets = true;
 					bullets2Remove.add(projectile.getId());
-					jsonProjectile.put("isAlive", false);
+					
+					projectileJSON.put("isAlive", false);
+					
 					if (projectile.isHit()) {
-						jsonProjectile.put("isHit", true);
-						jsonProjectile.put("posX", projectile.getPosX());
-						jsonProjectile.put("posY", projectile.getPosY());
+						
+						projectileJSON.put("isHit", true);
+						projectileJSON.put("posX", projectile.getPosX());
+						projectileJSON.put("posY", projectile.getPosY());
 					}
 				}
-				arrayNodeProjectiles.addPOJO(jsonProjectile);
+				
+				arrayNodeProjectiles.addPOJO(projectileJSON);
 			}
 
 			if (removeBullets)
 				this.projectiles.keySet().removeAll(bullets2Remove);
 
-			json.put("event", "GAME STATE UPDATE");
-			json.putPOJO("players", arrayNodePlayers);
-			json.putPOJO("projectiles", arrayNodeProjectiles);
+			msg.put("event", "GAME STATE UPDATE");
+			msg.putPOJO("players", arrayNodePlayers);
+			msg.putPOJO("projectiles", arrayNodeProjectiles);
 			
-			this.broadcast(json.toString());
+			this.room.broadcast(msg.toString());
+			
 		} catch (Throwable ex) {
-
 		}
 	}
 
+	///////////////////////////////////
+	//MÉTODOS DE GESTIÓN DE JUGADORES//
+	///////////////////////////////////
+	
 	public void addPlayer(Player player) {
-		//players.put(player.getSession().getName(), player);
-		players.put(player.getName(), player);
 		
-		/*int count = numPlayers.getAndIncrement();
-		
-		if (count == 0) {
-			this.startGameLoop();
-		}
-		*/
-	}
-
-	public Collection<Player> getPlayers() {
-		return players.values();
+		players.put(player.getSession().getId(), player);
+		System.out.println("[GAME] [PLAYER INFO] Player " + player.getName() + " joined the game in Room '" + room.getName() + "'");
 	}
 
 	public void removePlayer(Player player) {
+		
 		players.remove(player.getSession().getId());
-
-		/*
-		int count = this.numPlayers.decrementAndGet();
-		if (count == 0) {
-			this.stopGameLoop();
-		}
-		*/
+		System.out.println("[GAME] [PLAYER INFO] Player " + player.getName() + " left the game in Room '" + room.getName() + "'");
 	}
 
+	/////////////////////////////////////
+	//MÉTODOS DE GESTIÓN DE PROYECTILES//
+	/////////////////////////////////////
+	
 	public void addProjectile(int id, Projectile projectile) {
 		projectiles.put(id, projectile);
-	}
-
-	public Collection<Projectile> getProjectiles() {
-		return projectiles.values();
 	}
 
 	public void removeProjectile(Projectile projectile) {
 		players.remove(projectile.getId(), projectile);
 	}
 
-	public void startGameLoop() {
-		scheduler = Executors.newScheduledThreadPool(1);
-		scheduler.scheduleAtFixedRate(() -> tick(), TICK_DELAY, TICK_DELAY, TimeUnit.MILLISECONDS);
+	///////////////////////////
+	//MÉTODOS DE COMUNICACIÓN//
+	///////////////////////////
+	
+	public void sendBeginningMsgToPlayer(Player player) throws Exception{
+		
+		ObjectNode msg = mapper.createObjectNode();
+		msg.put("event", "JOINING GAME");
+		msg.put("id", player.getPlayerId());
+		msg.put("shipType", player.getShipType());
+		player.sendMessage(msg.toString());
+	
+	
+		ObjectNode msg2 = mapper.createObjectNode();
+		msg2.put("event", "GAME STARTING");
+		player.sendMessage(msg2.toString());
 	}
-
+	
+	public void broadcastBeginningMsg() throws Exception{
+		
+		for(Player player : players.values()) {
+			
+			ObjectNode msg = mapper.createObjectNode();
+			msg.put("event", "JOINING GAME");
+			msg.put("id", player.getPlayerId());
+			msg.put("shipType", player.getShipType());
+			player.sendMessage(msg.toString());
+		}
+		
+		ObjectNode msg2 = mapper.createObjectNode();
+		msg2.put("event", "GAME STARTING");
+		room.broadcast(msg2.toString());
+	}
+	
+	//////////////////////////////////////////
+	//MÉTODOS DE CONTROL DEL ESTADO DE JUEGO//
+	//////////////////////////////////////////
+	
+	public void startGameLoop() {
+		
+		if(!hasStarted()) {
+			scheduler = Executors.newScheduledThreadPool(1);
+			scheduler.scheduleAtFixedRate(() -> tick(), TICK_DELAY, TICK_DELAY, TimeUnit.MILLISECONDS);
+			started = true;
+		}
+	}
+	
 	public void stopGameLoop() {
+		
 		if (scheduler != null) {
 			scheduler.shutdown();
+			started = false;
 		}
 	}
-
-	public void broadcast(String message) {
-		for (Player player : getPlayers()) {
-			try {
-				player.sendMessage((message.toString()));
-			} catch (Throwable ex) {
-				System.err.println("Execption sending message to player " + player.getSession().getId());
-				ex.printStackTrace(System.err);
-				this.removePlayer(player);
-			}
-		}
-	}
-
-	public void handleCollision() {
-
-	}
-
 	
-	//habrá que implementarlo en un futuro
-	public ConcurrentHashMap<String, Integer> getScores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void sendBeginningMsgToPlayer(Player player) {
-		// TODO Auto-generated method stub
+	public void finishGame(String winnerPlayer) {
 		
+		if(!hasFinished()) {
+			finished = true;
+			room.setFinished(finished);
+			
+			System.out.println("[GAME] [GAME INFO] The game has finished. The winner is " + winnerPlayer);
+			
+			ObjectNode msg = mapper.createObjectNode();
+			msg.put("event", "GAME END");
+			ArrayNode losersArray = mapper.createArrayNode();
+			
+			for (Player player : room.getPlayers()) {
+				
+				if (player.getSession().getId() == winnerPlayer) {
+					
+					ObjectNode winnerJSON = mapper.createObjectNode();
+					winnerJSON.put("playerName", player.getName());
+					winnerJSON.put("points", player.getPoints());
+					winnerJSON.put("hp", player.getLives());
+					msg.putPOJO("winner", winnerJSON);
+					
+				} else {
+					
+					ObjectNode loserJSON = mapper.createObjectNode();
+					loserJSON.put("playerName", player.getName());
+					loserJSON.put("points", player.getPoints());
+					loserJSON.put("hp", player.getLives());
+					losersArray.addPOJO(loserJSON);
+				}
+			}
+
+			msg.putPOJO("losers", losersArray);
+			room.broadcast(msg.toString());
+			stopGameLoop();
+		}
+		
+	}
+	
+	////////////////////////
+	//MÉTODOS DE GET Y SET//
+	////////////////////////
+	
+	public boolean hasStarted() {
+		return started;
+	}
+	
+	public boolean hasFinished() {
+		return finished;
+	}
+	
+	public Collection<Player> getPlayers() {
+		return players.values();
+	}
+	
+	public Collection<Projectile> getProjectiles() {
+		return projectiles.values();
 	}
 }
