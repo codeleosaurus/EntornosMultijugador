@@ -42,29 +42,7 @@ function leave(){
 	game.state.start('menuState')
 }
 
-function createList(roomlist) {
-	var ul = document.getElementById("LUL");
-	$(ul).empty();
-	mostrar(true);
-	//console.log(roomlist.length)
-	for (i = 0; i < roomlist.length; i++) { 
-		var room = roomlist[i]
-		//console.log(room)
-		//console.log(room.roomName)
-		var li = document.createElement("li");
-		var a = document.createElement("a");
-	
-		a.appendChild(document.createTextNode(room.roomName + " - " + room.numberOfPlayers + "/" + room.maxPlayers + " jugadores - Gamemode:"
-				+ room.gamemode + " - Difficulty: " + room.difficulty));
-		//if room.started
-		a.addEventListener("click", function() {
-			join(room.roomName);
-		});
-		li.appendChild(a);
-	
-		ul.appendChild(li);
-	}
-}
+
 function join(roomName){
 	mostrar(false);
 	let evento = new Object();
@@ -76,10 +54,13 @@ function join(roomName){
 
 function mostrar(modo){
 	var uList = document.getElementsByClassName("list");
+	var uList2 = document.getElementsByClassName("list2");
 	if (modo == true){
 		uList[0].hidden = false;
+		uList2[0].hidden = false;
 	} else {
 		uList[0].hidden = true;
+		uList2[0].hidden = true;
 	}
 	
 }
