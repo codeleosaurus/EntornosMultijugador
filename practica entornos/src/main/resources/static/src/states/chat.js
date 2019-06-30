@@ -18,7 +18,7 @@ Spacewar.chatState.prototype = {
 
 	create : function() {
 		//mostrar(false);
-		var chatbackground = game.add.sprite(game.world.X, game.world.Y, "menu");
+		var chatbackground = game.add.sprite(game.world.X, game.world.Y, "chatFondo");
 		chatbackground.height = game.height;
 		chatbackground.width = game.width;
 		
