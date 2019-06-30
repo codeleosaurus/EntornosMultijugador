@@ -18,7 +18,7 @@ public class Application implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(gameHandler(), "/spacewar/{playerName}");
 	}
-
+	
 	@Bean
 	public WebsocketGameHandler gameHandler() {
 		return new WebsocketGameHandler();

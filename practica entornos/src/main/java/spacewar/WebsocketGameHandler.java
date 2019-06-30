@@ -87,7 +87,6 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		try {
-			
 			JsonNode node = mapper.readTree(message.getPayload());
 			String evento = node.get("event").asText();
 			
