@@ -7,7 +7,7 @@ Spacewar.chatState.prototype = {
 
 	init : function() {
 		if (game.global.DEBUG_MODE) {
-			console.log("[DEBUG] Entering **MENU** state");
+			console.log("[DEBUG] Entering **CHAT** state");
 		}
 	},
 
@@ -18,26 +18,26 @@ Spacewar.chatState.prototype = {
 
 	create : function() {
 		//mostrar(false);
-		var menubackground = game.add.sprite(game.world.X, game.world.Y, "menu");
-		menubackground.height = game.height;
-		menubackground.width = game.width;
+		var chatbackground = game.add.sprite(game.world.X, game.world.Y, "menu");
+		chatbackground.height = game.height;
+		chatbackground.width = game.width;
 		
 		//Aqui meto el botón de que le de a jugar
 		 var backButton = game.add.sprite(
-			      game.world.centerX,
+			      game.world.centerX + 300,
 			      game.world.centerY - 75,
 			      "volver"
 			    );
-		 playbutton.inputEnabled = true;
-		 playbutton.events.onInputDown.add(back, this);
+		 backButton.inputEnabled = true;
+		 backButton.events.onInputDown.add(back, this);
 		 
 		 var sendMessage = game.add.sprite(
-			      game.world.centerX,
+			      game.world.centerX + 300,
 			      game.world.centerY + 75,
-			      "Mensajear"
+			      "mensajear"
 			    );
-		 rank.inputEnabled = true;
-		 rank.events.onInputDown.add(send, this);
+		 sendMessage.inputEnabled = true;
+		 sendMessage.events.onInputDown.add(send, this);
 
 	},
 	update : function() {
@@ -57,10 +57,10 @@ function send(){
 
 function back(){
 	mostrar2(false);
-	gamet.state.start("menuState");
+	game.state.start("menuState");
 }
 
-function mostrar2(){
+function mostrar2(modo){
 	var uList3 = document.getElementsByClassName("list3");
 	if (modo == true){
 		uList3[0].hidden = false;

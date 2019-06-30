@@ -93,7 +93,8 @@ window.onload = function() {
 			//displayChatMsg(msg.text, msg.playerName);
 			var mensaje = (msg.playerName + ": " + msg.text)
 			//if (game.global.chat.length() < 40){
-				game.global.chats.add(mensaje);
+				game.global.chats.push(mensaje);
+			createList3();
 			//}
 			break
 		
@@ -232,7 +233,7 @@ window.onload = function() {
 	game.state.add('bootState', Spacewar.bootState)
 	game.state.add('preloadState', Spacewar.preloadState)
 	game.state.add('lobbyState', Spacewar.lobbyState)
-	game.state.add('chatState', spacewar.chatState)
+	game.state.add('chatState', Spacewar.chatState)
 	game.state.add('menuState', Spacewar.menuState)
 	game.state.add('matchmakingState', Spacewar.matchmakingState)
 	game.state.add('roomState', Spacewar.roomState)

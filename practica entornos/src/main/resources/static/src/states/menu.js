@@ -36,7 +36,7 @@ Spacewar.menuState.prototype = {
 		//Aqui meto el botón de que le de a jugar
 		 var playbutton = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY - 75,
+			      game.world.centerY - 100,
 			      "play"
 			    );
 		 playbutton.inputEnabled = true;
@@ -44,7 +44,7 @@ Spacewar.menuState.prototype = {
 		 
 		 var rank = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY + 75,
+			      game.world.centerY + 50,
 			      "rankingBot"
 			    );
 		 rank.inputEnabled = true;
@@ -52,11 +52,11 @@ Spacewar.menuState.prototype = {
 		 
 		 var chat = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY + 225,
+			      game.world.centerY + 200,
 			      "chats"
 			    );
-		 rank.inputEnabled = true;
-		 rank.events.onInputDown.add(seeChat, this);
+		 chat.inputEnabled = true;
+		 chat.events.onInputDown.add(seeChat, this);
 
 	},
 	update : function() {
