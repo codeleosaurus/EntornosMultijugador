@@ -137,7 +137,7 @@ public class Lobby {
 			String ROOM_DIFFICULTY = room.getDifficulty();
 			String ROOM_GAMEMODE = room.getGamemode();
 			
-			if(!room.hasFinished() && !room.isFull() && ROOM_DIFFICULTY == desiredDiff && ROOM_GAMEMODE == desiredMode) {
+			if(!room.hasFinished() && !room.isFull() && ROOM_DIFFICULTY.equals(desiredDiff) && ROOM_GAMEMODE.equals(desiredMode)) {
 				
 				try {
 					
@@ -259,7 +259,7 @@ public class Lobby {
 			String ROOM_DIFFICULTY = room.getDifficulty();
 			Player joiningPlayer = null;
 			
-			if(ROOM_GAMEMODE == "DUEL") {
+			if(ROOM_GAMEMODE.equals("DUEL")) {
 				
 				switch(ROOM_DIFFICULTY) {
 					case "EASY":

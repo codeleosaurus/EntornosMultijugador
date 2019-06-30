@@ -275,7 +275,7 @@ public class SpacewarGame {
 			
 			for (Player player : room.getPlayers()) {
 				
-				if (player.getSession().getId() == winnerPlayer) {
+				if (player.getSession().getId().equals(winnerPlayer)) {
 					
 					ObjectNode winnerJSON = mapper.createObjectNode();
 					winnerJSON.put("playerName", player.getName());
