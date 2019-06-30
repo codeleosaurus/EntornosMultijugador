@@ -63,6 +63,8 @@ Spacewar.gameState.prototype = {
 	},
 
 	create : function() {
+		
+		mostrar(false);
 		/*
 		//pasarle el nombre del jugador desde el server
 		//el texto que va a seguir a la nave se crea aqui

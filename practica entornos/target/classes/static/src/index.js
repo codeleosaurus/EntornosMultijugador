@@ -144,7 +144,7 @@ window.onload = function() {
 			
 		case 'PLAYER LIST':
 			console.log("Recibiendo lista de jugadores")
-			playersInGame = msg.playersGame
+			playersGame = msg.playersInGame
 			break
 			
 			

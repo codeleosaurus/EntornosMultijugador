@@ -30,6 +30,7 @@ Spacewar.roomState.prototype = {
 	},
 
 	create : function() {
+		mostrar(false);
 		var background = game.add.sprite(game.world.X, game.world.Y, "menu");
 		background.height = game.height;
 		background.width = game.width;

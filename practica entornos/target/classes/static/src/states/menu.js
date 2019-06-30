@@ -28,7 +28,7 @@ Spacewar.menuState.prototype = {
 	},
 
 	create : function() {
-		
+		mostrar(false);
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "menu");
 		menubackground.height = game.height;
 		menubackground.width = game.width;

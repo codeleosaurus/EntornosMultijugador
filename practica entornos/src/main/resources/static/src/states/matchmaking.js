@@ -43,6 +43,7 @@ Spacewar.matchmakingState.prototype = {
 
 	create : function() {
 		
+		mostrar(false);
 		var background = game.add.sprite(game.world.X, game.world.Y, "matchmaking");
 		background.height = game.height;
 		background.width = game.width;
