@@ -85,12 +85,13 @@ Spacewar.gameState.prototype = {
 	},
 
 	create : function() {
+		/*
 		//pasarle el nombre del jugador desde el server
 		//el texto que va a seguir a la nave se crea aqui
 		text = game.add.bitmapText(0, 0,name,style);
 		text.x = Math.floor(randomImage.x + sprite.width / 2);
 	    text.y = Math.floor(randomImage.y + sprite.height / 2);
-		
+		*/
 	    this.bulletTime = 0
 		this.fireBullet = function() {
 			if (game.time.now > this.bulletTime) {

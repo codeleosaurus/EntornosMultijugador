@@ -32,7 +32,7 @@ function selecMatchmaking(){
 		evento.mode = modeM;
 		game.global.socket.send(JSON.stringify(evento))
 		console.log("Joining matchmaking")
-	game.state.start('matchmakingState')
+	game.state.start('roomState')
 	
 }
 

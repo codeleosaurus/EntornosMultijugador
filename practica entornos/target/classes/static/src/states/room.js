@@ -3,8 +3,10 @@ Spacewar.roomState = function(game) {
 //aqui no se por que hay un paso intermedio pero deberia ir a 
 //game al recibir un mensaje
 function toGame(){
-	
-	game.state.start('gameState')
+	let evento = new Object();
+	evento.event= 'START GAME MANUALLY'
+		game.global.socket.send(JSON.stringify(evento))
+		game.state.start('gameState')
 	
 }
 function leaveRoom(){
@@ -37,8 +39,14 @@ Spacewar.roomState.prototype = {
 			      "leaveRoom"
 			    );
 		 leave.inputEnabled = true;
-		 leave.events.onInputDown.add(leaveRoom,this);
-		 
+		 leave.events.onInputDown.add(toGame,this);
+		 var play = game.add.sprite(
+			      game.world.centerX -150,
+			      game.world.centerY + 150,
+			      "play"
+			    );
+		 play.inputEnabled = true;
+		 play.events.onInputDown.add(toGame,this);
 	},
 
 	update : function() {
