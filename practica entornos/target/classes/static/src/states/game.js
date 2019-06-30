@@ -90,7 +90,7 @@ Spacewar.gameState.prototype = {
 		
 		var vidas=game.add.sprite(
 				 game.world.centerX-400,
-				 game.world.centerY -260,
+				 game.world.centerY -160,
 				 "vida"
 				 );
 	},

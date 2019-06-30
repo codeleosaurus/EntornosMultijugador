@@ -93,7 +93,7 @@ Spacewar.lobbyState.prototype = {
 		menubackground.width = game.width;
 		//creamos el boton del matchmaking y le damos posicion
 		 var matchmaking = game.add.sprite(
-			      game.world.centerX -250,
+			      game.world.centerX -350,
 			      game.world.centerY + 150,
 			      "matchmakingButt"
 			    );
@@ -103,7 +103,7 @@ Spacewar.lobbyState.prototype = {
 		 matchmaking.events.onInputDown.add(selecMatchmaking,this);
 		
 		 var roomCreate = game.add.sprite(
-			      game.world.centerX +55,
+			      game.world.centerX +150,
 			      game.world.centerY + 150,
 			      "createroom"
 			    );
@@ -111,7 +111,7 @@ Spacewar.lobbyState.prototype = {
 		 roomCreate.events.onInputDown.add(crearSala,this);
 		 
 		 var leaveLobby = game.add.sprite(
-			      game.world.centerX +-70,
+			      game.world.centerX -100,
 			      game.world.centerY + 150,
 			      "leaveLobby"
 			    );
