@@ -59,6 +59,7 @@ function mostrar(modo){
 		uList[0].hidden = false;
 		uList2[0].hidden = false;
 	} else {
+		//UList[0].visible = false;
 		uList[0].hidden = true;
 		uList2[0].hidden = true;
 	}
@@ -79,8 +80,7 @@ Spacewar.lobbyState.prototype = {
 
 	create : function() {
 		
-		mostrar(true);
-		
+		console.log("hola")
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "lobby");
 		menubackground.height = game.height;
 		menubackground.width = game.width;
@@ -124,7 +124,7 @@ Spacewar.lobbyState.prototype = {
 				 );
 		 playerList.scale.setTo(0.7,0.7);
 			
-		
+		 mostrar(true);
 	},
 
 	update : function() {
