@@ -87,11 +87,11 @@ Spacewar.gameState.prototype = {
 
 		game.camera.follow(game.global.myPlayer.image);
 		
-		/*var vidas=game.add.sprite(
+		var vidas=game.add.sprite(
 				 game.world.centerX-400,
 				 game.world.centerY -260,
 				 "vida"
-				 );*/
+				 );
 	},
 	//aqui actualiza lo de la posicion es donde llega el mensaje que se hace en el servidor
 	update : function() {
