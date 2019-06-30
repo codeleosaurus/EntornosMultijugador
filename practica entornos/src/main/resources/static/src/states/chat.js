@@ -46,7 +46,7 @@ Spacewar.chatState.prototype = {
 }
 
 function send(){
-	var mensaje = prompt("Mensaje que enviar", "Mensaje")
+	var mensaje = prompt("Mensaje que enviar", "")
 	let evento = new Object();
 	evento.event = 'CHAT MESSAGE';
 	evento.text = mensaje;
