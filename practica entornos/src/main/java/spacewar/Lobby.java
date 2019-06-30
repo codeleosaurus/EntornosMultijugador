@@ -115,14 +115,21 @@ public class Lobby {
 	public void joinMatchmaking(Player player, String desiredDiff, String desiredMode) {
 		
 		
-		if(!desiredDiff.equals("EASY") && !desiredDiff.equals("MEDIUM") && !desiredDiff.equals("HARD")) {
-			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid difficulty value. Setting desired difficulty to Easy by default");
-			desiredDiff = "EASY";
+		switch(desiredDiff) {
+		case "EASY": break;
+		case "MEDIUM": break;
+		case "HARD": break;
+		default: System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid difficulty value " + desiredDiff + ". Setting desired difficulty to Easy by default");
+				 desiredDiff = "EASY";
+				 break;
 		}
 		
-		if(!desiredMode.equals("DUEL") && !desiredMode.equals("BATTLE ROYALE")) {
-			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid gamemode value. Setting desired gamemode to Duel by default");
-			desiredMode = "DUEL";
+		switch(desiredMode) {
+		case "DUEL": break;
+		case "BATTLE ROYALE": break;
+		default: System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid gamemode value " + desiredMode + ". Setting desired gamemode to Duel by default");
+				 desiredMode = "DUEL";
+				 break;
 		}
 		
 		for (Room room : rooms.values()) {
@@ -130,7 +137,7 @@ public class Lobby {
 			String ROOM_DIFFICULTY = room.getDifficulty();
 			String ROOM_GAMEMODE = room.getGamemode();
 			
-			if(!room.hasFinished() && !room.isFull() && ROOM_DIFFICULTY == desiredDiff && ROOM_GAMEMODE == desiredMode) {
+			if(!room.hasFinished() && !room.isFull() && ROOM_DIFFICULTY.equals(desiredDiff) && ROOM_GAMEMODE.equals(desiredMode)) {
 				
 				try {
 					
@@ -146,7 +153,7 @@ public class Lobby {
 		
 		System.out.println("[LOBBY] [MATCHMAKING INFO] Couldn't find any available room for player " + player.getName() + ". Sending player to matchmaking queues");
 		
-		if(desiredMode == "BATTLE ROYALE") {
+		if(desiredMode.equals("BATTLE ROYALE")) {
 			switch(desiredDiff) {
 			
 				case "EASY":
@@ -168,7 +175,7 @@ public class Lobby {
 			}
 		}else {
 			
-			if(desiredMode != "DUEL") {
+			if(!desiredMode.equals("DUEL")) {
 				System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid gamemode selected. Setting gamemode to Duel by default");
 			}
 			
@@ -252,7 +259,7 @@ public class Lobby {
 			String ROOM_DIFFICULTY = room.getDifficulty();
 			Player joiningPlayer = null;
 			
-			if(ROOM_GAMEMODE == "DUEL") {
+			if(ROOM_GAMEMODE.equals("DUEL")) {
 				
 				switch(ROOM_DIFFICULTY) {
 					case "EASY":
