@@ -60,6 +60,7 @@ window.onload = function() {
 		case 'JOINING GAME':
 			game.global.myPlayer.id = msg.id
 			game.global.myPlayer.id = msg.shipType
+			
 			game.state.start('gameState')
 			break
 		case 'GAME END':
@@ -170,6 +171,7 @@ window.onload = function() {
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
 						game.global.myPlayer.image.angle = player.facingAngle
+						
 					} else {
 						if (typeof game.global.otherPlayers[player.id] == 'undefined') {
 							console.log("e2")
