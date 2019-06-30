@@ -49,6 +49,14 @@ Spacewar.menuState.prototype = {
 			    );
 		 rank.inputEnabled = true;
 		 rank.events.onInputDown.add(ranking, this);
+		 
+		 var chat = game.add.sprite(
+			      game.world.centerX,
+			      game.world.centerY + 225,
+			      "chats"
+			    );
+		 rank.inputEnabled = true;
+		 rank.events.onInputDown.add(seeChat, this);
 
 	},
 	update : function() {
@@ -62,4 +70,8 @@ function ranking(){
 			//event : "JOIN LOBBY"
 		console.log("asking for ranking");
 		game.global.socket.send(JSON.stringify(evento));
+}
+
+function seeChat(){
+	game.state.start("chatState");
 }

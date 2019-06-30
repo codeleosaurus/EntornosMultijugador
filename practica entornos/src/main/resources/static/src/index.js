@@ -14,7 +14,8 @@ window.onload = function() {
 		playersGame : [],
 		currentRooms : [],
 		currentRoom : null,
-		waiting: false
+		waiting: false,
+		chats: []
 	}
 
 	// WEBSOCKET CONFIGURATOR
@@ -90,6 +91,10 @@ window.onload = function() {
 			
 		case 'CHAT MSG':
 			//displayChatMsg(msg.text, msg.playerName);
+			var mensaje = (msg.playerName + ": " + msg.text)
+			//if (game.global.chat.length() < 40){
+				chats.add(mensaje);
+			//}
 			break
 		
 		case 'WAITING ROOM':
@@ -98,10 +103,10 @@ window.onload = function() {
 			game.state.start("matchmakingState")
 			break
 		
-		case 'LEAVE WAITING':
+		case 'LEAVING WAITLIST':
 			console.log("leaving queue")
-			game.global.waiting = false;
 			game.state.start("lobbyState")
+			game.global.waiting = false;
 			break
 			
 		case 'RANKING':
@@ -227,6 +232,7 @@ window.onload = function() {
 	game.state.add('bootState', Spacewar.bootState)
 	game.state.add('preloadState', Spacewar.preloadState)
 	game.state.add('lobbyState', Spacewar.lobbyState)
+	game.state.add('chatState', spacewar.chatState)
 	game.state.add('menuState', Spacewar.menuState)
 	game.state.add('matchmakingState', Spacewar.matchmakingState)
 	game.state.add('roomState', Spacewar.roomState)
