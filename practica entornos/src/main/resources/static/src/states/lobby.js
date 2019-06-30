@@ -31,7 +31,7 @@ function selecMatchmaking(){
 	
 }
 
-function leaveLobby(){
+function leave(){
 	
 	let evento = new Object();
 	evento.event = 'LEAVE LOBBY'
@@ -102,8 +102,8 @@ Spacewar.lobbyState.prototype = {
 		menubackground.width = game.width;
 		//creamos el boton del matchmaking y le damos posicion
 		 var matchmaking = game.add.sprite(
-			      game.world.centerX -250,
-			      game.world.centerY + 150,
+			      game.world.centerX -350,
+			      game.world.centerY + 137,
 			      "matchmakingButt"
 			    );
 		 //le ponemos el input a true y le asignamos el evento de matchmaking 
@@ -112,20 +112,20 @@ Spacewar.lobbyState.prototype = {
 		 matchmaking.events.onInputDown.add(selecMatchmaking,this);
 		
 		 var roomCreate = game.add.sprite(
-			      game.world.centerX +55,
-			      game.world.centerY + 150,
+			      game.world.centerX -100,
+			      game.world.centerY + 137,
 			      "createroom"
 			    );
 		 roomCreate.inputEnabled = true;
 		 roomCreate.events.onInputDown.add(crearSala,this);
 		 
 		 var leaveLobby = game.add.sprite(
-			      game.world.centerX +-70,
-			      game.world.centerY + 150,
+			      game.world.centerX +150,
+			      game.world.centerY + 137,
 			      "leaveLobby"
 			    );
 		 leaveLobby.inputEnabled = true;
-		 leaveLobby.events.onInputDown.add(leaveLobby,this);
+		 leaveLobby.events.onInputDown.add(leave,this);
 		 
 			
 		
@@ -134,4 +134,4 @@ Spacewar.lobbyState.prototype = {
 	update : function() {
 			
 		}
-	}
+}

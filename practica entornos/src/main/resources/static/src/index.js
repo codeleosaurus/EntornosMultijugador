@@ -82,13 +82,13 @@ window.onload = function() {
 		
 		case 'WAITING ROOM':
 			console.log("waiting for " + msg.roomName);
-			waiting = true;
+			game.global.waiting = true;
 			game.state.start("matchmakingState")
 			break
 		
 		case 'LEAVE WAITING':
 			console.log("leaving queue")
-			waiting = false;
+			game.global.waiting = false;
 			game.state.start("lobbyState")
 			break
 			
