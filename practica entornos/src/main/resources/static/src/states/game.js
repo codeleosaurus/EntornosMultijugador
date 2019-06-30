@@ -55,6 +55,7 @@ Spacewar.gameState.prototype = {
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
 		console.log(game.global.myPlayer)
+		//pinta la vida la primera vez
 		var vidas=game.add.sprite(
 				 game.world.centerX-515,
 				 game.world.centerY-310,
@@ -63,6 +64,8 @@ Spacewar.gameState.prototype = {
 	},
 
 	create : function() {
+		
+		mostrar(false);
 		/*
 		//pasarle el nombre del jugador desde el server
 		//el texto que va a seguir a la nave se crea aqui

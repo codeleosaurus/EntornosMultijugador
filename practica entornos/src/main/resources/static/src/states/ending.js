@@ -19,7 +19,7 @@ Spacewar.endState.prototype = {
 	},
 
 	create : function() {
-		
+		mostrar(false);
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "ending");
 		menubackground.height = game.height;
 		menubackground.width = game.width;
@@ -38,9 +38,9 @@ Spacewar.endState.prototype = {
 	}
 }
 function showResults(msg){
-	var puntuaciones = ("El ganador es " + msg.winner.playerName + " con " + msg.winner.points + "puntos y " + msg.winner.hp + " vidas")
+	var puntuaciones = ("El ganador es " + msg.winner.playerName + " con " + msg.winner.points + " puntos y " + msg.winner.hp + " vidas")
 	for ( var player of msg.losers){
-		puntuaciones += ("\n Un perdedor es " + player.playerName + " con " + player.points + "puntos" )
+		puntuaciones += ("\n Un perdedor es " + player.playerName + " con " + player.points + " puntos" )
 	}
 	alert(puntuaciones)
 }
