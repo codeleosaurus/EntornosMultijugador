@@ -22,8 +22,8 @@ function crearSala(){
 	
 }
 function selecMatchmaking(){
-	var difM= prompt("write dificulty(Easy, Meedium, Hard)", "Easy")
-	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","Duel")
+	var difM= prompt("write dificulty(Easy, Meedium, Hard)", "EASY")
+	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","DUEL")
 	console.log(difM);
 	console.log(modeM);
 	let evento = new Object();

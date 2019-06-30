@@ -1,9 +1,16 @@
 Spacewar.menuState = function(game) {}
-	 
 
 	function play(){
 		if (typeof game.global.myPlayer.id !== 'undefined') {
-		      game.state.start('lobbyState')
+			if (typeof game.global.myPlayer.id != 'undefined') {
+				if (game.global.DEBUG_MODE) {
+					let message = {
+							event : 'JOIN LOBBY'
+						}
+						game.global.socket.send(JSON.stringify(message))
+					}
+				      game.state.start('lobbyState')
+				}
 		}
 	
 
@@ -18,15 +25,7 @@ Spacewar.menuState.prototype = {
 
 	preload : function() {
 		// In case JOIN message from server failed, we force it
-		if (typeof game.global.myPlayer.id == 'undefined') {
-			if (game.global.DEBUG_MODE) {
-				console.log("[DEBUG] Forcing joining server...");
-			}
-			let message = {
-				event : 'JOIN LOBBY'
-			}
-			game.global.socket.send(JSON.stringify(message))
-		}
+	
 	},
 
 	create : function() {
@@ -45,7 +44,7 @@ Spacewar.menuState.prototype = {
 
 	},
 	update : function() {
-		 
+		
 		}
 	}
 }

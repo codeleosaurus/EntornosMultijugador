@@ -37,7 +37,7 @@ Spacewar.preloadState.prototype = {
 	},
 
 	create : function() {
-		game.state.start('lobbyState')
+		game.state.start('menuState')
 	},
 
 	update : function() {
