@@ -82,18 +82,19 @@ window.onload = function() {
 		
 		case 'WAITING ROOM':
 			console.log("waiting for " + msg.roomName);
-			waiting = true;
+			game.global.waiting = true;
 			game.state.start("matchmakingState")
 			break
 		
 		case 'LEAVE WAITING':
 			console.log("leaving queue")
-			waiting = false;
+			game.global.waiting = false;
 			game.state.start("lobbyState")
 			break
 			
 		case 'RANKING':
 			console.log("recibido ranking")
+			showRanking(msg.rankingList)
 			break
 			
 		case 'GAME STATE UPDATE' :
@@ -176,8 +177,31 @@ function nameConfirmation(validname) {
 		console.log("nombre aprobado");
 		game.state.start('bootState');
 	}
-	else if (game.global.DEBUG_MODE) {
+	else{
+		if (game.global.DEBUG_MODE) {
 		console.log("[DEBUG] [ERROR] Confirmation name error. Name was not valid");
+		}
+		askName();
 	}
+}
+
+function askName(){
+	name= prompt("Write your name", "shrek")
+	let evento = new Object();
+			evento.event = 'INIT SESSION'
+			evento.playerName = name;
+			console.log("Name retry, sending message to server")
+			game.global.socket.send(JSON.stringify(evento))
+	
+}
+
+function showRanking(rankingList){
+	var ranking = "";
+	var puesto = 1;
+	for (var player of rankingList){
+		ranking += (puesto + "º: " + player.playerName + " -> " + player.score + " puntos" + "\n");
+		puesto++;
+	}
+	alert(ranking);
 }
 

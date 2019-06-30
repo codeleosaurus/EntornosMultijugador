@@ -36,7 +36,7 @@ Spacewar.menuState.prototype = {
 		//Aqui meto el botón de que le de a jugar
 		 var playbutton = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY + 300,
+			      game.world.centerY - 75,
 			      "play"
 			    );
 		 playbutton.inputEnabled = true;
@@ -44,14 +44,22 @@ Spacewar.menuState.prototype = {
 		 
 		 var rank = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY + 300,
+			      game.world.centerY + 75,
 			      "rankingBot"
 			    );
 		 rank.inputEnabled = true;
-		 //rank.events.onInputDown.add(play, this);
+		 rank.events.onInputDown.add(ranking, this);
 
 	},
 	update : function() {
 		
-		}
 	}
+}
+
+function ranking(){
+	let evento = new Object();
+	evento.event = 'GET RANKING';
+			//event : "JOIN LOBBY"
+		console.log("asking for ranking");
+		game.global.socket.send(JSON.stringify(evento));
+}

@@ -50,7 +50,7 @@ Spacewar.gameState.prototype = {
 				'purple', 'red' ]
 		let randomImage = random[Math.floor(Math.random() * random.length)]
 				+ '_0' + (Math.floor(Math.random() * 6) + 1) + '.png'
-		game.global.myPlayer.image = game.add.sprite(200, 200, 'spacewar',
+		game.global.myPlayer.image = game.add.sprite(0, 0, 'spacewar',
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
 		console.log(game.global.myPlayer)
@@ -89,8 +89,8 @@ Spacewar.gameState.prototype = {
 		game.camera.follow(game.global.myPlayer.image);
 		
 		var vidas=game.add.sprite(
-				 game.world.centerX-400,
-				 game.world.centerY -260,
+				 game.world.centerX-515,
+				 game.world.centerY-310,
 				 "vida"
 				 );
 	},
