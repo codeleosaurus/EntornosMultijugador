@@ -12,6 +12,7 @@ window.onload = function() {
 		projectiles : [],
 		rooms : [],
 		playersGame : [],
+		currentRooms : [],
 		currentRoom : null,
 		waiting: false
 	}
@@ -57,6 +58,8 @@ window.onload = function() {
 		
 			
 		case 'JOINING GAME':
+			game.global.myPlayer.id = msg.id
+			game.global.myPlayer.id = msg.shipType
 			game.state.start('gameState')
 			break
 		case 'GAME END':
@@ -68,13 +71,15 @@ window.onload = function() {
 			break
 			
 		case 'ROOM LIST':
-			createList(msg.roomList)
+			game.global.currentRooms = msg.roomList
+			createList()
 			break
 			
 		case 'JOINING ROOM':
 			//game.global.currentRoom.roomName = msg.roomName;
 			console.log("Joining room:" + msg.roomName)
 			game.state.start('roomState')
+			//var nameText
 			break
 			
 		case 'ROOM INFO':
@@ -145,7 +150,10 @@ window.onload = function() {
 			
 		case 'PLAYER LIST':
 			console.log("Recibiendo lista de jugadores")
-			playersGame = msg.playersInGame
+			console.log(msg.playersInGame)
+			game.global.playersGame = msg.playersInGame
+			createList2()
+			//createList2(msg.playerInGame)
 			break
 			
 			
@@ -161,16 +169,26 @@ window.onload = function() {
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
 						game.global.myPlayer.image.angle = player.facingAngle
+						////
+						console.log(player.posX);
+						game.global.myPlayer.hpImage.x=player.posX
+						game.global.myPlayer.hpImage.x=player.posY-100
+						
 					} else {
 						if (typeof game.global.otherPlayers[player.id] == 'undefined') {
 							game.global.otherPlayers[player.id] = {
 									image : game.add.sprite(player.posX, player.posY, 'spacewar', player.shipType)
+									hpImage: game.add.sprite(player.posX,player.posY-100,'vida')
 							}
 							game.global.otherPlayers[player.id].image.anchor.setTo(0.5, 0.5)
 						} else {
 							game.global.otherPlayers[player.id].image.x = player.posX
 							game.global.otherPlayers[player.id].image.y = player.posY
 							game.global.otherPlayers[player.id].image.angle = player.facingAngle
+							game.global.otherPlayers[player.id].hpImage.x=player.posX
+							game.global.otherPlayers[player.id].hpImage.x=player.posY-100
+							console.log(player.posX);
+							////
 						}
 					}
 				}
@@ -214,8 +232,8 @@ window.onload = function() {
 	// PHASER SCENE CONFIGURATOR
 	game.state.add('bootState', Spacewar.bootState)
 	game.state.add('preloadState', Spacewar.preloadState)
-	game.state.add('menuState', Spacewar.menuState)
 	game.state.add('lobbyState', Spacewar.lobbyState)
+	game.state.add('menuState', Spacewar.menuState)
 	game.state.add('matchmakingState', Spacewar.matchmakingState)
 	game.state.add('roomState', Spacewar.roomState)
 	game.state.add('gameState', Spacewar.gameState)
@@ -257,3 +275,48 @@ function showRanking(rankingList){
 	alert(ranking);
 }
 
+function createList() {
+	var ul = document.getElementById("LUL");
+	$(ul).empty();
+	mostrar(true);
+	//console.log(roomlist.length)
+	for (i = 0; i < game.global.currentRooms.length; i++) { 
+		var room = game.global.currentRooms[i]
+		//console.log(room)
+		//console.log(room.roomName)
+		var li = document.createElement("li");
+		var a = document.createElement("a");
+	
+		a.appendChild(document.createTextNode(room.roomName + " - " + room.numberOfPlayers + "/" + room.maxPlayers + " players - Gamemode:"
+				+ room.gamemode + " - Difficulty: " + room.difficulty));
+		//if room.started
+		a.addEventListener("click", function() {
+			join(room.roomName);
+		});
+		li.appendChild(a);
+	
+		ul.appendChild(li);
+	}
+}
+
+	function createList2() {
+		console.log(game.global.playersGame)
+		var ul2 = document.getElementById("LUL2");
+		$(ul2).empty();
+		mostrar(true);
+		//console.log(roomlist.length)
+		for (i = 0; i < game.global.playersGame.length; i++) { 
+			var player = game.global.playersGame[i]
+			console.log(player)
+			//console.log(room.roomName)
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+		
+			a.appendChild(document.createTextNode(player.playerName));
+			//if room.started
+			li.appendChild(a);
+		
+			ul2.appendChild(li);
+		}
+	
+}
