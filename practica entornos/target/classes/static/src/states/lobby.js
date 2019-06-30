@@ -10,7 +10,7 @@ function joinRoom(){
 function crearSala(){
 		var roomName= prompt("Write the rooms name", "Villa oculta de la hoja")
 		var dif= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
-		var mode=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
+		var mode=prompt("Select playmode(BATTLE ROYALE,DUEL)","DUEL")
 		let evento = new Object();
 			evento.event = 'CREATE ROOM'
 			evento.roomName = roomName;

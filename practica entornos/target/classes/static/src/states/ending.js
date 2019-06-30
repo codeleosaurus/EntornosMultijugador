@@ -21,8 +21,8 @@ Spacewar.lobbyState.prototype = {
 		menubackground.width = game.width;
 		
 		var replayButton= game.add.sprite(
-			      game.world.centerX,
-			      game.world.centerY + 100,
+			      game.world.centerX-100,
+			      game.world.centerY +120,
 			      "replay"
 			    );
 		replayButton.inputEnabled = true;

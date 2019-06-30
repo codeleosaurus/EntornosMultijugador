@@ -54,6 +54,9 @@ window.onload = function() {
 		case 'JOINIG GAME':
 			game.state.start('gameState')
 			break
+		case 'GAME END':
+			game.state.start('endState')
+			break
 			
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
