@@ -31,8 +31,6 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
-			//GESTIÓN DEL NOMBRE
-			//POR AHORA ES COMO LO HICIERON NICO/LUNA, PODEMOS ENCONTRAR OTRA FORMA DE OBTENERLO?
 		String name;
 		
 		synchronized(session) {

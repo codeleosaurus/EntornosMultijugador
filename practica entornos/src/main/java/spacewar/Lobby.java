@@ -114,6 +114,16 @@ public class Lobby {
 	
 	public void joinMatchmaking(Player player, String desiredDiff, String desiredMode) {
 		
+		if(desiredDiff != "EASY" && desiredDiff != "MEDIUM" && desiredDiff != "HARD") {
+			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid difficulty value. Setting desired difficulty to Easy by default");
+			desiredDiff = "EASY";
+		}
+		
+		if(desiredMode != "DUEL" && desiredMode != "BATTLE ROYALE") {
+			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid gamemode value. Setting desired gamemode to Duel by default");
+			desiredMode = "DUEL";
+		}
+		
 		for (Room room : rooms.values()) {
 			
 			String ROOM_DIFFICULTY = room.getDifficulty();
@@ -665,7 +675,7 @@ public class Lobby {
 		
 		msg.put("event", "CHAT MSG");
 		msg.put("msg text", msgText);
-		msg.put("player", player.getName());
+		msg.put("playerName", player.getName());
 		broadcast(msg.toString());
 		
 	}
