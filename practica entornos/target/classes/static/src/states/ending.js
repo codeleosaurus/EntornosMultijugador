@@ -1,6 +1,10 @@
 Spacewar.endState = function(game) {}
 var puntuacion;
 function newGame(){
+	let evento = new Object();
+	evento.event = 'LEAVE ROOM'
+		evento.event = 'LEAVE LOBBY'
+		game.global.socket.send(JSON.stringify(evento))
 	game.state.start('menuState')
 }
 
