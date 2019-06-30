@@ -1,17 +1,17 @@
 Spacewar.menuState = function(game) {}
 
 	function play(){
-		if (typeof game.global.myPlayer.id !== 'undefined') {
-			if (typeof game.global.myPlayer.id != 'undefined') {
-				if (game.global.DEBUG_MODE) {
-					let message = {
-							event : 'JOIN LOBBY'
-						}
-						game.global.socket.send(JSON.stringify(message))
+		//if (typeof game.global.myPlayer.id !== 'undefined') {
+		//	if (typeof game.global.myPlayer.id != 'undefined') {
+				let message = {
+						event : 'JOIN LOBBY'
 					}
-				      game.state.start('lobbyState')
-				}
-		}
+					game.global.socket.send(JSON.stringify(message))
+					game.state.start('lobbyState')
+					if (game.global.DEBUG_MODE) {}
+		//		}
+		//}
+	}
 	
 
 
@@ -47,4 +47,3 @@ Spacewar.menuState.prototype = {
 		
 		}
 	}
-}

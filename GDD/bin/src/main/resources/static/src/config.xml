@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<pantalla>
+		<tamañoW>400</tamañoW>
+		<tamañoH>300</tamañoH>
+	</pantalla>
+	<color>rojo</color>
+	<usuario>Ash</usuario>
+	<nSerie>1.37</nSerie>
+</config>

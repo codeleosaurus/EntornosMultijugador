@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+<title>POKÉDEX</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+<style>
+#canvas {
+	border: 1px solid black;
+	background: url(hexagon_pattern2.png)
+}
+
+.fondo {
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 800;
+	height: 600;
+}
+
+.pantalla {
+	position: absolute;
+	top: 160px;
+	left: 50px;
+	width: 200;
+	height: 200;
+}
+
+.pantalla_2 {
+	position: absolute;
+	top: 475px;
+	left: 50px;
+}
+
+.button_plus {
+	position: absolute;
+	top: 130px;
+	left: 390px;
+	height: 20px;
+	width: 20px;
+	background: "plus.png";
+}
+
+.button_papelera {
+	position: absolute;
+	top: 130px;
+	left: 430px;
+	height: 20px;
+	width: 20px;
+	background: "papelera.png";
+}
+
+.right_arrow {
+	position: absolute;
+	top: 130px;
+	left: 100px;
+}
+
+.left_arrow {
+	position: absolute;
+	top: 130px;
+	left: 50px;
+}
+
+.centered {
+	position: absolute;
+	top: 190px;
+	left: 120px;
+}
+
+.button_comenzar {
+	position: absolute;
+	top: 330px;
+	left: 210px;
+}
+
+.pokeFoto {
+	position: absolute;
+	top: 200px;
+	left: 170px;
+	width: 160px;
+	height: 160px;
+}
+
+.pokeID {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 510px;
+	left: 15px;
+	text-align: center;
+	width: 160px;
+	height: 160px;
+}
+
+.pokeTipo1 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 510px;
+	left: 110px;
+	text-align: center;
+	width: 160px;
+	height: 160px;	
+}
+
+.pokeTipo2 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 510px;
+	left: 220px;
+	text-align: center;
+	width: 160px;
+	height: 160px;
+}
+
+.pokeGen {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 510px;
+	left: 310px;
+	text-align: center;
+	width: 160px;
+	height: 160px;
+}
+
+.pokeList {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 180px;
+	left: 75px;
+	z-index: 2;
+	height: 200px;
+	width: 350px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+
+.pokeball {
+	position: absolute;
+	top: 310px;
+	left: 300px;
+}
+
+.pokeball_2 {
+	position: absolute;
+	top: 310px;
+	left: 100px;
+}
+
+.buscar_add {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 120px;
+	left: 575px;
+}
+
+.tipo1 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 225px;
+	left: 575px;
+}
+
+.tipo2 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 225px;
+	left: 675px;
+}
+
+.tipo1_form {
+	position: absolute;
+	top: 275px;
+	left: 575px;
+}
+
+.tipo2_form {
+	position: absolute;
+	top: 275px;
+	left: 675px;
+}
+
+.legendario_form {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 350px;
+	left: 575px;
+}
+
+.order_form{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 640px;
+	left: 650px;
+}
+.myOrder{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: -18px;
+	left: 30px;
+}
+
+
+.generacion {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 400px;
+	left: 575px;
+}
+.generacion_add {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 450px;
+	left: 575px;
+}
+
+.numero_pokemon {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 400px;
+	left: 800px;
+}
+.numero_pokemon2 {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 450px;
+	left: 800px;
+}
+
+.nombre_add {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 350px;
+	left: 800px;
+}
+
+.nombre {
+	position: absolute;
+    top: 100px;
+    left: 225px;
+	font-size: 150%
+}
+
+.nSerie {
+    position: absolute;
+    top: 100px;
+    left: 575px;
+}
+                
+.generacion_form {
+	position: absolute;
+	top: 450px;
+	left: 575px;
+}
+
+.topnav {
+	position: absolute;
+	top: 200px;
+	left: 90px;
+	overflow: hidden;
+}
+
+.topnav .search-container {
+	float: left;
+	width: 300px;
+}
+
+.topnav input[type=text] {
+	padding: 6px;
+	margin-top: 8px;
+	font-size: 13px;
+	border: 1px;
+	border-color: #313131;
+	border-style: solid;
+}
+
+.buscar {
+	position: absolute;
+	top: 640px;
+	left: 575px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#PokemonUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#PokemonUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#PokemonUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+
+</style>
+</head>
+<body>
+	<img id= "sourceFondo" class="fondo" width="1000"
+		height="700">
+	<p id=buscar_add class="buscar_add" style="font-size: 160%">Búsqueda
+		avanzada</p>
+	<img src="../assets/Imagen_pokemon_v2.png" class="pantalla" id="tamañoPantalla">
+	<img id="bienvenida" src="../assets/bienvenida.png" class="centered"
+		width="250" height="100">
+	<img src="../assets/screen_2_v2.png" class="pantalla_2" width="400"
+		height="200">
+
+	<button id="comenzar" class="button_comenzar" onclick="goToState2()">Comenzar</button>
+
+	<button id="buscar" class="buscar" onclick="buscar()">Buscar</button>
+	
+	<button id="add" class="buscar" hidden onclick="nuevo()">Añadir</button>
+	
+	<img id="pokeball1" src="../assets/pokeball.gif" class="pokeball"
+		width="100">
+	<img id="pokeball2" src="../assets/pokeball.gif" class="pokeball_2"
+		width="100">
+
+	<ul id="PokemonUL" class="pokeList" hidden></ul>
+
+	<img src="../assets/screen_2_v2.png" class="pantalla_2" width="400"
+		height="200">
+
+	<img src="../assets/pokemon/1.png" class="pokeFoto" hidden width="100"
+		height="100">
+		
+	<p class="nombre" id="nombre"></p>
+	<p class="nSerie" id="nSerie"></p>
+		
+	<p class="pokeID" hidden>ID</p>
+	<p class="pokeTipo1" hidden>Tipo1</p>
+	<p class="pokeTipo2" hidden>Tipo2</p>
+	<p class="pokeGen" hidden>Gen</p>
+
+	<input type="image" src="../assets/plus.png" class="button_plus"
+		onclick="javascript:busqueda();">
+	<input type="image" src="../assets/papelera.png"
+		class="button_papelera" onclick="javascript:borrar();">
+
+	<input type="image" src="../assets/right-arrow.png" class="right_arrow" width="40"
+		height="20" hidden>
+		
+	<input type="image" src="../assets/left-arrow.png" class="left_arrow" width="40"
+		height="20" onclick="javascript:show();" hidden>
+
+	<p class="tipo1">Tipo1</p>
+	<p class="tipo2">Tipo2</p>
+	<p class="generacion">Generación</p>
+	
+	<input type="number" class="generacion_add" hidden id="generation_add" value="1">
+	<p class="numero_pokemon" hidden id="numPokemon">Numero</p>
+	<input type="number" class="numero_pokemon2" hidden id="numPokemon2" value="1">
+	<input type="text" class="nombre_add" hidden id="nombre_add" value="NombrePokemon">
+
+
+	<script src="../scripts/jquery-3.3.1.min.js"></script>
+	<script src="ajax/communication.js"></script>
+
+	<script>
+		var nombre;
+		var pokNumber;
+		var pokActual;
+		var add_buscar = false;
+		var comenzado = false;
+		var ul = document.getElementById("PokemonUL");
+
+		var tipo1_traducido = "";
+		var tipo2_traducido;
+		var generacion_traducida;
+		var legendario_traducido;
+		var tipo1_add;
+		var tipo2_add;
+		var generacion_add;
+		var legendario_add;
+		var numero_add;
+		var nombre_add;
+
+		postPokemon();
+
+		function goToState2() {
+			var img = document.getElementById("bienvenida")
+			img.remove();
+			img = document.getElementById("pokeball1")
+			img.remove();
+			img = document.getElementById("pokeball2")
+			img.remove();
+			img = document.getElementById("comenzar")
+			img.remove();
+
+			comenzado = true;
+
+			buscar();
+		}
+
+		function buscar() {
+			//TIPO 1
+			tipo1 = document.getElementById("myTipo1");
+			filter = tipo1.value.toUpperCase();
+			tipo1_traducido = convertidorTipos(filter);
+
+			//TIPO 2
+			tipo2 = document.getElementById("myTipo2");
+			filter = tipo2.value.toUpperCase();
+			tipo2_traducido = convertidorTipos(filter);
+
+			//GENERACION
+			generacion = document.getElementById("myGen")
+			filter = generacion.value.toUpperCase();
+			generacion_traducida = convertidorGeneracion(filter);
+
+			//LEGENDARIO
+			legendario = document.getElementById("myLegen");
+			filter = legendario.checked;
+			legendario_traducido = convertidorLegendario(filter);
+
+			sendInfo();
+		}
+		
+		function borrar() {
+			console.log(pokActual);
+			remove();
+		}
+		
+		function mostrar(data){
+			if (comenzado === true) {
+				$(ul).empty();
+				ordenDescendente = document.getElementById("myOrder");
+				console.log(ordenDescendente.checked);
+				if (ordenDescendente.checked == false){
+					console.log("hola");
+					for (i = 0; i < data.length; i++) {
+						console.log("Get: " + JSON.stringify(data[i]));
+	
+						nombre = JSON.stringify(data[i].name);
+						pokNumber = JSON.stringify(data[i].pokedex_number);
+	
+						createList(data[i]);
+	
+						show();
+					}
+				} else {
+					console.log("hola2");
+					for (i = data.length-1 ; i >= 0; i--) {
+						console.log("hola2");
+						console.log("Get: " + JSON.stringify(data[i]));
+	
+						nombre = JSON.stringify(data[i].name);
+						pokNumber = JSON.stringify(data[i].pokedex_number);
+	
+						createList(data[i]);
+	
+						show();
+					}
+				}
+			}
+		}
+		
+		function busqueda(){
+			var buscar_add = document.getElementById("buscar_add");
+			if (comenzado) {
+				if (add_buscar == false){
+					buscar_add.innerHTML = "Añadir Pokemon";
+					document.getElementById("buscar").hidden = true;
+					document.getElementById("add").hidden = false;
+					document.getElementById("myGen").hidden = true;
+					document.getElementById("generation_add").hidden = false;
+					document.getElementById("numPokemon").hidden = false;
+					document.getElementById("numPokemon2").hidden = false;
+					document.getElementById("nombre_add").hidden = false;
+					document.getElementById("myOrder").hidden = true;
+					document.getElementById("myOrder2").hidden = true;
+					add_buscar = true;
+				} else{
+					buscar_add.innerHTML = "Busqueda Avanzada";
+					document.getElementById("buscar").hidden = false;
+					document.getElementById("add").hidden = true;
+					document.getElementById("myGen").hidden = false;
+					document.getElementById("generation_add").hidden = true;
+					document.getElementById("numPokemon").hidden = true;
+					document.getElementById("nombre_add").hidden = true;
+					document.getElementById("myOrder").hidden = false;
+					document.getElementById("myOrder2").hidden = false;
+					add_buscar = false;
+				}
+			}
+		}
+		function nuevo(){
+			
+			tipo1 = document.getElementById("myTipo1");
+			filter = tipo1.value.toUpperCase();
+			tipo1_add = convertidorTipos(filter);
+			console.log(tipo1_add);
+
+			tipo2 = document.getElementById("myTipo2");
+			filter = tipo2.value.toUpperCase();
+			tipo2_add = convertidorTipos(filter);
+			console.log(tipo2_add);
+
+			generacion_add =  document.getElementById("generation_add").value;
+			console.log(generacion_add);
+			
+			legendario = document.getElementById("myLegen");
+			filter = legendario.checked;
+			legendario_add = convertidorLegendario(filter);
+			console.log(legendario_add);
+			
+			numero_add = document.getElementById("numPokemon2").value;
+			console.log(numero_add);
+			nombre_add = document.getElementById("nombre_add").value;
+			console.log(nombre_add);
+			
+			if (tipo1_add !=null && generacion_add >=1 && numero_add>=1){
+				add();
+			}else{
+				console.log("fallido");
+			}
+		}
+
+		function convertidorTipos(aux) {
+			var nombreBueno = ""
+			switch (aux) {
+			case "PLANTA":
+				nombreBueno = "grass";
+				break;
+			case "FUEGO":
+				nombreBueno = "fire";
+				break;
+			case "AGUA":
+				nombreBueno = "water";
+				break;
+			case "NORMAL":
+				nombreBueno = "normal";
+				break;
+			case "ELÉCTRICO":
+				nombreBueno = "electric";
+				break;
+			case "PSÍQUICO":
+				nombreBueno = "psychic";
+				break;
+			case "LUCHA":
+				nombreBueno = "fight";
+				break;
+			case "ROCA":
+				nombreBueno = "rock";
+				break;
+			case "TIERRA":
+				nombreBueno = "ground";
+				break;
+			case "VOLADOR":
+				nombreBueno = "flying";
+				break;
+			case "BICHO":
+				nombreBueno = "bug";
+				break;
+			case "VENENO":
+				nombreBueno = "poison";
+				break;
+			case "SINIESTRO":
+				nombreBueno = "dark";
+				break;
+			case "FANTASMA":
+				nombreBueno = "ghost";
+				break;
+			case "HIELO":
+				nombreBueno = "ice";
+				break;
+			case "ACERO":
+				nombreBueno = "steel";
+				break;
+			case "DRAGON":
+				nombreBueno = "dragon";
+				break;
+			case "HADA":
+				nombreBueno = "fairy";
+				break;
+			case "----":
+				nombreBueno="----";
+				break;
+			}
+			return nombreBueno;
+
+		}
+
+		function convertidorGeneracion(aux) {
+			var nombrebueno;
+			switch (aux) {
+			case "PRIMERA":
+				nombreBueno = "1";
+				break;
+			case "SEGUNDA":
+				nombreBueno = "2";
+				break;
+			case "TERCERA":
+				nombreBueno = "3";
+				break;
+			case "CUARTA":
+				nombreBueno = "4";
+				break;
+			case "QUINTA":
+				nombreBueno = "5";
+				break;
+			case "SEXTA":
+				nombreBueno = "6";
+				break;
+			case "SÉPTIMA":
+				nombreBueno = "7";
+				break;
+			case "----":
+				nombreBueno="-1";
+				break;
+
+			}
+
+			return nombreBueno;
+
+		}
+
+		function convertidorLegendario(aux) {
+			var isLegendary;
+			if (aux == true) {
+				isLegendary = "1";
+			} else {
+				isLegendary = "0";
+			}
+
+			return isLegendary;
+
+		}
+
+		function show() {
+			var listPoke = document.getElementsByClassName("pokeList");
+			var foto = document.getElementsByClassName("pokeFoto");
+			var idElement = document.getElementsByClassName("pokeID");
+			var tipo1Element = document.getElementsByClassName("pokeTipo1");
+			var tipo2Element = document.getElementsByClassName("pokeTipo2");
+			var genElement = document.getElementsByClassName("pokeGen");
+			var leftArrow = document.getElementsByClassName("left_arrow");
+
+			listPoke[0].hidden = false;
+			foto[0].hidden = true;
+			idElement[0].hidden = true;
+			tipo1Element[0].hidden = true;
+			tipo2Element[0].hidden = true;
+			genElement[0].hidden = true;
+			leftArrow[0].hidden = true;
+			//
+			pokActual = -1;
+		}
+
+		function showPicStats(pokemon) {
+			var foto = document.getElementsByClassName("pokeFoto");
+			var idElement = document.getElementsByClassName("pokeID");
+			var tipo1Element = document.getElementsByClassName("pokeTipo1");
+			var tipo2Element = document.getElementsByClassName("pokeTipo2");
+			var genElement = document.getElementsByClassName("pokeGen");
+			var listPoke = document.getElementsByClassName("pokeList");
+			var leftArrow = document.getElementsByClassName("left_arrow");
+			
+			listPoke[0].hidden = true;
+			foto[0].hidden = false;
+			idElement[0].hidden = false;
+			tipo1Element[0].hidden = false;
+			tipo2Element[0].hidden = false;
+			genElement[0].hidden = false;
+			leftArrow[0].hidden = false;
+			
+			foto[0].src = '../assets/pokemon/' + pokemon.pokedex_number + '.png';
+			idElement[0].innerHTML = pokemon.pokedex_number;
+			tipo1Element[0].innerHTML = pokemon.type1;
+			tipo2Element[0].innerHTML = pokemon.type2;
+			genElement[0].innerHTML = pokemon.generation;
+			//
+			pokActual = pokemon.pokedex_number;
+		}
+
+		function createList(pokemonElement) {
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+
+			a.appendChild(document.createTextNode(pokemonElement.name)); // + " " + pokemonElement.pokedex_number + " " + pokemonElement.type1 + " " + pokemonElement.type2 + " " + pokemonElement.generation
+			a.addEventListener("click", function() {
+				showPicStats(pokemonElement);
+			});
+			li.appendChild(a);
+
+			ul.appendChild(li);
+		}
+	</script>
+
+	<!--
+	<div class="topnav">
+		<form class="search-container">
+			<input type="text" id="myInput" onkeyup="filtrarNombre()"
+				placeholder="Buscar Pokimones.." title="Nombre del pokemon">
+		</form>
+	</div>
+-->
+
+	<form class="tipo1_form">
+		<select id="myTipo1" name="tipo_1">
+			<option value="----" selected>----</option>
+			<option value="Fuego">Fuego</option>
+			<option value="Planta">Planta</option>
+			<option value="Agua">Agua</option>
+			<option value="Normal">Normal</option>
+			<option value="Eléctrico">Eléctrico</option>
+			<option value="Psíquico">Psíquico</option>
+			<option value="Lucha">Lucha</option>
+			<option value="Roca">Roca</option>
+			<option value="Tierra">Tierra</option>
+			<option value="Volador">Volador</option>
+			<option value="Bicho">Bicho</option>
+			<option value="Veneno">Veneno</option>
+			<option value="Siniestro">Siniestro</option>
+			<option value="Fantasma">Fantasma</option>
+			<option value="Hielo">Hielo</option>
+			<option value="Acero">Acero</option>
+			<option value="Dragón">Dragón</option>
+			<option value="Hada">Hada</option>
+		</select> <br> <br>
+	</form>
+
+	<form class="tipo2_form">
+		<select id="myTipo2" name="tipo_2">
+			<option value="----" selected>----</option>
+			<option value="Fuego">Fuego</option>
+			<option value="Planta">Planta</option>
+			<option value="Agua">Agua</option>
+			<option value="Normal">Normal</option>
+			<option value="Eléctrico">Eléctrico</option>
+			<option value="Psíquico">Psíquico</option>
+			<option value="Lucha">Lucha</option>
+			<option value="Roca">Roca</option>
+			<option value="Tierra">Tierra</option>
+			<option value="Volador">Volador</option>
+			<option value="Bicho">Bicho</option>
+			<option value="Veneno">Veneno</option>
+			<option value="Siniestro">Siniestro</option>
+			<option value="Fantasma">Fantasma</option>
+			<option value="Hielo">Hielo</option>
+			<option value="Acero">Acero</option>
+			<option value="Dragón">Dragón</option>
+			<option value="Hada">Hada</option>
+		</select> <br> <br>
+	</form>
+
+	<form class="legendario_form">
+		<input id="myLegen" type="checkbox" name="legen" value="Legendario">
+		Legendario <br>
+	</form>
+	
+	<form class="order_form">
+		<input id="myOrder" type="checkbox" name="ordenDescendente" value="orden">
+		<p class="myOrder" id="myOrder2">Orden Descendente</p>
+		<br>
+	</form>
+	
+
+	<form class="generacion_form">
+		<select id="myGen" name="gen">
+			<option value="----" selected>----</option>
+			<option value="Primera">Primera</option>
+			<option value="Segunda">Segunda</option>
+			<option value="Tercera">Tercera</option>
+			<option value="Cuarta">Cuarta</option>
+			<option value="Quinta">Quinta</option>
+			<option value="Sexta">Sexta</option>
+			<option value="Séptima">Séptima</option>
+		</select> <br> <br>
+	</form>
+	
+	</script>
+		
+		<script>
+						
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function(){
+			  if(xmlhttp.status == 200 && xmlhttp.readyState == 4){
+				procesar(this);
+			  }
+			};
+			xmlhttp.open("GET","config.xml",true);
+			xmlhttp.send();
+			function procesar(xml){
+				var x, color, nombre, numero, tamañoW, tamañoH, xmlDoc;  
+				xmlDoc = xml.responseXML;
+				
+				x = xmlDoc.getElementsByTagName("color");
+				color = x[0].childNodes[0].nodeValue;
+				document.getElementById("sourceFondo").src = "../assets/fondo" +color + ".png"; 
+				
+				x = xmlDoc.getElementsByTagName("usuario");
+				nombre = x[0].childNodes[0].nodeValue;
+				document.getElementById("nombre").innerHTML  = nombre;
+				x = xmlDoc.getElementsByTagName("nSerie");
+				numero = x[0].childNodes[0].nodeValue;
+				document.getElementById("nSerie").innerHTML  = numero;
+				
+				x = xmlDoc.getElementsByTagName("tamañoH");
+				tamañoH = x[0].childNodes[0].nodeValue;
+				x = xmlDoc.getElementsByTagName("tamañoW");
+				tamañoW = x[0].childNodes[0].nodeValue;
+				document.getElementById("tamañoPantalla").style.width = tamañoW + "px";
+				document.getElementById("tamañoPantalla").style.height = tamañoH + "px";
+			}
+			/*var xml = "<rss version='2.0'><channel><title>RSS Title</title></channel></rss>",
+			xmlDoc = $.parseXML( xml ),
+			$xml = $( xmlDoc ),
+			$title = $xml.find( "title" );
+	 
+			// Append "RSS Title" to #someElement
+			$( "#someElement" ).append( $title.text() );*/
+		</script>
+	
+</body>
