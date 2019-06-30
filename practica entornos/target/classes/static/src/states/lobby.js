@@ -21,12 +21,13 @@ function crearSala(){
 	
 }
 function selecMatchmaking(){
+	var difM= prompt("write dificulty(Easy, Meedium, Hard)", "Easy")
+	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","Duel")
 	let evento = new Object();
 	evento.event = 'JOIN MATCHMAKING'
-		var difM= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
-		var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
-		evento.roomDiff=difM;
-		evento.roomType = modeM;
+		evento.diff=difM;
+		evento.mode = modeM;
+		game.global.socket.send(JSON.stringify(evento))
 		console.log("Joining matchmaking")
 	game.state.start('matchmakingState')
 	
