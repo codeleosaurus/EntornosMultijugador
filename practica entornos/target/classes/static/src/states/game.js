@@ -55,6 +55,7 @@ Spacewar.gameState.prototype = {
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
 		console.log(game.global.myPlayer)
+		//pinta la vida la primera vez
 		var vidas=game.add.sprite(
 				 game.world.centerX-515,
 				 game.world.centerY-310,
