@@ -110,6 +110,14 @@ Spacewar.lobbyState.prototype = {
 		 roomCreate.inputEnabled = true;
 		 roomCreate.events.onInputDown.add(crearSala,this);
 		 
+		 var leaveLobby = game.add.sprite(
+			      game.world.centerX +-70,
+			      game.world.centerY + 150,
+			      "leaveLobby"
+			    );
+		 leaveLobby.inputEnabled = true;
+		// leaveLobby.events.onInputDown.add(leave,this);
+		 
 			
 		
 	},
