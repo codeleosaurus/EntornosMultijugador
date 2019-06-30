@@ -8,7 +8,7 @@ Spacewar.menuState = function(game) {}
 						//event : "JOIN LOBBY"
 					console.log(evento);
 					game.global.socket.send(JSON.stringify(evento));
-					//game.state.start('lobbyState');
+					game.state.start('lobbyState');
 					if (game.global.DEBUG_MODE) {}
 				}
 	

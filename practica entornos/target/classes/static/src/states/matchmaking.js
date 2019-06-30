@@ -1,5 +1,17 @@
 Spacewar.matchmakingState = function(game) {}
 function leaveMatchmaking(){
+	if (waiting == true){
+		let evento = new Object();
+		evento.event = 'LEAVE WAITLIST'
+		console.log("Leaving waitlist, sending message to server")
+		game.global.socket.send(JSON.stringify(evento))
+	} else{
+		let evento = new Object();
+		evento.event = 'LEAVE MATCHMAKING'
+		console.log("Leaving matchmaking, sending message to server")
+		game.global.socket.send(JSON.stringify(evento))
+	}
+	waiting = false;
 	game.state.start('lobbyState')
 }
 //al recibir un mensaje del servidor de que estan todos los jugadores
