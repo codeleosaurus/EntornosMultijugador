@@ -13,9 +13,9 @@ function actualizarVida(){
 	//game.state.start('endState')
 	//}
 }
-function muerte{
+/*function muerte{
 	
-}
+}*/
 function updateMove{
 	let msg = new Object()
 	msg.event = 'UPDATE MOVEMENT'

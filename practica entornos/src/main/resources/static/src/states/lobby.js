@@ -1,6 +1,6 @@
 Spacewar.lobbyState = function(game) {}
 //funciones que se llaman al pulsar los botones
-function onSelect(){
+function joinRoom(){
 	//aqui hay que hacer una funcion que haga que al seleccionar una sala y darle a confirmar llame a join room
 	//let evento = new Object();
 	//evento.event = 'JOIN ROOM'
@@ -10,17 +10,7 @@ function onSelect(){
 function crearSala(){
 		var roomName= prompt("Write the rooms name", "Villa oculta de la hoja")
 		var dif= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
-		console.log(dif);
-		if(dif=="EASY"||dif=="MEDIUM"||dif=="HARD"){
-		console.log("se envia mensaje al servidor con la dificultad y toda la mierda")
-		}else{
-			while(dif!="EASY"||dif!="MEDIUM"||dif!="HARD"){
-				dif=prompt("please select a valid dificulty","EASY")
-				break
-			}
-		}
 		var mode=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
-		console.log(dif);
 		let evento = new Object();
 			evento.event = 'CREATE ROOM'
 			evento.roomName = roomName;
@@ -33,6 +23,11 @@ function crearSala(){
 function selecMatchmaking(){
 	let evento = new Object();
 	evento.event = 'JOIN MATCHMAKING'
+		var difM= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
+		var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
+		evento.roomDiff=difM;
+		evento.roomType = modeM;
+		console.log("Joining matchmaking")
 	game.state.start('matchmakingState')
 	
 }
