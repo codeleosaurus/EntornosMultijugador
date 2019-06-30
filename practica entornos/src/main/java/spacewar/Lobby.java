@@ -689,7 +689,7 @@ public class Lobby {
 		System.out.println("[LOBBY] [CHAT INFO] Message received. [" + player.getName() + "]: " + msgText);
 		
 		msg.put("event", "CHAT MSG");
-		msg.put("msg text", msgText);
+		msg.put("text", msgText);
 		msg.put("playerName", player.getName());
 		broadcast(msg.toString());
 		
