@@ -85,7 +85,8 @@ public class Lobby {
 		if(!playersInLobby.contains(player)) {
 			playersInLobby.put(player.getName(), player);
 			System.out.println("[LOBBY] [PLAYER INFO] Player " + player.getName() + " joined the lobby");
-			sendRoomListToPlayer(player);	
+			sendRoomListToPlayer(player);
+			broadcastPlayerListToAll();
 		}else {
 			System.out.println("[LOBBY] [PLAYER ERROR] Unable to connect player " + player.getName() + " to lobby. Player already exists in lobby");
 		}

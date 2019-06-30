@@ -156,7 +156,7 @@ window.onload = function() {
 			}
 			if (typeof game.global.myPlayer.image !== 'undefined') {
 				for (var player of msg.players) {
-					// if (game.global.myPlayer.name.equals(player.name)) {
+	
 					if (game.global.myPlayer.id == player.id) {
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
