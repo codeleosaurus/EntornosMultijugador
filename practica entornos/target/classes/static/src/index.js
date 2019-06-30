@@ -11,7 +11,8 @@ window.onload = function() {
 		otherPlayers : [],
 		projectiles : [],
 		rooms : [],
-		currentRoom : null
+		currentRoom : null,
+		waiting: false
 	}
 
 	// WEBSOCKET CONFIGURATOR
@@ -62,6 +63,37 @@ window.onload = function() {
 			
 		case 'ROOM LIST':
 			createList(msg.roomList)
+			break
+			
+		case 'JOINING ROOM':
+			game.global.currentRoom.roomName = msg.roomName;
+			game.state.start('roomState')
+			break
+			
+		case 'ROOM INFO':
+			console.log(msg)
+			game.global.currentRoom.roomName = msg.roomName;
+			game.global.currentRoom.playerlist = msg.playerlist;
+			//updateRoom();
+			
+		case 'CHAT MSG':
+			displayChatMsg(msg.text, msg.playerName);
+			break
+		
+		case 'WAITING ROOM':
+			console.log("waiting for " + msg.roomName);
+			waiting = true;
+			game.state.start("matchmakingState")
+			break
+		
+		case 'LEAVE WAITING':
+			console.log("leaving queue")
+			waiting = false;
+			game.state.start("lobbyState")
+			break
+			
+		case 'RANKING':
+			console.log("recibido ranking")
 			break
 			
 		case 'GAME STATE UPDATE' :
