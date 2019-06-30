@@ -3,16 +3,12 @@ Spacewar.menuState = function(game) {}
 	function play(){
 		//if (typeof game.global.myPlayer.id !== 'undefined') {
 		//	if (typeof game.global.myPlayer.id != 'undefined') {
-				let message = {
+				let evento = new Object();
 						event : "JOIN LOBBY"
-					}
-					//console.log(JSON.stringify(message))
-					game.global.socket.send(JSON.stringify(message))
+					game.global.socket.send(JSON.stringify(evento))
 					game.state.start('lobbyState')
 					if (game.global.DEBUG_MODE) {}
-		//		}
-		//}
-	}
+				}
 	
 
 
