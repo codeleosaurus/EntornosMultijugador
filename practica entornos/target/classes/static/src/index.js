@@ -163,13 +163,16 @@ window.onload = function() {
 			}
 			if (typeof game.global.myPlayer.image !== 'undefined') {
 				for (var player of msg.players) {
+					console.log("e")
 					// if (game.global.myPlayer.name.equals(player.name)) {
 					if (game.global.myPlayer.id == player.id) {
+						console.log("e1")
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
 						game.global.myPlayer.image.angle = player.facingAngle
 					} else {
 						if (typeof game.global.otherPlayers[player.id] == 'undefined') {
+							console.log("e2")
 							game.global.otherPlayers[player.id] = {
 									image : game.add.sprite(player.posX, player.posY, 'spacewar', player.shipType)
 							}
