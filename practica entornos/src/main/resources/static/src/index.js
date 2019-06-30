@@ -40,15 +40,28 @@ window.onload = function() {
 
 			nameConfirmation(msg.validname)
 			break
-		/*case 'NEW ROOM' :
+		case 'NEW ROOM' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] NEW ROOM message recieved')
 				console.dir(msg)
 			}
 			game.global.myPlayer.room = {
 					name : msg.room
-			}*/
-			/*break
+			}
+			break
+		
+			
+		case 'JOINIG GAME':
+			game.state.start('gameState')
+			break
+		case 'GAME END':
+			game.state.start('endState')
+			break
+			
+		case 'ROOM LIST':
+			createList(msg.roomList)
+			break
+			
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] GAME STATE UPDATE message recieved')
@@ -107,7 +120,7 @@ window.onload = function() {
 		default :
 			console.dir(msg)
 			break
-		}*/
+		
 		}
 	}
 
@@ -131,5 +144,5 @@ function nameConfirmation(validname) {
 	else if (game.global.DEBUG_MODE) {
 		console.log("[DEBUG] [ERROR] Confirmation name error. Name was not valid");
 	}
-
 }
+

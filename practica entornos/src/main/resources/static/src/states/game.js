@@ -16,36 +16,7 @@ function actualizarVida(){
 function muerte(){
 	
 }
-function updateMove(){
-	let msg = new Object()
-	msg.event = 'UPDATE MOVEMENT'
-		
-	msg.movement = {
-		thrust : false,
-		brake : false,
-		rotLeft : false,
-		rotRight : false
-	}
 
-	msg.bullet = false
-
-	if (this.wKey.isDown)
-		msg.movement.thrust = true;
-	if (this.sKey.isDown)
-		msg.movement.brake = true;
-	if (this.aKey.isDown)
-		msg.movement.rotLeft = true;
-	if (this.dKey.isDown)
-		msg.movement.rotRight = true;
-	if (this.spaceKey.isDown) {
-		msg.bullet = this.fireBullet()
-	}
-
-	if (game.global.DEBUG_MODE) {
-		console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
-	}
-	game.global.socket.send(JSON.stringify(msg))
-}
 
 Spacewar.gameState.prototype = {
 
@@ -85,13 +56,14 @@ Spacewar.gameState.prototype = {
 	},
 
 	create : function() {
+		/*
 		//pasarle el nombre del jugador desde el server
 		//el texto que va a seguir a la nave se crea aqui
 		text = game.add.bitmapText(0, 0,name,style);
 		text.x = Math.floor(randomImage.x + sprite.width / 2);
 	    text.y = Math.floor(randomImage.y + sprite.height / 2);
-		
-	    this.bulletTime = 0
+		*/
+		this.bulletTime = 0
 		this.fireBullet = function() {
 			if (game.time.now > this.bulletTime) {
 				this.bulletTime = game.time.now + 250;
@@ -101,7 +73,7 @@ Spacewar.gameState.prototype = {
 				return false
 			}
 		}
-		//movimiento
+
 		this.wKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.sKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.aKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -114,6 +86,7 @@ Spacewar.gameState.prototype = {
 				Phaser.Keyboard.SPACEBAR ]);
 
 		game.camera.follow(game.global.myPlayer.image);
+		
 		var vidas=game.add.sprite(
 				 game.world.centerX-400,
 				 game.world.centerY -260,
@@ -122,6 +95,34 @@ Spacewar.gameState.prototype = {
 	},
 	//aqui actualiza lo de la posicion es donde llega el mensaje que se hace en el servidor
 	update : function() {
-		updateMove();		  
+		let evento = new Object()
+		evento.event = 'UPDATE MOVEMENT'
+
+			evento.movement = {
+			thrust : false,
+			brake : false,
+			rotLeft : false,
+			rotRight : false
+		}
+
+		evento.bullet = false
+
+		if (this.wKey.isDown)
+			evento.movement.thrust = true;
+		if (this.sKey.isDown)
+			evento.movement.brake = true;
+		if (this.aKey.isDown)
+			evento.movement.rotLeft = true;
+		if (this.dKey.isDown)
+			evento.movement.rotRight = true;
+		if (this.spaceKey.isDown) {
+			evento.bullet = this.fireBullet()
+		}
+		
+		
+		if (game.global.DEBUG_MODE) {
+			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
+		}
+			game.global.socket.send(JSON.stringify(evento))
 	}
 }

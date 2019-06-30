@@ -2,12 +2,53 @@
 <html>
 
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+<style>
 
+.list {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	position: absolute;
+	top: 180px;
+	left: 75px;
+	z-index: 2;
+	height: 200px;
+	width: 350px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#LUL {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#LUL li a {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
+
+#LUL li a:hover:not(.header) {
+  background-color: #eee;
+}
+</style>
 <!-- Título de la página -->
 <title>SpaceWar!</title>
 
 <!-- Cargamos los archivos JS -->
+
+<script src="scripts/jquery-3.3.1.min.js"></script>
 <script src="scripts/phaser.min.js"></script>
 <script src="src/states/boot.js"></script>
 <script src="src/states/preload.js"></script>
@@ -16,10 +57,14 @@
 <script src="src/states/matchmaking.js"></script>
 <script src="src/states/room.js"></script>
 <script src="src/states/game.js"></script>
+<script src="src/states/ending.js"></script>
 <script src="src/index.js"></script>
 </head>
 
 <body>
+
+	<ul id="LUL" class="list" hidden></ul>
+	
 	<!-- div donde ubicaremos el juego -->
 	<div id="gameDiv"></div>
 </body>

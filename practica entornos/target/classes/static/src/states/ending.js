@@ -1,6 +1,10 @@
 Spacewar.endState = function(game) {}
 var puntuacion;
 function newGame(){
+	let evento = new Object();
+	evento.event = 'LEAVE ROOM'
+		evento.event = 'LEAVE LOBBY'
+		game.global.socket.send(JSON.stringify(evento))
 	game.state.start('menuState')
 }
 
@@ -21,8 +25,8 @@ Spacewar.lobbyState.prototype = {
 		menubackground.width = game.width;
 		
 		var replayButton= game.add.sprite(
-			      game.world.centerX,
-			      game.world.centerY + 100,
+			      game.world.centerX-100,
+			      game.world.centerY +120,
 			      "replay"
 			    );
 		replayButton.inputEnabled = true;
