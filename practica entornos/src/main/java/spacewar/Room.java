@@ -71,10 +71,11 @@ public class Room {
 				if(!isFull()) {
 				
 					players.put(player.getSession().getId(), player);
+					System.out.println("[ROOM] [PLAYER INFO] Player " + player.getName() + " joined Room '" + this.name + "'");
+					
 					game.addPlayer(player);
 					player.setPlayerId(n_players.getAndIncrement());
 				
-					System.out.println("[ROOM] [PLAYER INFO] Player " + player.getName() + " joined Room '" + this.name + "'");
 					return 0;
 				
 				}else {
