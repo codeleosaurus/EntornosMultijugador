@@ -11,8 +11,7 @@ function leaveMatchmaking(){
 		console.log("Leaving matchmaking, sending message to server")
 		game.global.socket.send(JSON.stringify(evento))
 	}
-	game.global.waiting = false;
-	game.state.start('lobbyState')
+	//game.state.start('lobbyState')
 }
 //al recibir un mensaje del servidor de que estan todos los jugadores
 //deberia pasar a room

@@ -21,13 +21,15 @@ function selecMatchmaking(){
 	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","DUEL")
 	console.log(difM);
 	console.log(modeM);
+	game.global.waiting = false;
 	let evento = new Object();
 	evento.event = 'JOIN MATCHMAKING'
 		evento.diff=difM;
 		evento.mode = modeM;
 		game.global.socket.send(JSON.stringify(evento))
 		console.log("Joining matchmaking")
-	game.state.start('matchmakingState')
+	
+	//game.state.start('matchmakingState')
 	
 }
 

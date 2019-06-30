@@ -37,3 +37,10 @@ Spacewar.endState.prototype = {
 		
 	}
 }
+function showResults(msg){
+	var puntuaciones = ("El ganador es " + msg.winner.playerName + " con " + msg.winner.points + "puntos y " + msg.winner.hp + " vidas")
+	for ( var player of msg.losers){
+		puntuaciones += ("\n Un perdedor es " + player.playerName + " con " + player.points + "puntos" )
+	}
+	alert(puntuaciones)
+}
