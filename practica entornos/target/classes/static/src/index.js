@@ -79,7 +79,6 @@ window.onload = function() {
 			//game.global.currentRoom.roomName = msg.roomName;
 			console.log("Joining room:" + msg.roomName)
 			game.state.start('roomState')
-			//var nameText
 			break
 			
 		case 'ROOM INFO':
@@ -169,26 +168,16 @@ window.onload = function() {
 						game.global.myPlayer.image.x = player.posX
 						game.global.myPlayer.image.y = player.posY
 						game.global.myPlayer.image.angle = player.facingAngle
-						////
-						console.log(player.posX);
-						game.global.myPlayer.hpImage.x=player.posX
-						game.global.myPlayer.hpImage.x=player.posY-100
-						
 					} else {
 						if (typeof game.global.otherPlayers[player.id] == 'undefined') {
 							game.global.otherPlayers[player.id] = {
 									image : game.add.sprite(player.posX, player.posY, 'spacewar', player.shipType)
-									hpImage: game.add.sprite(player.posX,player.posY-100,'vida')
 							}
 							game.global.otherPlayers[player.id].image.anchor.setTo(0.5, 0.5)
 						} else {
 							game.global.otherPlayers[player.id].image.x = player.posX
 							game.global.otherPlayers[player.id].image.y = player.posY
 							game.global.otherPlayers[player.id].image.angle = player.facingAngle
-							game.global.otherPlayers[player.id].hpImage.x=player.posX
-							game.global.otherPlayers[player.id].hpImage.x=player.posY-100
-							console.log(player.posX);
-							////
 						}
 					}
 				}
