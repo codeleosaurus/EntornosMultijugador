@@ -95,6 +95,9 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 
 			switch (evento) { 
 			
+			case "INIT SESSION":
+				tryInitSession(session, node.get("playerName").asText());
+			
 			case "GET RANKING":
 				lobby.sendRanking(player);
 				break;
@@ -184,7 +187,7 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 			e.printStackTrace(System.err);
 		}
 	}
-	
+
 	//////////////////////////////
 	//GESTIÓN DE FIN DE CONEXIÓN//
 	//////////////////////////////
@@ -208,6 +211,50 @@ public class WebsocketGameHandler extends TextWebSocketHandler {
 		}
 		
 		System.out.println("[SYSTEM] [INFO] Player " + player.getName() + " disconnected from the server");
+		
+	}
+	
+	public void tryInitSession(WebSocketSession session, String name) throws Exception {
+		
+		if(!openSessions.containsKey(name)) {
+			
+			Player player = new Player(name, session);
+			System.out.println("[SYSTEM] [INFO] Created new player with name " + name);
+				
+			synchronized(session) {
+				session.getAttributes().put(PLAYER_ATTRIBUTE, player);
+				//session.getAttributes().put(ROOM_ATTRIBUTE, "");
+			}
+			
+			System.out.println("[SYSTEM] [INFO] Updated session attributes");
+			
+			openSessions.put(name, session);
+			
+			System.out.println("[SYSTEM] [INFO] Added session to open session list");
+			
+			lobby.allPlayers.put(name, player);
+			
+			System.out.println("[SYSTEM] [INFO] Added player to global player list");
+			
+			ObjectNode msg = mapper.createObjectNode();
+			msg.put("event", "INIT SESSION"); 
+			msg.put("validname", true);	      
+			player.sendMessage(msg.toString());
+			
+			System.out.println("[SYSTEM] [INFO] Confirmation message sent to player");
+			
+		}else {
+			
+			System.out.println("[SYSTEM] [ERROR] Unable to create new player. Name " + name + " already used");
+			
+			ObjectNode msg = mapper.createObjectNode();
+			msg.put("event", "INIT SESSION");
+			msg.put("validname", false);
+				
+			synchronized(session) {
+				session.sendMessage(new TextMessage(msg.toString()));
+			}
+		}
 		
 	}
 }
