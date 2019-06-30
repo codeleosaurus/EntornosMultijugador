@@ -155,6 +155,7 @@ public class Room {
 					System.out.println("[ROOM] [GAME INFO] Full room. Starting game from Room '" + this.name + "'");
 					setStarted(true);
 					//game.sendStartMsg();
+					game.broadcastBeginningMsg();
 					game.startGameLoop();
 					return true;
 				}
@@ -184,6 +185,7 @@ public class Room {
 					System.out.println("[ROOM] [GAME INFO] Manual start selected with enough players. Starting game from Room '" + this.name + "'");
 					setStarted(true);
 					//game.sendStartMsg();
+					game.broadcastBeginningMsg();
 					game.startGameLoop();
 					return true;
 				}
