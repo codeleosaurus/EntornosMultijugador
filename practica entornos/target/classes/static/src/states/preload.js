@@ -30,6 +30,10 @@ Spacewar.preloadState.prototype = {
 		game.load.image("rankingBot", "assets/images/rankingBot.png");
 		game.load.image("roomTex", "assets/images/roomsTex.png");
 		game.load.image("playerTex", "assets/images/playersTex.png");
+		//botones del chat
+		game.load.image("chats", "assets/images/chat.png");
+		game.load.image("volver", "assets/images/leaveChat.png");
+		game.load.image("mensajear", "assets/images/send.png");
 		//explosiones y naves
 		game.load.atlas('spacewar', 'assets/atlas/spacewar.png',
 				'assets/atlas/spacewar.json',
