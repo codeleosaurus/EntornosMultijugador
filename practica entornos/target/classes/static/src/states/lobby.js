@@ -54,7 +54,8 @@ function createList(roomlist) {
 		var li = document.createElement("li");
 		var a = document.createElement("a");
 	
-		a.appendChild(document.createTextNode(room.roomName + " - " + room.numberOfPlayers + "/" + room.maxPlayers + " jugadores"));
+		a.appendChild(document.createTextNode(room.roomName + " - " + room.numberOfPlayers + "/" + room.maxPlayers + " jugadores - Gamemode:"
+				+ room.gamemode + " - Difficulty: " + room.difficulty));
 		//if room.started
 		a.addEventListener("click", function() {
 			join(room.roomName);
