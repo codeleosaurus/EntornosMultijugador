@@ -4,9 +4,11 @@ Spacewar.menuState = function(game) {}
 		//if (typeof game.global.myPlayer.id !== 'undefined') {
 		//	if (typeof game.global.myPlayer.id != 'undefined') {
 				let evento = new Object();
-						event : "JOIN LOBBY"
-					game.global.socket.send(JSON.stringify(evento))
-					game.state.start('lobbyState')
+				evento.event = 'JOIN LOBBY';
+						//event : "JOIN LOBBY"
+					console.log(evento);
+					game.global.socket.send(JSON.stringify(evento));
+					game.state.start('lobbyState');
 					if (game.global.DEBUG_MODE) {}
 				}
 	
@@ -26,6 +28,7 @@ Spacewar.menuState.prototype = {
 	},
 
 	create : function() {
+		
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "menu");
 		menubackground.height = game.height;
 		menubackground.width = game.width;

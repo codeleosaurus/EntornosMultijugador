@@ -3,12 +3,12 @@ var puntuacion;
 function newGame(){
 	let evento = new Object();
 	evento.event = 'LEAVE ROOM'
-		evento.event = 'LEAVE LOBBY'
+		//evento.event = 'LEAVE LOBBY'
 		game.global.socket.send(JSON.stringify(evento))
-	game.state.start('menuState')
+	game.state.start('lobbyState')
 }
 
-Spacewar.lobbyState.prototype = {
+Spacewar.endState.prototype = {
 
 	init : function() {
 		

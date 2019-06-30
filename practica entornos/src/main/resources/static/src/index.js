@@ -5,7 +5,7 @@ window.onload = function() {
 	// GLOBAL VARIABLES
 	game.global = {
 		FPS : 30,
-		DEBUG_MODE : false,
+		DEBUG_MODE : true,
 		socket : null,
 		myPlayer : new Object(),
 		otherPlayers : [],
@@ -51,7 +51,7 @@ window.onload = function() {
 			break
 		
 			
-		case 'JOINIG GAME':
+		case 'JOINING GAME':
 			game.state.start('gameState')
 			break
 		case 'GAME END':
@@ -132,13 +132,14 @@ window.onload = function() {
 	game.state.add('matchmakingState', Spacewar.matchmakingState)
 	game.state.add('roomState', Spacewar.roomState)
 	game.state.add('gameState', Spacewar.gameState)
-	game.state.add('endState', Spacewar.ending)
-	game.state.start('bootState')
+	game.state.add('endState', Spacewar.endState)
+	//game.state.start('bootState')
 	
 }
 function nameConfirmation(validname) {
 	
 	if (validname){
+		console.log("nombre aprobado");
 		game.state.start('bootState');
 	}
 	else if (game.global.DEBUG_MODE) {

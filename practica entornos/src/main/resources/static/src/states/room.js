@@ -39,7 +39,7 @@ Spacewar.roomState.prototype = {
 			      "leaveRoom"
 			    );
 		 leave.inputEnabled = true;
-		 leave.events.onInputDown.add(toGame,this);
+		 leave.events.onInputDown.add(leaveRoom,this);
 		 var play = game.add.sprite(
 			      game.world.centerX -150,
 			      game.world.centerY + 150,

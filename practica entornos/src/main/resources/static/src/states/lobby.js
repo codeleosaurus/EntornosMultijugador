@@ -86,8 +86,7 @@ Spacewar.lobbyState.prototype = {
 
 	create : function() {
 		
-		var uList = document.getElementsByClassName("list");
-		uList[0].hidden = false;
+		mostrar(false);
 		
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "lobby");
 		menubackground.height = game.height;
