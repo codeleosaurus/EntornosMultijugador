@@ -3,6 +3,7 @@ Spacewar.gameState = function(game) {
 	this.fireBullet
 	this.numStars = 100 // Should be canvas size dependant
 	this.maxProjectiles = 800 // 8 per player
+	
 }
 function actualizarVida(){
 	//cada vez que le llega un mensaje comprueba la vida que viene del servidor y hace una regla de 3 para calcular
@@ -51,16 +52,13 @@ Spacewar.gameState.prototype = {
 				'purple', 'red' ]
 		let randomImage = random[Math.floor(Math.random() * random.length)]
 				+ '_0' + (Math.floor(Math.random() * 6) + 1) + '.png'
-		game.global.myPlayer.image = game.add.sprite(-1000, -1000, 'spacewar',
+		game.global.myPlayer.image = game.add.sprite(0, 0, 'spacewar',
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
 		console.log(game.global.myPlayer)
 		//pinta la vida la primera vez
-		var vidas=game.add.sprite(
-				 game.world.centerX-515,
-				 game.world.centerY-310,
-				 "vida"
-				 );
+		game.global.myPlayer.hpImage=game.add.sprite(0, 0,'vida')
+		
 	},
 
 	create : function() {
