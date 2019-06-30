@@ -73,6 +73,7 @@ window.onload = function() {
 			
 		case 'JOINING ROOM':
 			//game.global.currentRoom.roomName = msg.roomName;
+			console.log("Joining room:" + msg.roomName)
 			game.state.start('roomState')
 			break
 			
