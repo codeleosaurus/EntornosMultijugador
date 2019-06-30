@@ -12,7 +12,7 @@ function crearSala(){
 			evento.roomType = mode;
 			console.log("Room created, sending message to server")
 			game.global.socket.send(JSON.stringify(evento))
-			game.state.start('roomState')
+			//game.state.start('roomState')
 	
 }
 function selecMatchmaking(){
@@ -27,7 +27,7 @@ function selecMatchmaking(){
 		evento.mode = modeM;
 		game.global.socket.send(JSON.stringify(evento))
 		console.log("Joining matchmaking")
-	game.state.start('roomState')
+	game.state.start('matchmakingState')
 	
 }
 
@@ -86,8 +86,7 @@ Spacewar.lobbyState.prototype = {
 
 	create : function() {
 		
-		var uList = document.getElementsByClassName("list");
-		uList[0].hidden = false;
+		mostrar(false);
 		
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "lobby");
 		menubackground.height = game.height;
@@ -110,6 +109,14 @@ Spacewar.lobbyState.prototype = {
 			    );
 		 roomCreate.inputEnabled = true;
 		 roomCreate.events.onInputDown.add(crearSala,this);
+		 
+		 var leaveLobby = game.add.sprite(
+			      game.world.centerX +-70,
+			      game.world.centerY + 150,
+			      "leaveLobby"
+			    );
+		 leaveLobby.inputEnabled = true;
+		// leaveLobby.events.onInputDown.add(leave,this);
 		 
 			
 		

@@ -50,9 +50,10 @@ Spacewar.gameState.prototype = {
 				'purple', 'red' ]
 		let randomImage = random[Math.floor(Math.random() * random.length)]
 				+ '_0' + (Math.floor(Math.random() * 6) + 1) + '.png'
-		game.global.myPlayer.image = game.add.sprite(0, 0, 'spacewar',
+		game.global.myPlayer.image = game.add.sprite(200, 200, 'spacewar',
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
+		console.log(game.global.myPlayer)
 	},
 
 	create : function() {

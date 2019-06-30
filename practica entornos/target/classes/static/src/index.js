@@ -9,7 +9,10 @@ window.onload = function() {
 		socket : null,
 		myPlayer : new Object(),
 		otherPlayers : [],
-		projectiles : []
+		projectiles : [],
+		rooms : [],
+		currentRoom : null,
+		waiting: false
 	}
 
 	// WEBSOCKET CONFIGURATOR
@@ -51,7 +54,7 @@ window.onload = function() {
 			break
 		
 			
-		case 'JOINIG GAME':
+		case 'JOINING GAME':
 			game.state.start('gameState')
 			break
 		case 'GAME END':
@@ -60,6 +63,37 @@ window.onload = function() {
 			
 		case 'ROOM LIST':
 			createList(msg.roomList)
+			break
+			
+		case 'JOINING ROOM':
+			game.global.currentRoom.roomName = msg.roomName;
+			game.state.start('roomState')
+			break
+			
+		case 'ROOM INFO':
+			console.log(msg)
+			game.global.currentRoom.roomName = msg.roomName;
+			game.global.currentRoom.playerlist = msg.playerlist;
+			//updateRoom();
+			
+		case 'CHAT MSG':
+			displayChatMsg(msg.text, msg.playerName);
+			break
+		
+		case 'WAITING ROOM':
+			console.log("waiting for " + msg.roomName);
+			waiting = true;
+			game.state.start("matchmakingState")
+			break
+		
+		case 'LEAVE WAITING':
+			console.log("leaving queue")
+			waiting = false;
+			game.state.start("lobbyState")
+			break
+			
+		case 'RANKING':
+			console.log("recibido ranking")
 			break
 			
 		case 'GAME STATE UPDATE' :
@@ -132,13 +166,14 @@ window.onload = function() {
 	game.state.add('matchmakingState', Spacewar.matchmakingState)
 	game.state.add('roomState', Spacewar.roomState)
 	game.state.add('gameState', Spacewar.gameState)
-	game.state.add('endState', Spacewar.ending)
-	game.state.start('bootState')
+	game.state.add('endState', Spacewar.endState)
+	//game.state.start('bootState')
 	
 }
 function nameConfirmation(validname) {
 	
 	if (validname){
+		console.log("nombre aprobado");
 		game.state.start('bootState');
 	}
 	else if (game.global.DEBUG_MODE) {
