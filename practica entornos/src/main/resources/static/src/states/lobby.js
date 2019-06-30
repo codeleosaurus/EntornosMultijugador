@@ -127,6 +127,18 @@ Spacewar.lobbyState.prototype = {
 		 leaveLobby.inputEnabled = true;
 		 leaveLobby.events.onInputDown.add(leave,this);
 		 
+		 var roomList=game.add.sprite(
+				 game.world.centerX -350,
+			      game.world.centerY - 210,
+			      "roomTex"
+				 );
+		 roomList.scale.setTo(0.7,0.7);
+		 var playerList=game.add.sprite(
+				 game.world.centerX +150,
+			      game.world.centerY - 210,
+			      "playerTex"
+				 );
+		 playerList.scale.setTo(0.7,0.7);
 			
 		
 	},
