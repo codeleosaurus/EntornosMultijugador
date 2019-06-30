@@ -12,6 +12,7 @@ function actualizarVida(){
 	//if (vida==0){
 	//game.state.start('endState')
 	//}
+	//vidas.scale.setTo(rand, rand);
 }
 function muerte(){
 	
@@ -50,10 +51,15 @@ Spacewar.gameState.prototype = {
 				'purple', 'red' ]
 		let randomImage = random[Math.floor(Math.random() * random.length)]
 				+ '_0' + (Math.floor(Math.random() * 6) + 1) + '.png'
-		game.global.myPlayer.image = game.add.sprite(200, 200, 'spacewar',
+		game.global.myPlayer.image = game.add.sprite(-1000, -1000, 'spacewar',
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
 		console.log(game.global.myPlayer)
+		var vidas=game.add.sprite(
+				 game.world.centerX-515,
+				 game.world.centerY-310,
+				 "vida"
+				 );
 	},
 
 	create : function() {
@@ -88,11 +94,7 @@ Spacewar.gameState.prototype = {
 
 		game.camera.follow(game.global.myPlayer.image);
 		
-		var vidas=game.add.sprite(
-				 game.world.centerX-400,
-				 game.world.centerY -160,
-				 "vida"
-				 );
+		
 	},
 	//aqui actualiza lo de la posicion es donde llega el mensaje que se hace en el servidor
 	update : function() {
@@ -125,5 +127,6 @@ Spacewar.gameState.prototype = {
 			console.log("[DEBUG] Sending UPDATE MOVEMENT message to server")
 		}
 			game.global.socket.send(JSON.stringify(evento))
+			
 	}
 }

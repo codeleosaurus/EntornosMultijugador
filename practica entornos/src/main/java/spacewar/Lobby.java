@@ -202,8 +202,7 @@ public class Lobby {
 		
 		ObjectNode msg = mapper.createObjectNode();
 		
-		msg.put("event",  "CONFIRMATION");
-		msg.put("type", "JOINING MATCHMAKING");
+		msg.put("event",  "JOINING MATCHMAKING");
 		
 		try {
 			player.sendMessage(msg.toString());
@@ -233,8 +232,7 @@ public class Lobby {
 			System.out.println("[LOBBY] [MATCHMAKING INFO] Player " + player.getName() + " left matchmaking queues");
 			
 			ObjectNode msg = mapper.createObjectNode();
-			msg.put("event", "CONFIRMATION");
-			msg.put("type", "LEAVING MATCHMAKING");
+			msg.put("event", "LEAVING MATCHMAKING");
 			player.sendMessage(msg.toString());
 		
 		}else {
@@ -482,8 +480,7 @@ public class Lobby {
 			
 		case -1:
 			
-			msg.put("event", "ERROR");
-			msg.put("type", "JOINING ROOM ERROR");
+			msg.put("event", "JOINING ROOM ERROR");
 			player.sendMessage(msg.toString());
 			
 			joinLobby(player);

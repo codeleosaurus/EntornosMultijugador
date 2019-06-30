@@ -28,6 +28,8 @@ Spacewar.preloadState.prototype = {
 		game.load.image("leaveRoom", "assets/images/leaveRoom.png");
 		game.load.image("leaveLobby", "assets/images/leaveLobby.png");
 		game.load.image("rankingBot", "assets/images/rankingBot.png");
+		game.load.image("roomTex", "assets/images/roomsTex.png");
+		game.load.image("playerTex", "assets/images/playersTex.png");
 		//explosiones y naves
 		game.load.atlas('spacewar', 'assets/atlas/spacewar.png',
 				'assets/atlas/spacewar.json',
