@@ -31,6 +31,15 @@ function selecMatchmaking(){
 	
 }
 
+function leaveLobby(){
+	
+	let evento = new Object();
+	evento.event = 'LEAVE LOBBY'
+		game.global.socket.send(JSON.stringify(evento))
+		console.log("Leaving lobby, message sent to server")
+	game.state.start('menuState')
+}
+
 function createList(roomlist) {
 	var ul = document.getElementById("LUL");
 	$(ul).empty();
@@ -116,7 +125,7 @@ Spacewar.lobbyState.prototype = {
 			      "leaveLobby"
 			    );
 		 leaveLobby.inputEnabled = true;
-		// leaveLobby.events.onInputDown.add(leave,this);
+		 leaveLobby.events.onInputDown.add(leaveLobby,this);
 		 
 			
 		
