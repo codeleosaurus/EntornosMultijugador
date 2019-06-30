@@ -56,5 +56,16 @@ function send(){
 }
 
 function back(){
-	gamet.state.start("menuState")
+	mostrar2(false);
+	gamet.state.start("menuState");
+}
+
+function mostrar2(){
+	var uList3 = document.getElementsByClassName("list3");
+	if (modo == true){
+		uList3[0].hidden = false;
+	} else {
+		//UList[0].visible = false;
+		uList3[0].hidden = true;
+	}
 }

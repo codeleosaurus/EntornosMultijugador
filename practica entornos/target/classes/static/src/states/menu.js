@@ -73,5 +73,6 @@ function ranking(){
 }
 
 function seeChat(){
+	mostrar2(true);
 	game.state.start("chatState");
 }

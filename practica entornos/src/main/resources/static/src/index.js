@@ -92,7 +92,7 @@ window.onload = function() {
 			//displayChatMsg(msg.text, msg.playerName);
 			var mensaje = (msg.playerName + ": " + msg.text)
 			//if (game.global.chat.length() < 40){
-				chats.add(mensaje);
+				game.global.chats.add(mensaje);
 			//}
 			break
 		
@@ -316,5 +316,25 @@ function createList() {
 		
 			ul2.appendChild(li);
 		}
-	
 }
+	
+	function createList3() {
+		console.log(game.global.chats)
+		var ul3 = document.getElementById("LUL3");
+		$(ul3).empty();
+		mostrar2(true);
+		//console.log(roomlist.length)
+		for (i = 0; i < game.global.chats.length; i++) { 
+			var chat = game.global.chats[i]
+			console.log(chat)
+			//console.log(room.roomName)
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+		
+			a.appendChild(document.createTextNode(chat));
+			//if room.started
+			li.appendChild(a);
+		
+			ul3.appendChild(li);
+		}
+	}
