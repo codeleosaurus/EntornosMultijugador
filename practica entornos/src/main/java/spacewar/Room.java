@@ -313,6 +313,8 @@ public class Room {
 		roomJSON.put("roomName", getName());
 		roomJSON.put("started", hasStarted());
 		roomJSON.put("finished",  hasFinished());
+		roomJSON.put("gamemode", getGamemode());
+		roomJSON.put("difficulty",  getDifficulty());
 		roomJSON.put("numberOfPlayers", getNumberOfPlayers());
 		roomJSON.put("maxPlayers", MAX_PLAYERS);
 		
