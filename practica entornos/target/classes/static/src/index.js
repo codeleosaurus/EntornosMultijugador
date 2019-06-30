@@ -11,6 +11,7 @@ window.onload = function() {
 		otherPlayers : [],
 		projectiles : [],
 		rooms : [],
+		playersGame : [],
 		currentRoom : null,
 		waiting: false
 	}
@@ -18,6 +19,7 @@ window.onload = function() {
 	// WEBSOCKET CONFIGURATOR
 
 	game.global.socket = new WebSocket("ws://127.0.0.1:8080/spacewar/"+ name)
+	//game.global.socket = new WebSocket("ws://192.168.1.37:8080/spacewar/"+ name)
 	
 	game.global.socket.onopen = () => {
 		if (game.global.DEBUG_MODE) {
@@ -58,7 +60,11 @@ window.onload = function() {
 			game.state.start('gameState')
 			break
 		case 'GAME END':
+			game.state.clearCurrentState()
+			game.global.myPlayer = new Object()
+			game.global.otherPlayers = []
 			game.state.start('endState')
+			showResults(msg)
 			break
 			
 		case 'ROOM LIST':
@@ -66,18 +72,18 @@ window.onload = function() {
 			break
 			
 		case 'JOINING ROOM':
-			game.global.currentRoom.roomName = msg.roomName;
+			//game.global.currentRoom.roomName = msg.roomName;
 			game.state.start('roomState')
 			break
 			
 		case 'ROOM INFO':
 			console.log(msg)
-			game.global.currentRoom.roomName = msg.roomName;
-			game.global.currentRoom.playerlist = msg.playerlist;
+			//game.global.currentRoom.roomName = msg.roomName;
+			//game.global.currentRoom.playerlist = msg.playerlist;
 			//updateRoom();
 			
 		case 'CHAT MSG':
-			displayChatMsg(msg.text, msg.playerName);
+			//displayChatMsg(msg.text, msg.playerName);
 			break
 		
 		case 'WAITING ROOM':
@@ -96,6 +102,51 @@ window.onload = function() {
 			console.log("recibido ranking")
 			showRanking(msg.rankingList)
 			break
+			
+		case 'JOINING MATCHMAKING':
+			console.log("joining matchmaking")			
+			game.state.start("matchmakingState")
+			break
+			
+		case 'LEAVING MATCHMAKING':
+			console.log("leaving matchmaking")
+			game.state.start("lobbyState")
+			break
+			
+		case 'JOINING ROOM ERROR':
+			console.log("error at joining room")
+			game.state.start("lobbyState")
+			break
+			
+		case 'DELETING ROOM':
+			console.log("Deleting room: " + msg.roomName)
+			break
+			
+		case 'PLAYER LEAVING ROOM':
+			console.log("Player " + msg.id + " leaves room")
+                /*var pos = -1;
+                for (i = 0; i < game.global.currentRoom.playerList.length; i++) {
+                    if (game.global.currentRoom.playerList[i] == msg.playerName) {
+                        pos = i;
+                    }
+                }
+                if (pos >= 0) game.global.currentRoom.playerList.remove(pos);
+                updateSalaInfo();*/
+			break
+			
+		case 'PLAYER LEAVING GAME':
+			console.log("Player " + msg.id + " leaves game")
+			game.global.otherPlayers[msg.id].image.destroy()
+            //game.global.UIPlayerName[player.id].destroy();
+            //game.global.UIText[player.id].destroy();
+            delete game.global.otherPlayers[msg.id]
+			break
+			
+		case 'PLAYER LIST':
+			console.log("Recibiendo lista de jugadores")
+			playersGame = msg.playersInGame
+			break
+			
 			
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
