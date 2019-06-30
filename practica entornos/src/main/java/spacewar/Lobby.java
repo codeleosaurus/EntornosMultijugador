@@ -502,7 +502,7 @@ public class Lobby {
 			ROOM_NAME = roomName;
 		}else {
 			System.out.println("[LOBBY] [ROOM ERROR] Invalid room name creating Room " + roomName + ". Room with that name already exists creating alternative name");
-			while(rooms.containsKey("roomName")) {
+			while(rooms.containsKey(roomName)) {
 				roomName += "Alt";
 			}
 			ROOM_NAME = roomName;
