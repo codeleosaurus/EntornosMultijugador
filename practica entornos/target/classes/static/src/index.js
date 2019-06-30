@@ -5,11 +5,13 @@ window.onload = function() {
 	// GLOBAL VARIABLES
 	game.global = {
 		FPS : 30,
-		DEBUG_MODE : true,
+		DEBUG_MODE : false,
 		socket : null,
 		myPlayer : new Object(),
 		otherPlayers : [],
-		projectiles : []
+		projectiles : [],
+		rooms : [],
+		currentRoom : null
 	}
 
 	// WEBSOCKET CONFIGURATOR

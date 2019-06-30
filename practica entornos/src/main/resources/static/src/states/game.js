@@ -53,6 +53,7 @@ Spacewar.gameState.prototype = {
 		game.global.myPlayer.image = game.add.sprite(200, 200, 'spacewar',
 				game.global.myPlayer.shipType)
 		game.global.myPlayer.image.anchor.setTo(0.5, 0.5)
+		console.log(game.global.myPlayer)
 	},
 
 	create : function() {
