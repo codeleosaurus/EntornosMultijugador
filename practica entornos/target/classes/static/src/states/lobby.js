@@ -23,6 +23,8 @@ function crearSala(){
 function selecMatchmaking(){
 	var difM= prompt("write dificulty(Easy, Meedium, Hard)", "Easy")
 	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","Duel")
+	console.log(difM);
+	console.log(modeM);
 	let evento = new Object();
 	evento.event = 'JOIN MATCHMAKING'
 		evento.diff=difM;
