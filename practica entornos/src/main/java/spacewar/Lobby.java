@@ -114,12 +114,13 @@ public class Lobby {
 	
 	public void joinMatchmaking(Player player, String desiredDiff, String desiredMode) {
 		
-		if(desiredDiff != "EASY" && desiredDiff != "MEDIUM" && desiredDiff != "HARD") {
+		
+		if(!desiredDiff.equals("EASY") && !desiredDiff.equals("MEDIUM") && !desiredDiff.equals("HARD")) {
 			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid difficulty value. Setting desired difficulty to Easy by default");
 			desiredDiff = "EASY";
 		}
 		
-		if(desiredMode != "DUEL" && desiredMode != "BATTLE ROYALE") {
+		if(!desiredMode.equals("DUEL") && !desiredMode.equals("BATTLE ROYALE")) {
 			System.out.println("[LOBBY] [MATCHMAKING ERROR] Invalid gamemode value. Setting desired gamemode to Duel by default");
 			desiredMode = "DUEL";
 		}
@@ -521,11 +522,20 @@ public class Lobby {
 			
 		String ROOM_DIFFICULTY;
 			
-		if(roomDiff == "EASY" || roomDiff == "MEDIUM" || roomDiff == "HARD") {
-			ROOM_DIFFICULTY = roomDiff;
-		}else {
-			System.out.println("[LOBBY] [ROOM ERROR] Invalid difficulty value creating Room " + roomName + ". Setting difficulty to Easy by default");
+		switch(roomDiff) {
+		case "EASY":
 			ROOM_DIFFICULTY = "EASY";
+			break;
+		case "MEDIUM":
+			ROOM_DIFFICULTY = "MEDIUM";
+			break;
+		case "HARD":
+			ROOM_DIFFICULTY = "HARD";
+			break;
+		default:
+			System.out.println("[LOBBY] [ROOM ERROR] Invalid difficulty value " + roomDiff + " creating Room " + roomName + ". Setting difficulty to Easy by default");
+			ROOM_DIFFICULTY = "EASY";
+			break;
 		}
 			
 		Room room = new Room(ROOM_NAME, ROOM_DIFFICULTY, MAX_PLAYERS);
