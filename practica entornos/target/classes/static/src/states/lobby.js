@@ -18,6 +18,7 @@ function crearSala(){
 			evento.roomType = mode;
 			console.log("Room created, sending message to server")
 			game.global.socket.send(JSON.stringify(evento))
+			game.state.start('roomState')
 	
 }
 function selecMatchmaking(){

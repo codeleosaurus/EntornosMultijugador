@@ -32,9 +32,9 @@ Spacewar.matchmakingState.prototype = {
 
 	create : function() {
 		
-		var menubackground = game.add.sprite(game.world.X, game.world.Y, "matchmaking");
-		menubackground.height = game.height;
-		menubackground.width = game.width;
+		var background = game.add.sprite(game.world.X, game.world.Y, "matchmaking");
+		background.height = game.height;
+		background.width = game.width;
 		 var nope=game.add.sprite(
 				 game.world.centerX+400,
 				 game.world.centerY -260,
