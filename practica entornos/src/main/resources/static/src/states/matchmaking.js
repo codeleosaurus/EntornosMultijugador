@@ -4,7 +4,7 @@ function leaveMatchmaking(){
 }
 //al recibir un mensaje del servidor de que estan todos los jugadores
 //deberia pasar a room
-function toRoom{
+function toRoom(){
 	if (typeof game.global.myPlayer.room !== 'undefined') {
 		if (game.global.DEBUG_MODE) {
 			console.log("[DEBUG] Joined room " + game.global.myPlayer.room);
