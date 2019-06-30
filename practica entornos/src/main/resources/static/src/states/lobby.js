@@ -1,13 +1,7 @@
 Spacewar.lobbyState = function(game) {}
 //funciones que se llaman al pulsar los botones
-function joinRoom(){
-	//aqui hay que hacer una funcion que haga que al seleccionar una sala y darle a confirmar llame a join room
-	//let evento = new Object();
-	//evento.event = 'JOIN ROOM'
-		//evento.roomName = selRoom;
-	//de momento esta comentada porque no tenemos manera de seleccionar las salas disponibles 
-}
 function crearSala(){
+		mostrar(false);
 		var roomName= prompt("Write the rooms name", "Villa oculta de la hoja")
 		var dif= prompt("write dificulty(EASY, MEDIUM, HARD)", "EASY")
 		var mode=prompt("Select playmode(BATTLE ROYALE,DUEL)","BATTLE ROYALE")
@@ -22,6 +16,7 @@ function crearSala(){
 	
 }
 function selecMatchmaking(){
+	mostrar(false);
 	var difM= prompt("write dificulty(Easy, Meedium, Hard)", "EASY")
 	var modeM=prompt("Select playmode(BATTLE ROYALE,DUEL)","DUEL")
 	console.log(difM);
@@ -36,7 +31,46 @@ function selecMatchmaking(){
 	
 }
 
+function createList(roomlist) {
+	var ul = document.getElementById("LUL");
+	$(ul).empty();
+	mostrar(true);
+	//console.log(roomlist.length)
+	for (i = 0; i < roomlist.length; i++) { 
+		var room = roomlist[i]
+		//console.log(room)
+		//console.log(room.roomName)
+		var li = document.createElement("li");
+		var a = document.createElement("a");
+	
+		a.appendChild(document.createTextNode(room.roomName + " - " + room.numberOfPlayers + "/" + room.maxPlayers + " jugadores"));
+		//if room.started
+		a.addEventListener("click", function() {
+			join(room.roomName);
+		});
+		li.appendChild(a);
+	
+		ul.appendChild(li);
+	}
+}
+function join(roomName){
+	mostrar(false);
+	let evento = new Object();
+	evento.event = 'JOIN ROOM'
+	evento.roomName = roomName;
+	console.log("Sending join room petition to server for: " + roomName)
+	game.global.socket.send(JSON.stringify(evento))
+}
 
+function mostrar(modo){
+	var uList = document.getElementsByClassName("list");
+	if (modo == true){
+		uList[0].hidden = false;
+	} else {
+		uList[0].hidden = true;
+	}
+	
+}
 
 Spacewar.lobbyState.prototype = {
 
@@ -51,6 +85,9 @@ Spacewar.lobbyState.prototype = {
 	},
 
 	create : function() {
+		
+		var uList = document.getElementsByClassName("list");
+		uList[0].hidden = false;
 		
 		var menubackground = game.add.sprite(game.world.X, game.world.Y, "lobby");
 		menubackground.height = game.height;

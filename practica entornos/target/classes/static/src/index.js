@@ -55,6 +55,10 @@ window.onload = function() {
 			game.state.start('gameState')
 			break
 			
+		case 'ROOM LIST':
+			createList(msg.roomList)
+			break
+			
 		case 'GAME STATE UPDATE' :
 			if (game.global.DEBUG_MODE) {
 				console.log('[DEBUG] GAME STATE UPDATE message recieved')
@@ -137,5 +141,5 @@ function nameConfirmation(validname) {
 	else if (game.global.DEBUG_MODE) {
 		console.log("[DEBUG] [ERROR] Confirmation name error. Name was not valid");
 	}
-
 }
+
