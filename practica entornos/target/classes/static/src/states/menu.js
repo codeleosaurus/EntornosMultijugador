@@ -36,11 +36,19 @@ Spacewar.menuState.prototype = {
 		//Aqui meto el botón de que le de a jugar
 		 var playbutton = game.add.sprite(
 			      game.world.centerX,
-			      game.world.centerY + 100,
+			      game.world.centerY + 300,
 			      "play"
 			    );
 		 playbutton.inputEnabled = true;
 		 playbutton.events.onInputDown.add(play, this);
+		 
+		 var rank = game.add.sprite(
+			      game.world.centerX,
+			      game.world.centerY + 300,
+			      "rankingBot"
+			    );
+		 rank.inputEnabled = true;
+		 //rank.events.onInputDown.add(play, this);
 
 	},
 	update : function() {
